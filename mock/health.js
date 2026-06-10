@@ -225,6 +225,26 @@ const deviceList = [
   }
 ];
 
+// 推荐添加设备
+const recommendedDevices = [
+  {
+    id: 'rec-dev-001',
+    name: '智能血糖仪',
+    type: 'bloodGlucose',
+    typeLabel: '血糖设备',
+    description: '支持血糖记录同步',
+    reason: '建议补充血糖监测'
+  },
+  {
+    id: 'rec-dev-002',
+    name: '智能尿酸仪',
+    type: 'uricAcid',
+    typeLabel: '尿酸设备',
+    description: '支持尿酸记录同步',
+    reason: '尿酸记录较少'
+  }
+];
+
 // 今日提醒
 const todayReminders = [
   {
@@ -252,12 +272,12 @@ const reminders = [
     memberName: '本人',
     metricType: 'bloodPressure',
     metricLabel: '血压',
-    title: '晨起血压记录',
-    time: '07:30',
+    title: '血压记录提醒',
+    time: '每天 07:30',
     repeatText: '每天',
     enabled: true,
     statusText: '已开启',
-    description: '每日晨起测量血压'
+    description: '晨起后建议记录一次'
   },
   {
     id: 'rem-002',
@@ -265,12 +285,25 @@ const reminders = [
     memberName: '本人',
     metricType: 'bloodGlucose',
     metricLabel: '血糖',
-    title: '空腹血糖记录',
-    time: '07:00',
+    title: '血糖记录提醒',
+    time: '每天 09:30',
     repeatText: '每天',
     enabled: true,
     statusText: '已开启',
-    description: '每日空腹测量血糖'
+    description: '餐后 2 小时建议继续记录'
+  },
+  {
+    id: 'rem-003',
+    memberId: 'father',
+    memberName: '父亲',
+    metricType: 'uricAcid',
+    metricLabel: '尿酸',
+    title: '尿酸记录提醒',
+    time: '每周三 20:00',
+    repeatText: '每周',
+    enabled: false,
+    statusText: '已关闭',
+    description: '建议保持固定周期记录'
   }
 ];
 
@@ -703,5 +736,6 @@ module.exports = {
   aiSessions,
   typeConfig,
   detailRecords,
-  memberHomeData
+  memberHomeData,
+  recommendedDevices
 };

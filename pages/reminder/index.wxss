@@ -1,1 +1,153 @@
-/* 提醒设置页 — Phase 1 骨架占位 */
+/* ═══════════════════════════════════════════════
+   瓯械健康 · 提醒设置页 — Phase 6
+   ═══════════════════════════════════════════════ */
+
+page {
+  background-color: #F5F6F8;
+}
+
+.page {
+  height: 100vh;
+  background-color: #F5F6F8;
+}
+
+/* ── 顶部说明卡片 ── */
+.intro-card {
+  margin: 24rpx 32rpx 0;
+  background: #FFFFFF;
+  border: 1px solid #E8E8EE;
+  border-radius: 24rpx;
+  padding: 28rpx 32rpx;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.intro-title {
+  display: block;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1A1A2E;
+  margin-bottom: 8rpx;
+}
+
+.intro-desc {
+  display: block;
+  font-size: 13px;
+  color: #8E8E9A;
+  line-height: 1.5;
+}
+
+/* ── 区块标题 ── */
+.section {
+  margin: 24rpx 32rpx 0;
+}
+
+.section-title {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1A1A2E;
+  margin-bottom: 16rpx;
+}
+
+/* ── 提醒卡片 ── */
+.reminder-card {
+  background: #FFFFFF;
+  border: 1px solid #E8E8EE;
+  border-radius: 20rpx;
+  margin-bottom: 16rpx;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.reminder-body {
+  display: flex;
+  align-items: center;
+  padding: 24rpx 28rpx;
+}
+
+.reminder-left {
+  flex: 1;
+  min-width: 0;
+}
+
+.reminder-title {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1A1A2E;
+  margin-bottom: 6rpx;
+}
+
+.reminder-meta {
+  display: block;
+  font-size: 12px;
+  color: #8E8E9A;
+  margin-bottom: 4rpx;
+}
+
+.reminder-desc {
+  display: block;
+  font-size: 11px;
+  color: #B8B8C4;
+  line-height: 1.5;
+}
+
+.reminder-right {
+  flex-shrink: 0;
+  margin-left: 24rpx;
+}
+
+.reminder-switch {
+  transform: scale(0.85);
+}
+
+/* ── 添加提醒入口 ── */
+.add-entry {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12rpx;
+  margin: 0 32rpx;
+  padding: 28rpx 0;
+  border: 1px dashed #D8D8E0;
+  border-radius: 20rpx;
+  background: #FFFFFF;
+}
+
+.add-entry-icon {
+  font-size: 18px;
+  color: #8E8E9A;
+}
+
+.add-entry-text {
+  font-size: 13px;
+  color: #8E8E9A;
+}
+
+/* ── 说明区域 ── */
+.note-card {
+  background: #FFFFFF;
+  border: 1px solid #E8E8EE;
+  border-radius: 20rpx;
+  padding: 24rpx 28rpx;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.note-title {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #4A4A5A;
+  margin-bottom: 8rpx;
+}
+
+.note-body {
+  display: block;
+  font-size: 12px;
+  color: #8E8E9A;
+  line-height: 1.6;
+}
+
+/* ── 底部间隔 ── */
+.bottom-spacer {
+  height: 48rpx;
+}

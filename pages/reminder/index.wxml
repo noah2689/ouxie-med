@@ -1,6 +1,48 @@
-<!-- 瓯械健康 · 提醒设置页 —— Phase 1 骨架占位 -->
-<view class="page-placeholder">
-  <text class="page-title">提醒设置</text>
-  <text class="page-desc">设置健康指标记录提醒，保持规律测量</text>
-  <text class="page-hint">Phase 6 将完成本页完整功能</text>
-</view>
+<!-- 瓯械健康 · 提醒设置页 — Phase 6 -->
+<scroll-view class="page" scroll-y>
+
+  <!-- ═══ ① 顶部说明卡片 ═══ -->
+  <view class="intro-card">
+    <text class="intro-title">记录提醒</text>
+    <text class="intro-desc">帮助家庭成员保持固定周期记录，减少漏记</text>
+  </view>
+
+  <!-- ═══ ② 提醒列表 ═══ -->
+  <view class="section">
+    <text class="section-title">提醒列表</text>
+    <view class="reminder-card" wx:for="{{reminders}}" wx:key="id">
+      <view class="reminder-body">
+        <view class="reminder-left">
+          <text class="reminder-title">{{item.title}}</text>
+          <text class="reminder-meta">{{item.memberName}} · {{item.time}}</text>
+          <text class="reminder-desc">{{item.description}}</text>
+        </view>
+        <view class="reminder-right">
+          <switch
+            class="reminder-switch"
+            checked="{{item.enabled}}"
+            data-id="{{item.id}}"
+            bindchange="onToggleReminder"
+            color="#2EAB8A"
+          />
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- ═══ ③ 添加提醒入口 ═══ -->
+  <view class="add-entry" bindtap="onAddReminder">
+    <text class="add-entry-icon">+</text>
+    <text class="add-entry-text">添加提醒</text>
+  </view>
+
+  <!-- ═══ ④ 提醒说明 ═══ -->
+  <view class="section">
+    <view class="note-card">
+      <text class="note-title">提醒说明</text>
+      <text class="note-body">当前提醒仅作为 Demo 展示，后续可接入小程序订阅消息能力。</text>
+    </view>
+  </view>
+
+  <view class="bottom-spacer"></view>
+</scroll-view>
