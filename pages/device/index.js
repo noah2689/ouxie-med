@@ -40,6 +40,12 @@ Page({
       }
     });
 
+    // 过滤用户已移除的设备
+    var removedIds = app.globalData.removedDeviceIds || [];
+    allDevices = allDevices.filter(function (d) {
+      return removedIds.indexOf(d.id) === -1;
+    });
+
     // 已连接
     var connected = allDevices.filter(function (d) {
       return d.connectedStatus === 'connected';
@@ -171,6 +177,30 @@ Page({
   // 点击「商城」按钮
   onShopDevice: function () {
     wx.showToast({ title: '即将跳转至商城', icon: 'none' });
+  },
+
+  // 移除设备
+  onRemoveDevice: function (e) {
+    var deviceId = e.currentTarget.dataset.id;
+    var deviceName = e.currentTarget.dataset.name;
+    var app = getApp();
+
+    // 标记为已移除（防止 mock 数据重新加载）
+    if (!app.globalData.removedDeviceIds) {
+      app.globalData.removedDeviceIds = [];
+    }
+    app.globalData.removedDeviceIds.push(deviceId);
+
+    // 从 globalData.deviceList 中移除（运行时连接的设备）
+    if (app.globalData.deviceList) {
+      app.globalData.deviceList = app.globalData.deviceList.filter(function (d) {
+        return d.id !== deviceId;
+      });
+    }
+
+    this.loadDevices();
+    wx.showToast({ title: '已移除 ' + deviceName, icon: 'none' });
+    console.log('[设备] 已移除:', deviceName);
   },
 
   // 关闭连接弹窗

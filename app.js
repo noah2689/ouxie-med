@@ -20,7 +20,9 @@ App({
     // AI 会话列表
     aiSessions: [],
     // 设备同步记录（运行时可追加）
-    syncedRecords: []
+    syncedRecords: [],
+    // 用户移除的设备 ID（运行时移除后不再显示）
+    removedDeviceIds: []
   },
 
   onLaunch: function () {

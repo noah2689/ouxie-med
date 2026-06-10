@@ -29,6 +29,9 @@
             <text class="device-name">{{item.name}}</text>
             <text class="device-status-text">{{item.statusText}}</text>
           </view>
+          <view class="device-delete" data-id="{{item.id}}" data-name="{{item.name}}" bindtap="onRemoveDevice">
+            <text class="delete-icon">✕</text>
+          </view>
         </view>
         <view class="device-body">
           <text class="device-sync">数据同步正常</text>

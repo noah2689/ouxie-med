@@ -130,6 +130,23 @@ page {
   margin-bottom: 2rpx;
 }
 
+.device-delete {
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-left: 12rpx;
+}
+
+.device-delete .delete-icon {
+  font-size: 11px;
+  color: #C0C0C8;
+  line-height: 1;
+}
+
 .device-status-text {
   font-size: 12px;
   color: #5B9E7A;
