@@ -13,18 +13,19 @@ Page({
   },
 
   onLoad: function () {
-    const members = mockData.members || [];
-    const self = members.find(function (m) {
-      return m.id === 'self';
-    });
-    if (self) {
-      this.setData({
-        memberName: self.name,
-        memberGender: self.gender || '男',
-        memberAge: (self.age || 32) + ' 岁'
-      });
-    }
+    this.loadPageData();
+    console.log('[我的] 页面加载');
+  },
 
+  onShow: function () {
+    // 每次显示时重新加载当前成员信息（处理从首页切换成员后返回）
+    this.loadMemberInfo();
+    console.log('[我的] 页面显示');
+  },
+
+  // 加载页面基础数据
+  loadPageData: function () {
+    const members = mockData.members || [];
     const reminders = mockData.reminders || [];
     const deviceList = mockData.deviceList || [];
 
@@ -34,7 +35,32 @@ Page({
       deviceCount: deviceList.length
     });
 
-    console.log('[我的] 页面加载');
+    this.loadMemberInfo();
+  },
+
+  // 从全局状态加载当前成员信息
+  loadMemberInfo: function () {
+    const app = getApp();
+    const currentMember = app.globalData.currentMember || { id: 'self' };
+    const members = mockData.members || [];
+
+    // 查找当前成员的完整信息
+    var member = null;
+    for (var i = 0; i < members.length; i++) {
+      if (members[i].id === currentMember.id) {
+        member = members[i];
+        break;
+      }
+    }
+
+    if (member) {
+      this.setData({
+        memberName: member.name,
+        memberGender: member.gender || '男',
+        memberAge: (member.age || 32) + ' 岁',
+        profilePercent: member.id === 'self' ? 70 : (member.id === 'mother' ? 50 : 40)
+      });
+    }
   },
 
   // 健康管理入口
