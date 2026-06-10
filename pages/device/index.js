@@ -114,10 +114,10 @@ Page({
     }, 300);
   },
 
-  // 添加设备
+  // 添加设备（占位引导）
   onAddDevice: function () {
     wx.showToast({
-      title: '后续接入',
+      title: '即将跳转至商城',
       icon: 'none'
     });
   }

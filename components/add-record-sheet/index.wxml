@@ -263,6 +263,7 @@
     <block wx:if="{{inputMode === 'sync'}}">
       <view class="sync-placeholder">
         <text class="sync-placeholder-text">设备同步将在后续接入</text>
+        <view class="sync-device-btn" bindtap="onLearnDevice">了解设备详情 ›</view>
       </view>
     </block>
   </view>

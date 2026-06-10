@@ -249,6 +249,13 @@
 .sync-placeholder-text {
   font-size: 13px;
   color: #B8B8C4;
+  margin-bottom: 16rpx;
+}
+
+.sync-device-btn {
+  font-size: 13px;
+  color: #2EAB8A;
+  font-weight: 500;
 }
 
 /* ── 底部按钮 ── */
