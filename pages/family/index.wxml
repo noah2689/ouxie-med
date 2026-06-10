@@ -29,9 +29,9 @@
           <text class="mc-meta">最近记录：{{item.recentRecordText}}</text>
         </view>
         <view class="mc-status">
-          <text class="mc-status-tag {{currentMemberId === item.id ? 'mc-status-current' : ''}}">
-            {{currentMemberId === item.id ? '当前查看' : '已添加'}}
-          </text>
+          <view class="mc-status-tag {{currentMemberId === item.id ? 'mc-status-current' : ''}}">
+            <text>{{currentMemberId === item.id ? '当前查看' : '已添加'}}</text>
+          </view>
         </view>
       </view>
 
