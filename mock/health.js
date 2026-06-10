@@ -193,7 +193,7 @@ const healthRecords = [
   }
 ];
 
-// 设备列表
+// 设备列表（仅已连接设备）
 const deviceList = [
   {
     id: 'dev-001',
@@ -205,20 +205,6 @@ const deviceList = [
     statusLevel: 'ok',
     lastSyncText: '今日 07:30',
     description: '血压计正常同步',
-    actions: [
-      { label: '同步', type: 'secondary' }
-    ]
-  },
-  {
-    id: 'dev-002',
-    name: '智能血糖仪',
-    type: 'bloodGlucose',
-    typeLabel: '血糖设备',
-    connectedStatus: 'connected',
-    statusText: '已连接',
-    statusLevel: 'ok',
-    lastSyncText: '今日 07:00',
-    description: '血糖仪正常同步',
     actions: [
       { label: '同步', type: 'secondary' }
     ]
