@@ -10,7 +10,7 @@
         <text class="tr-arrow"></text>
       </view>
       <view class="tr-remind" bindtap="onRemindTap">
-        <text class="tr-bell-icon"></text>
+        <image class="tr-bell-icon" src="/images/icon-bell.png" mode="aspectFit" />
         <text class="tr-remind-text">提醒</text>
       </view>
     </view>

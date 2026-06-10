@@ -57,30 +57,7 @@
 .tr-bell-icon {
   width: 30rpx;
   height: 30rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-}
-
-.tr-bell-icon::before {
-  content: '';
   display: block;
-  width: 18rpx;
-  height: 20rpx;
-  border: 3rpx solid #8E8E9A;
-  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-  background: transparent;
-}
-
-.tr-bell-icon::after {
-  content: '';
-  position: absolute;
-  bottom: 4rpx;
-  width: 14rpx;
-  height: 3rpx;
-  background: #8E8E9A;
-  border-radius: 1px;
 }
 
 .tr-remind-text {
