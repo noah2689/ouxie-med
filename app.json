@@ -25,20 +25,20 @@
       {
         "pagePath": "pages/health/index",
         "text": "健康",
-        "iconPath": "images/tab-health.svg",
-        "selectedIconPath": "images/tab-health-active.svg"
+        "iconPath": "images/tab-health.png",
+        "selectedIconPath": "images/tab-health-active.png"
       },
       {
         "pagePath": "pages/ai/index",
         "text": "AI 助手",
-        "iconPath": "images/tab-ai.svg",
-        "selectedIconPath": "images/tab-ai-active.svg"
+        "iconPath": "images/tab-ai.png",
+        "selectedIconPath": "images/tab-ai-active.png"
       },
       {
         "pagePath": "pages/my/index",
         "text": "我的",
-        "iconPath": "images/tab-my.svg",
-        "selectedIconPath": "images/tab-my-active.svg"
+        "iconPath": "images/tab-my.png",
+        "selectedIconPath": "images/tab-my-active.png"
       }
     ]
   },
