@@ -24,15 +24,21 @@
     "list": [
       {
         "pagePath": "pages/health/index",
-        "text": "健康"
+        "text": "健康",
+        "iconPath": "images/tab-health.svg",
+        "selectedIconPath": "images/tab-health-active.svg"
       },
       {
         "pagePath": "pages/ai/index",
-        "text": "AI 助手"
+        "text": "AI 助手",
+        "iconPath": "images/tab-ai.svg",
+        "selectedIconPath": "images/tab-ai-active.svg"
       },
       {
         "pagePath": "pages/my/index",
-        "text": "我的"
+        "text": "我的",
+        "iconPath": "images/tab-my.svg",
+        "selectedIconPath": "images/tab-my-active.svg"
       }
     ]
   },
