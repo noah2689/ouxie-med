@@ -1,4 +1,6 @@
 {
   "navigationBarTitleText": "AI 助手",
-  "usingComponents": {}
+  "usingComponents": {
+    "ai-drawer": "../../components/ai-drawer/index"
+  }
 }

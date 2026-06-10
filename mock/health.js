@@ -698,16 +698,77 @@ const memberHomeData = {
   }
 };
 
+// AI 洞察数据
+const aiInsight = {
+  title: '今日记录解读',
+  content: '今日已完成 2 项记录，血压记录保持平稳，尿酸记录需要继续关注。建议保持固定周期记录，便于观察趋势变化。'
+};
+
+// AI 初始消息
+const initialAiMessage = {
+  role: 'ai',
+  content: '你好，我可以帮你解读近期健康记录，整理趋势变化和记录建议。内容仅供参考，如有不适请咨询专业人士。'
+};
+
 // AI 快捷问题
 const quickQuestions = [
-  '最近有哪些指标需要关注？',
-  '为什么我的血压最近需要关注？',
-  '今天还缺哪些记录？',
-  '帮我总结本周健康变化'
+  '最近血压记录怎么样？',
+  '血糖记录需要注意什么？',
+  '尿酸记录有什么变化？',
+  '我今天还需要记录什么？'
 ];
 
+// AI 回复映射（按关键词匹配）
+const aiReplyMap = [
+  {
+    keywords: ['血压'],
+    reply: '近几次血压记录整体较平稳，晨起记录较连续。建议继续保持固定时间测量，方便后续观察趋势变化。'
+  },
+  {
+    keywords: ['血糖'],
+    reply: '血糖记录中包含空腹和餐后场景，建议尽量保持相同场景下记录，便于对比变化。当前结果仅用于记录解读，不作为专业判断。'
+  },
+  {
+    keywords: ['尿酸'],
+    reply: '尿酸记录次数相对较少，建议保持固定周期记录。当前结果仅用于记录解读，不作为专业判断。'
+  },
+  {
+    keywords: ['今天', '缺', '需要记录', '记录什么'],
+    reply: '今日已完成部分记录，建议根据个人习惯继续补充未记录项目，保持记录连续性。'
+  },
+  {
+    keywords: ['总结', '变化', '趋势'],
+    reply: '近期整体记录较连续，血压指标较平稳，尿酸指标需要适当关注。建议保持固定周期记录，数据越完整越便于了解趋势变化。'
+  }
+];
+
+// 兜底回复
+const fallbackReply = '我可以根据近期记录，帮你整理趋势变化和记录建议。你也可以点击上方快捷问题开始。';
+
 // AI 会话
-const aiSessions = [];
+const aiSessions = [
+  {
+    id: 'session-001',
+    title: '今日记录解读',
+    summary: '血压、血糖、尿酸记录总结',
+    timeText: '今天',
+    isCurrent: true
+  },
+  {
+    id: 'session-002',
+    title: '血糖记录说明',
+    summary: '空腹与餐后记录整理',
+    timeText: '昨天',
+    isCurrent: false
+  },
+  {
+    id: 'session-003',
+    title: '尿酸记录趋势',
+    summary: '近期记录较少，建议继续记录',
+    timeText: '更早',
+    isCurrent: false
+  }
+];
 
 module.exports = {
   members,
@@ -723,5 +784,9 @@ module.exports = {
   typeConfig,
   detailRecords,
   memberHomeData,
-  recommendedDevices
+  recommendedDevices,
+  aiInsight,
+  initialAiMessage,
+  aiReplyMap,
+  fallbackReply
 };

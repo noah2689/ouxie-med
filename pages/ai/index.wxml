@@ -1,6 +1,98 @@
-<!-- 瓯械健康 · AI 助手 —— Phase 1 骨架占位 -->
-<view class="page-placeholder">
-  <text class="page-title">AI 助手</text>
-  <text class="page-desc">AI 辅助解读健康数据，了解近期指标趋势变化</text>
-  <text class="page-hint">Phase 7 将完成 AI 助手完整功能</text>
+<!-- 瓯械健康 · AI 助手 — Phase 7 -->
+<view class="page-wrapper">
+
+  <!-- ═══ 顶部标题区 ═══ -->
+  <view class="ai-header">
+    <view class="ai-header-left">
+      <text class="ai-header-title">AI 健康助手</text>
+      <text class="ai-header-sub">基于近期记录，辅助理解健康数据变化</text>
+    </view>
+    <view class="ai-header-right">
+      <text class="ai-ref-tag">仅供参考</text>
+      <view class="ai-history-btn" bindtap="openSessionDrawer">
+        <text class="history-icon">☰</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- ═══ 可滚动内容区 ═══ -->
+  <scroll-view class="content-scroll" scroll-y scroll-into-view="{{scrollToId}}" scroll-with-animation>
+
+    <!-- ① 今日洞察卡片 -->
+    <view class="ai-section">
+      <view class="insight-card">
+        <text class="insight-title">{{aiInsight.title}}</text>
+        <text class="insight-content">{{aiInsight.content}}</text>
+        <view class="insight-link" bindtap="goRelatedRecords">
+          <text class="insight-link-text">查看关联记录</text>
+          <text class="insight-link-arrow">›</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- ② 快捷问题区 -->
+    <view class="ai-section">
+      <text class="section-label">你可以这样问</text>
+      <view class="quick-row">
+        <view
+          class="quick-pill"
+          wx:for="{{quickQuestions}}"
+          wx:key="*this"
+          data-question="{{item}}"
+          bindtap="onQuickQuestionTap"
+        >{{item}}</view>
+      </view>
+    </view>
+
+    <!-- ③ 对话区 -->
+    <view class="chat-section" id="chatArea">
+      <view
+        class="msg-item msg-{{item.role}}"
+        wx:for="{{messages}}"
+        wx:key="*this"
+        wx:for-index="idx"
+        id="msg-{{idx}}"
+      >
+        <view class="msg-avatar msg-avatar-{{item.role}}">
+          <text>{{item.role === 'ai' ? 'AI' : '我'}}</text>
+        </view>
+        <view class="msg-bubble msg-bubble-{{item.role}}">
+          <text class="msg-text">{{item.content}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 底部间隔（给固定输入区留空间） -->
+    <view class="chat-bottom-spacer"></view>
+  </scroll-view>
+
+  <!-- ═══ 底部固定输入区 ═══ -->
+  <view class="input-bar">
+    <view class="input-wrapper">
+      <input
+        class="input-field"
+        type="text"
+        placeholder="输入你想了解的记录问题"
+        placeholder-class="input-placeholder"
+        value="{{inputValue}}"
+        bindinput="onInputChange"
+        confirm-type="send"
+        bindconfirm="onSendMessage"
+      />
+    </view>
+    <view class="send-btn" bindtap="onSendMessage">
+      <text class="send-icon">›</text>
+    </view>
+  </view>
+
+  <!-- ═══ 会话抽屉 ═══ -->
+  <ai-drawer
+    wx:if="{{showDrawer}}"
+    sessions="{{sessions}}"
+    visible="{{showDrawer}}"
+    bind:close="closeSessionDrawer"
+    bind:select="onSessionSelect"
+    bind:new="onNewSession"
+  />
+
 </view>

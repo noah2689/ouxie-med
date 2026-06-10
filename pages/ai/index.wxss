@@ -1,2 +1,281 @@
-/* AI 助手 — Phase 1 骨架占位 */
-/* Phase 7 将替换为本页完整样式 */
+/* ═══════════════════════════════════════════════
+   瓯械健康 · AI 助手 — Phase 7
+   参考：ai-assistant-hifi.html
+   ═══════════════════════════════════════════════ */
+
+page {
+  background-color: #F5F6F8;
+}
+
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #F5F6F8;
+}
+
+/* ── 顶部标题区 ── */
+.ai-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 20rpx 32rpx;
+  background: #FFFFFF;
+  border-bottom: 1px solid #F0F0F2;
+  flex-shrink: 0;
+}
+
+.ai-header-left {
+  flex: 1;
+}
+
+.ai-header-title {
+  font-size: 17px;
+  font-weight: 600;
+  color: #1A1A2E;
+  display: block;
+  margin-bottom: 4rpx;
+}
+
+.ai-header-sub {
+  font-size: 12px;
+  color: #8E8E9A;
+  display: block;
+}
+
+.ai-header-right {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  flex-shrink: 0;
+  margin-top: 4rpx;
+}
+
+.ai-ref-tag {
+  font-size: 10px;
+  color: #2EAB8A;
+  border: 1px solid #C8E0D0;
+  background: #F0F9F5;
+  border-radius: 6rpx;
+  padding: 2rpx 10rpx;
+}
+
+.ai-history-btn {
+  width: 48rpx;
+  height: 48rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.history-icon {
+  font-size: 20px;
+  color: #8E8E9A;
+}
+
+/* ── 可滚动内容区 ── */
+.content-scroll {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.ai-section {
+  margin: 24rpx 32rpx 0;
+}
+
+.section-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1A1A2E;
+  margin-bottom: 16rpx;
+}
+
+/* ── 洞察卡片 ── */
+.insight-card {
+  background: linear-gradient(135deg, #F0F9F5 0%, #F5F7FA 100%);
+  border: 1px solid #E0E8E0;
+  border-radius: 24rpx;
+  padding: 28rpx 32rpx;
+}
+
+.insight-title {
+  display: block;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1A1A2E;
+  margin-bottom: 12rpx;
+}
+
+.insight-content {
+  display: block;
+  font-size: 13px;
+  color: #4A4A5A;
+  line-height: 1.6;
+  margin-bottom: 16rpx;
+}
+
+.insight-link {
+  display: flex;
+  align-items: center;
+  gap: 4rpx;
+}
+
+.insight-link-text {
+  font-size: 12px;
+  color: #2EAB8A;
+}
+
+.insight-link-arrow {
+  font-size: 14px;
+  color: #2EAB8A;
+  line-height: 1;
+}
+
+/* ── 快捷问题 ── */
+.quick-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+}
+
+.quick-pill {
+  font-size: 12px;
+  font-weight: 400;
+  color: #6A6A7A;
+  border: 1px solid #E0E0E6;
+  border-radius: 32rpx;
+  padding: 12rpx 28rpx;
+  background: #FFFFFF;
+  white-space: nowrap;
+}
+
+/* ── 对话区 ── */
+.chat-section {
+  margin: 24rpx 32rpx 0;
+  padding-bottom: 0;
+}
+
+.msg-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16rpx;
+  margin-bottom: 24rpx;
+}
+
+.msg-user {
+  flex-direction: row-reverse;
+}
+
+.msg-avatar {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.msg-avatar-ai {
+  background: #E8F6F1;
+  color: #2EAB8A;
+}
+
+.msg-avatar-user {
+  background: #2EAB8A;
+  color: #FFFFFF;
+}
+
+.msg-bubble {
+  max-width: 70%;
+  padding: 20rpx 24rpx;
+  border-radius: 20rpx;
+  line-height: 1.6;
+}
+
+.msg-bubble-ai {
+  background: #FFFFFF;
+  border: 1px solid #E8E8EE;
+  color: #4A4A5A;
+}
+
+.msg-bubble-user {
+  background: #2EAB8A;
+  color: #FFFFFF;
+}
+
+.msg-text {
+  font-size: 13px;
+  line-height: 1.6;
+  word-break: break-word;
+}
+
+/* ── 底部间隔 ── */
+.chat-bottom-spacer {
+  height: 160rpx;
+}
+
+/* ── 底部固定输入区 ── */
+.input-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  padding: 16rpx 32rpx;
+  padding-bottom: calc(16rpx + env(safe-area-inset-bottom));
+  background: #FFFFFF;
+  border-top: 1px solid #F0F0F2;
+  z-index: 100;
+}
+
+.input-wrapper {
+  flex: 1;
+  height: 72rpx;
+  border: 1px solid #E0E0E6;
+  border-radius: 44rpx;
+  padding: 0 24rpx;
+  background: #F8F9FA;
+  display: flex;
+  align-items: center;
+}
+
+.input-field {
+  flex: 1;
+  height: 72rpx;
+  font-size: 14px;
+  color: #1A1A2E;
+  background: transparent;
+  border: none;
+  outline: none;
+}
+
+.input-placeholder {
+  color: #B8B8C4;
+  font-size: 13px;
+}
+
+.send-btn {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 50%;
+  background: #2EAB8A;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.send-icon {
+  font-size: 22px;
+  color: #FFFFFF;
+  font-weight: 700;
+  line-height: 0;
+  transform: translateY(-1rpx);
+}

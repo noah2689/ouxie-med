@@ -1,0 +1,44 @@
+<!-- AI 会话抽屉组件 -->
+<view class="drawer-wrapper">
+
+  <!-- 遮罩 -->
+  <view class="drawer-mask" bindtap="onClose"></view>
+
+  <!-- 抽屉面板（右侧滑出） -->
+  <view class="drawer-panel" catchtap="noop">
+
+    <!-- 标题 -->
+    <view class="drawer-header">
+      <text class="drawer-title">历史会话</text>
+      <view class="drawer-close" bindtap="onClose">
+        <text class="close-icon">✕</text>
+      </view>
+    </view>
+
+    <!-- 会话列表 -->
+    <view class="drawer-body">
+      <view
+        class="drawer-item {{item.isCurrent ? 'drawer-item-current' : ''}}"
+        wx:for="{{sessions}}"
+        wx:key="id"
+        data-id="{{item.id}}"
+        bindtap="onSelect"
+      >
+        <view class="drawer-item-left">
+          <view class="drawer-item-indicator {{item.isCurrent ? 'indicator-active' : ''}}"></view>
+        </view>
+        <view class="drawer-item-body">
+          <text class="drawer-item-title">{{item.title}}</text>
+          <text class="drawer-item-summary">{{item.summary}}</text>
+          <text class="drawer-item-time">{{item.timeText}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 新建会话 -->
+    <view class="drawer-footer">
+      <view class="drawer-new-btn" bindtap="onNewSession">新建会话</view>
+    </view>
+
+  </view>
+</view>
