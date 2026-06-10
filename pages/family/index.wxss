@@ -112,14 +112,19 @@ page {
 }
 
 .mc-status-tag {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 44rpx;
+  padding: 0 20rpx;
+  border-radius: 12rpx;
   font-size: 11px;
   font-weight: 500;
-  padding: 4rpx 16rpx;
-  border-radius: 8rpx;
+  line-height: 1;
   color: #8E8E9A;
   border: 1px solid #D8D8E0;
   background: #F8F9FA;
+  box-sizing: border-box;
 }
 
 .mc-status-current {
