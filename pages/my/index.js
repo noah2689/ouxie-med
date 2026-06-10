@@ -8,6 +8,10 @@ Page({
     memberGender: '男',
     memberAge: '32 岁',
     profilePercent: 70,
+    height: 175,
+    weight: 72,
+    focusIndicators: '血压 · 尿酸',
+    recordHabit: '晨起 · 睡前',
     memberCount: 3,
     reminderCount: 3,
     deviceCount: 1
@@ -60,7 +64,11 @@ Page({
         memberName: member.name,
         memberGender: member.gender || '男',
         memberAge: (member.age || 32) + ' 岁',
-        profilePercent: member.id === 'self' ? 70 : (member.id === 'mother' ? 50 : 40)
+        profilePercent: member.completion || 50,
+        height: member.height || 170,
+        weight: member.weight || 65,
+        focusIndicators: member.focusIndicators || '血压',
+        recordHabit: member.recordHabit || '晨起'
       });
     }
   },

@@ -16,7 +16,12 @@ const members = [
     recentRecordText: '今日已记录',
     healthFocus: ['血压', '血糖'],
     status: '默认成员',
-    lastRecordTime: '2026-06-10T07:30:00'
+    lastRecordTime: '2026-06-10T07:30:00',
+    height: 175,
+    weight: 72,
+    focusIndicators: '血压 · 尿酸',
+    recordHabit: '晨起 · 睡前',
+    completion: 70
   },
   {
     id: 'mother',
@@ -29,7 +34,12 @@ const members = [
     recentRecordText: '昨天有记录',
     healthFocus: ['血压', '尿酸'],
     status: '已添加',
-    lastRecordTime: '2026-06-09T20:00:00'
+    lastRecordTime: '2026-06-09T20:00:00',
+    height: 160,
+    weight: 58,
+    focusIndicators: '血压 · 尿酸',
+    recordHabit: '午后 · 睡前',
+    completion: 55
   },
   {
     id: 'father',
@@ -42,7 +52,12 @@ const members = [
     recentRecordText: '3 天前记录',
     healthFocus: ['血糖'],
     status: '记录较少',
-    lastRecordTime: '2026-06-07T08:00:00'
+    lastRecordTime: '2026-06-07T08:00:00',
+    height: 170,
+    weight: 76,
+    focusIndicators: '血压 · 血糖',
+    recordHabit: '晨起 · 晚间',
+    completion: 40
   }
 ];
 
