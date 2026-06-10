@@ -4,6 +4,10 @@ Component({
     type: {
       type: String,
       value: 'bloodPressure'
+    },
+    syncDeviceName: {
+      type: String,
+      value: ''
     }
   },
 
@@ -145,10 +149,19 @@ Component({
       this.triggerEvent('save', { record: record });
     },
 
-    // 了解设备（占位引导）
-    onLearnDevice: function () {
+    // 去商城购买设备
+    onGoShop: function () {
       wx.showToast({
         title: '即将跳转至商城',
+        icon: 'none',
+        duration: 1500
+      });
+    },
+
+    // 设备同步
+    onSyncFromDevice: function () {
+      wx.showToast({
+        title: '正在同步',
         icon: 'none',
         duration: 1500
       });

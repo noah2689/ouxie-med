@@ -112,6 +112,7 @@
   <view wx:if="{{showRecordSheet}}" class="record-sheet" catchtap="noop">
     <add-record-sheet
       type="{{currentRecordType}}"
+      syncDeviceName="{{currentSyncDeviceName}}"
       bind:close="closeRecordSheet"
       bind:save="onSheetSave"
     />

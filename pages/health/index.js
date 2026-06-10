@@ -13,6 +13,7 @@ Page({
     // Phase 3：添加记录弹窗
     showRecordSheet: false,
     currentRecordType: 'bloodPressure',
+    currentSyncDeviceName: '',
 
     // Phase 5：成员切换弹窗
     showMemberSheet: false
@@ -115,9 +116,22 @@ Page({
     const type = e.currentTarget.dataset.type;
     const name = e.currentTarget.dataset.name;
     console.log('[弹窗] 打开添加' + name + '记录弹窗，类型:', type);
+
+    // 查找是否有该类型的已连接设备
+    var app = getApp();
+    var deviceName = '';
+    var allDevices = (mockData.deviceList || []).concat(app.globalData.deviceList || []);
+    for (var i = 0; i < allDevices.length; i++) {
+      if (allDevices[i].type === type && allDevices[i].connectedStatus === 'connected') {
+        deviceName = allDevices[i].name;
+        break;
+      }
+    }
+
     this.setData({
       showRecordSheet: true,
-      currentRecordType: type
+      currentRecordType: type,
+      currentSyncDeviceName: deviceName
     });
     this.hideHomeTabBar();
   },

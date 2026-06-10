@@ -259,11 +259,25 @@
       </block>
     </block>
 
-    <!-- 设备同步模式（占位） -->
+    <!-- 设备同步模式 -->
     <block wx:if="{{inputMode === 'sync'}}">
-      <view class="sync-placeholder">
-        <text class="sync-placeholder-text">设备同步将在后续接入</text>
-        <view class="sync-device-btn" bindtap="onLearnDevice">了解设备详情 ›</view>
+      <!-- 已有可用设备 -->
+      <view wx:if="{{syncDeviceName}}" class="sync-area">
+        <view class="sync-row">
+          <view class="sync-device-info">
+            <view class="sync-status-row">
+              <view class="sync-dot"></view>
+              <text class="sync-status-text">已连接</text>
+            </view>
+            <text class="sync-device-name">{{syncDeviceName}}</text>
+          </view>
+          <view class="dev-btn dev-btn-outline" bindtap="onSyncFromDevice">同步</view>
+        </view>
+      </view>
+      <!-- 无可用设备 → 引导去商城 -->
+      <view wx:else class="sync-placeholder">
+        <text class="sync-placeholder-text">暂无可用设备</text>
+        <view class="sync-device-btn" bindtap="onGoShop">去商城购买 ›</view>
       </view>
     </block>
   </view>
