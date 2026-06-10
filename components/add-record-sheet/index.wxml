@@ -59,29 +59,33 @@
         <view class="form-row-bp">
           <view class="form-field">
             <text class="field-label">收缩压 <text class="field-required">*</text></text>
-            <input
-              class="field-input"
-              type="digit"
-              placeholder="数值"
-              placeholder-class="field-placeholder"
-              data-field="systolic"
-              value="{{systolic}}"
-              bindinput="onInputChange"
-            />
-            <text class="field-unit">mmHg</text>
+            <view class="field-input-wrapper">
+              <input
+                class="field-input"
+                type="digit"
+                placeholder="数值"
+                placeholder-class="field-placeholder"
+                data-field="systolic"
+                value="{{systolic}}"
+                bindinput="onInputChange"
+              />
+              <text class="field-unit">mmHg</text>
+            </view>
           </view>
           <view class="form-field">
             <text class="field-label">舒张压 <text class="field-required">*</text></text>
-            <input
-              class="field-input"
-              type="digit"
-              placeholder="数值"
-              placeholder-class="field-placeholder"
-              data-field="diastolic"
-              value="{{diastolic}}"
-              bindinput="onInputChange"
-            />
-            <text class="field-unit">mmHg</text>
+            <view class="field-input-wrapper">
+              <input
+                class="field-input"
+                type="digit"
+                placeholder="数值"
+                placeholder-class="field-placeholder"
+                data-field="diastolic"
+                value="{{diastolic}}"
+                bindinput="onInputChange"
+              />
+              <text class="field-unit">mmHg</text>
+            </view>
           </view>
         </view>
 

@@ -55,6 +55,7 @@ Page({
       showRecordSheet: true,
       currentRecordType: type
     });
+    this.hideHomeTabBar();
   },
 
   // ⑤ 点击趋势按钮
@@ -95,6 +96,7 @@ Page({
   // 关闭弹窗
   closeRecordSheet: function () {
     this.setData({ showRecordSheet: false });
+    this.showHomeTabBar();
   },
 
   // 阻止冒泡
@@ -175,6 +177,31 @@ Page({
       duration: 1500
     });
 
+    // ⑥ 恢复 tabBar
+    this.showHomeTabBar();
+
     console.log('[保存] 首页数据已更新');
+  },
+
+  // ═══ Phase 3.1：tabBar 控制 ═══
+
+  // 隐藏底部 tabBar
+  hideHomeTabBar: function () {
+    wx.hideTabBar({
+      animation: true,
+      fail: function () {
+        console.log('[tabBar] 隐藏失败，不影响主流程');
+      }
+    });
+  },
+
+  // 显示底部 tabBar
+  showHomeTabBar: function () {
+    wx.showTabBar({
+      animation: true,
+      fail: function () {
+        console.log('[tabBar] 显示失败，不影响主流程');
+      }
+    });
   }
 });
