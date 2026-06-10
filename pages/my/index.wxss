@@ -180,19 +180,10 @@ page {
 }
 
 .menu-icon {
-  width: 40rpx;
-  height: 40rpx;
-  border: 1.5px solid #D8D8E0;
-  border-radius: 10rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 8px;
-  color: #B8B8C4;
+  width: 36rpx;
+  height: 36rpx;
   flex-shrink: 0;
-  background: #F8F9FA;
-  text-align: center;
-  line-height: 40rpx;
+  display: block;
 }
 
 .menu-label {
