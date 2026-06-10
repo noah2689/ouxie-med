@@ -1,4 +1,6 @@
 {
   "navigationBarTitleText": "健康",
-  "usingComponents": {}
+  "usingComponents": {
+    "add-record-sheet": "../../components/add-record-sheet/index"
+  }
 }

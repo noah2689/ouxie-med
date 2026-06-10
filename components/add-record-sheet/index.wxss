@@ -1,0 +1,287 @@
+/* 添加记录底部弹窗组件样式 */
+
+.sheet-content {
+  display: flex;
+  flex-direction: column;
+  max-height: 82vh;
+  background: #FFFFFF;
+}
+
+/* ── 拖拽条 ── */
+.sheet-handle {
+  display: flex;
+  justify-content: center;
+  padding: 20rpx 0 12rpx;
+  flex-shrink: 0;
+}
+
+.handle-bar {
+  width: 72rpx;
+  height: 8rpx;
+  border-radius: 4rpx;
+  background: #D8D8E0;
+}
+
+/* ── 标题区 ── */
+.sheet-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 40rpx 24rpx;
+  flex-shrink: 0;
+}
+
+.sheet-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1A1A2E;
+}
+
+.sheet-close {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 50%;
+  border: 1px solid #D8D8E0;
+  background: #F8F9FA;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-icon {
+  font-size: 14px;
+  color: #8E8E9A;
+  line-height: 1;
+}
+
+/* ── 类型切换 Tab ── */
+.type-tabs {
+  display: flex;
+  margin: 0 40rpx;
+  background: #F0F1F3;
+  border-radius: 16rpx;
+  padding: 4rpx;
+  flex-shrink: 0;
+  gap: 4rpx;
+}
+
+.type-tab {
+  flex: 1;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 14rpx 0;
+  color: #8E8E9A;
+  border-radius: 12rpx;
+  transition: all 150ms;
+}
+
+.type-tab-active {
+  background: #FFFFFF;
+  color: #2EAB8A;
+  font-weight: 600;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+/* ── 录入方式切换 ── */
+.mode-row {
+  display: flex;
+  gap: 0;
+  margin: 20rpx 40rpx 0;
+  background: #F8F9FA;
+  border-radius: 32rpx;
+  padding: 4rpx;
+  align-self: flex-start;
+  flex-shrink: 0;
+}
+
+.mode-item {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 10rpx 32rpx;
+  border-radius: 28rpx;
+  color: #8E8E9A;
+  transition: all 150ms;
+}
+
+.mode-item-active {
+  background: #2EAB8A;
+  color: #FFFFFF;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+/* ── 表单区域 ── */
+.sheet-form {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20rpx 40rpx 0;
+  -webkit-overflow-scrolling: touch;
+}
+
+.sheet-form::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── 表单项 ── */
+.form-field {
+  margin-bottom: 28rpx;
+}
+
+.form-row-bp {
+  display: flex;
+  gap: 24rpx;
+  margin-bottom: 0;
+}
+
+.form-row-bp .form-field {
+  flex: 1;
+  margin-bottom: 28rpx;
+}
+
+.field-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: #4A4A5A;
+  margin-bottom: 12rpx;
+}
+
+.field-required {
+  color: #E8913A;
+  font-weight: 400;
+  font-size: 13px;
+  margin-left: 4rpx;
+}
+
+.field-input-wrapper {
+  display: flex;
+  align-items: center;
+  height: 88rpx;
+  border: 1px solid #E0E0E6;
+  border-radius: 16rpx;
+  padding: 0 28rpx;
+  background: #F8F9FA;
+}
+
+.field-input {
+  flex: 1;
+  height: 88rpx;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 14px;
+  color: #1A1A2E;
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif;
+}
+
+.field-placeholder {
+  color: #B8B8C4;
+  font-size: 14px;
+}
+
+.field-text {
+  flex: 1;
+  font-size: 14px;
+  color: #1A1A2E;
+}
+
+.field-unit {
+  font-size: 13px;
+  color: #8E8E9A;
+  flex-shrink: 0;
+  margin-left: 8rpx;
+}
+
+.field-arrow {
+  font-size: 14px;
+  color: #B8B8C4;
+  margin-left: 12rpx;
+  line-height: 1;
+}
+
+.field-input-textarea {
+  width: 100%;
+  min-height: 112rpx;
+  border: 1px solid #E0E0E6;
+  border-radius: 16rpx;
+  padding: 20rpx 28rpx;
+  font-size: 14px;
+  color: #1A1A2E;
+  background: #F8F9FA;
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif;
+  line-height: 1.5;
+}
+
+/* ── 场景 Pill ── */
+.scene-row {
+  display: flex;
+  gap: 16rpx;
+  flex-wrap: wrap;
+  margin-top: 4rpx;
+}
+
+.scene-pill {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 12rpx 28rpx;
+  border: 1px solid #E0E0E6;
+  border-radius: 32rpx;
+  color: #8E8E9A;
+  background: #FFFFFF;
+  transition: all 150ms;
+}
+
+.scene-pill-active {
+  color: #2EAB8A;
+  border-color: #2EAB8A;
+  background: #E8F6F1;
+}
+
+/* ── 设备同步占位 ── */
+.sync-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80rpx 0;
+}
+
+.sync-placeholder-text {
+  font-size: 13px;
+  color: #B8B8C4;
+}
+
+/* ── 底部按钮 ── */
+.sheet-actions {
+  display: flex;
+  gap: 24rpx;
+  padding: 24rpx 40rpx;
+  padding-bottom: calc(24rpx + env(safe-area-inset-bottom));
+  border-top: 1px solid #F0F0F2;
+  flex-shrink: 0;
+}
+
+.btn {
+  flex: 1;
+  height: 88rpx;
+  border-radius: 16rpx;
+  font-size: 15px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 150ms;
+}
+
+.btn-cancel {
+  border: 1px solid #D8D8E0;
+  color: #4A4A5A;
+  background: #FFFFFF;
+}
+
+.btn-save {
+  border: none;
+  color: #FFFFFF;
+  background: #2EAB8A;
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(46, 171, 138, 0.25);
+}

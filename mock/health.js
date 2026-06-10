@@ -68,7 +68,83 @@ const metricTypes = [
   }
 ];
 
-// 健康记录（最简结构）
+// 今日健康概览
+const todayOverview = {
+  title: '今日健康概览',
+  subTitle: '今日已完成 2 项记录，1 项需要关注',
+  stats: [
+    { label: '今日已记录', value: 2, level: 'normal' },
+    { label: '需要关注', value: 1, level: 'attention' },
+    { label: '待观察', value: 1, level: 'info' }
+  ],
+  aiEntryText: 'AI 助手 · 查看记录解读'
+};
+
+// 首页 2×2 指标卡片专用数据
+const homeIndicators = [
+  {
+    type: 'bloodPressure',
+    name: '血压',
+    displayValue: '128/82',
+    unit: 'mmHg',
+    subValue: '脉搏 72 bpm',
+    recordTime: '今日 07:30',
+    recordScene: '晨起',
+    statusText: '正常范围',
+    statusLevel: 'normal',
+    hasRecordAction: true,
+    hasTrendAction: true,
+    isDeviceCard: false
+  },
+  {
+    type: 'bloodGlucose',
+    name: '血糖',
+    displayValue: '6.2',
+    unit: 'mmol/L',
+    subValue: '',
+    recordTime: '今日 07:10',
+    recordScene: '空腹',
+    statusText: '空腹记录',
+    statusLevel: 'recorded',
+    hasRecordAction: true,
+    hasTrendAction: true,
+    isDeviceCard: false
+  },
+  {
+    type: 'uricAcid',
+    name: '尿酸',
+    displayValue: '428',
+    unit: 'μmol/L',
+    subValue: '',
+    recordTime: '昨天 20:00',
+    recordScene: '日常',
+    statusText: '需要关注',
+    statusLevel: 'attention',
+    hasRecordAction: true,
+    hasTrendAction: true,
+    isDeviceCard: false
+  },
+  {
+    type: 'deviceStatus',
+    name: '设备状态',
+    displayValue: '',
+    unit: '',
+    subValue: '',
+    recordTime: '',
+    recordScene: '',
+    statusText: '待完善',
+    statusLevel: 'pending',
+    hasRecordAction: false,
+    hasTrendAction: false,
+    isDeviceCard: true,
+    deviceConnectedCount: 1,
+    deviceStatusText: '已连接 1 台',
+    deviceSubText: '血压计正常同步',
+    deviceHint: '推荐添加尿酸仪'
+  }
+];
+
+// 健康记录
 const healthRecords = [
   {
     id: 'rec-001',
@@ -81,8 +157,8 @@ const healthRecords = [
     unit: 'mmHg',
     recordTime: '2026-06-10T07:30:00',
     recordScene: '晨起',
-    statusText: '需要关注',
-    statusLevel: 'attention',
+    statusText: '正常范围',
+    statusLevel: 'normal',
     remark: ''
   },
   {
@@ -94,10 +170,25 @@ const healthRecords = [
     pulse: null,
     value: 6.2,
     unit: 'mmol/L',
-    recordTime: '2026-06-10T07:00:00',
+    recordTime: '2026-06-10T07:10:00',
     recordScene: '空腹',
     statusText: '空腹记录',
     statusLevel: 'recorded',
+    remark: ''
+  },
+  {
+    id: 'rec-003',
+    memberId: 'self',
+    metricType: 'uricAcid',
+    systolic: null,
+    diastolic: null,
+    pulse: null,
+    value: 428,
+    unit: 'μmol/L',
+    recordTime: '2026-06-09T20:00:00',
+    recordScene: '日常',
+    statusText: '需要关注',
+    statusLevel: 'attention',
     remark: ''
   }
 ];
@@ -134,6 +225,25 @@ const deviceList = [
   }
 ];
 
+// 今日提醒
+const todayReminders = [
+  {
+    id: 'today-rem-001',
+    text: '血糖餐后 2 小时建议继续记录',
+    level: 'info'
+  },
+  {
+    id: 'today-rem-002',
+    text: '血压近期需要关注，建议保持记录',
+    level: 'attention'
+  },
+  {
+    id: 'today-rem-003',
+    text: '尿酸记录较少，建议固定周期记录',
+    level: 'info'
+  }
+];
+
 // 提醒设置
 const reminders = [
   {
@@ -164,34 +274,6 @@ const reminders = [
   }
 ];
 
-// 今日概览
-const todayOverview = {
-  attentionCount: 2,
-  recordedCount: 3,
-  lastSyncTime: '07:30',
-  summary: '今日有 2 项指标需要关注',
-  subText: '保持每日记录，及时了解健康趋势'
-};
-
-// 今日提醒
-const todayReminders = [
-  {
-    id: 'today-rem-001',
-    text: '血糖餐后 2 小时未记录',
-    level: 'info'
-  },
-  {
-    id: 'today-rem-002',
-    text: '血压连续 3 天需要关注，建议记录',
-    level: 'attention'
-  },
-  {
-    id: 'today-rem-003',
-    text: '尿酸记录还不连续，建议补充记录',
-    level: 'info'
-  }
-];
-
 // AI 快捷问题
 const quickQuestions = [
   '最近有哪些指标需要关注？',
@@ -200,7 +282,7 @@ const quickQuestions = [
   '帮我总结本周健康变化'
 ];
 
-// AI 示例回话
+// AI 会话
 const aiSessions = [];
 
 module.exports = {
@@ -210,6 +292,7 @@ module.exports = {
   deviceList,
   reminders,
   todayOverview,
+  homeIndicators,
   todayReminders,
   quickQuestions,
   aiSessions

@@ -1,6 +1,146 @@
-<!-- 瓯械健康 · 健康首页 —— Phase 1 骨架占位 -->
-<view class="page-placeholder">
-  <text class="page-title">健康</text>
-  <text class="page-desc">家庭健康概览，记录与管理家庭成员的健康指标</text>
-  <text class="page-hint">Phase 2 将完成高保真首页还原</text>
+<!-- 瓯械健康 · 健康首页 — Phase 2 高保真还原 + Phase 3 添加记录弹窗 -->
+<view class="page-wrapper">
+
+  <scroll-view class="page-scroll" scroll-y>
+
+    <!-- ═══ ① 顶部操作行 ═══ -->
+    <view class="top-row">
+      <view class="tr-member" bindtap="onMemberTap">
+        <text class="tr-name">{{memberName}}</text>
+        <text class="tr-arrow"></text>
+      </view>
+      <view class="tr-remind" bindtap="onRemindTap">
+        <text class="tr-bell-icon"></text>
+        <text class="tr-remind-text">提醒</text>
+      </view>
+    </view>
+
+    <!-- ═══ ② 今日健康概览卡片 ═══ -->
+    <view class="ov-card">
+      <view class="ov-header">
+        <text class="ov-title">{{todayOverview.title}}</text>
+      </view>
+      <text class="ov-sub">{{todayOverview.subTitle}}</text>
+      <view class="ov-stats">
+        <view class="ov-stat" wx:for="{{todayOverview.stats}}" wx:key="label">
+          <text class="ov-num {{item.level === 'attention' ? 'ov-attention' : ''}}">{{item.value}}</text>
+          <text class="ov-lbl">{{item.label}}</text>
+        </view>
+      </view>
+      <view class="ai-entry" bindtap="onAiEntryTap">
+        <view class="ai-badge">AI</view>
+        <text class="ai-text">{{todayOverview.aiEntryText}}</text>
+        <text class="ai-arrow">›</text>
+      </view>
+    </view>
+
+    <!-- ═══ ③ 2×2 指标卡片区 ═══ -->
+    <view class="ind-grid">
+      <view
+        class="ind-card {{item.isDeviceCard ? 'ind-device' : ''}}"
+        wx:for="{{indicators}}"
+        wx:key="type"
+        wx:for-index="idx"
+      >
+        <!-- 卡片头 -->
+        <view class="ic-header">
+          <text class="ic-name">{{item.name}}</text>
+          <text
+            wx:if="{{item.statusText}}"
+            class="tag tag-{{item.statusLevel}}"
+          >{{item.statusText}}</text>
+        </view>
+
+        <!-- 血压双值 -->
+        <view wx:if="{{item.type === 'bloodPressure'}}" class="bp-row">
+          <text class="bp-val">{{item.displayValue}}</text>
+          <text class="bp-unit-after">mmHg</text>
+        </view>
+
+        <!-- 普通单值 -->
+        <view wx:elif="{{item.displayValue && !item.isDeviceCard}}" class="ic-val-row">
+          <text class="ic-val">{{item.displayValue}}</text>
+          <text class="ic-unit">{{item.unit}}</text>
+        </view>
+
+        <!-- 子信息 -->
+        <text wx:if="{{item.subValue}}" class="ic-meta">{{item.subValue}}</text>
+
+        <!-- 时间 + 场景 -->
+        <text wx:if="{{item.recordTime}}" class="ic-meta">
+          {{item.recordTime}}{{item.recordScene ? ' · ' + item.recordScene : ''}}
+        </text>
+
+        <!-- 设备状态 -->
+        <view wx:if="{{item.isDeviceCard}}" class="dvc-body">
+          <view class="dvc-status-row">
+            <view class="dvc-dot dvc-dot-ok"></view>
+            <text class="dvc-main">{{item.deviceStatusText}}</text>
+          </view>
+          <text class="dvc-sub">{{item.deviceSubText}}</text>
+          <view class="dvc-hint">{{item.deviceHint}}</view>
+        </view>
+
+        <!-- 按钮区 -->
+        <view class="ic-actions">
+          <view
+            wx:if="{{item.hasRecordAction}}"
+            class="ic-btn ic-btn-rec"
+            data-type="{{item.type}}"
+            data-name="{{item.name}}"
+            bindtap="onRecordTap"
+          >记录</view>
+          <view
+            wx:if="{{item.hasTrendAction}}"
+            class="ic-btn ic-btn-trend"
+            data-type="{{item.type}}"
+            data-name="{{item.name}}"
+            bindtap="onTrendTap"
+          >趋势</view>
+          <view
+            wx:if="{{item.isDeviceCard}}"
+            class="ic-btn ic-btn-manage"
+            bindtap="onDeviceManageTap"
+          >管理设备</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- ═══ ④ 今日提醒 ═══ -->
+    <view class="rem-section">
+      <view class="rem-header">
+        <text class="rem-title">今日提醒</text>
+        <view class="rem-more" bindtap="onViewAllRecords">
+          <text class="rem-more-text">全部记录</text>
+          <text class="rem-more-arrow">›</text>
+        </view>
+      </view>
+      <view class="rem-card">
+        <view
+          class="rem-item"
+          wx:for="{{todayReminders}}"
+          wx:key="id"
+        >
+          <view class="rem-dot rem-dot-{{item.level}}"></view>
+          <text class="rem-text">{{item.text}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 底部间隔 -->
+    <view class="bottom-spacer"></view>
+  </scroll-view>
+
+  <!-- ═══ 添加记录弹窗 ═══ -->
+  <!-- 遮罩层 — 兄弟节点，不嵌套弹窗 -->
+  <view wx:if="{{showRecordSheet}}" class="sheet-mask" bindtap="closeRecordSheet"></view>
+  <!-- 弹窗本体 — 独立兄弟节点，z-index 高于遮罩 -->
+  <view wx:if="{{showRecordSheet}}" class="record-sheet" catchtap="noop">
+    <add-record-sheet
+      type="{{currentRecordType}}"
+      bind:close="closeRecordSheet"
+      bind:save="onSheetSave"
+    />
+  </view>
+
 </view>

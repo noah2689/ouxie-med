@@ -1,0 +1,272 @@
+<!-- 添加记录底部弹窗组件 -->
+<view class="sheet-content">
+
+  <!-- 拖拽条 -->
+  <view class="sheet-handle">
+    <view class="handle-bar"></view>
+  </view>
+
+  <!-- 标题 + 关闭 -->
+  <view class="sheet-header">
+    <text class="sheet-title">添加{{typeTitleMap[activeTab]}}记录</text>
+    <view class="sheet-close" bindtap="onCancel">
+      <text class="close-icon">✕</text>
+    </view>
+  </view>
+
+  <!-- 指标类型切换 -->
+  <view class="type-tabs">
+    <view
+      class="type-tab {{activeTab === 'bloodPressure' ? 'type-tab-active' : ''}}"
+      data-type="bloodPressure"
+      bindtap="onTypeChange"
+    >血压</view>
+    <view
+      class="type-tab {{activeTab === 'bloodGlucose' ? 'type-tab-active' : ''}}"
+      data-type="bloodGlucose"
+      bindtap="onTypeChange"
+    >血糖</view>
+    <view
+      class="type-tab {{activeTab === 'uricAcid' ? 'type-tab-active' : ''}}"
+      data-type="uricAcid"
+      bindtap="onTypeChange"
+    >尿酸</view>
+  </view>
+
+  <!-- 录入方式切换 -->
+  <view class="mode-row">
+    <view
+      class="mode-item {{inputMode === 'manual' ? 'mode-item-active' : ''}}"
+      data-mode="manual"
+      bindtap="onModeChange"
+    >手动输入</view>
+    <view
+      class="mode-item {{inputMode === 'sync' ? 'mode-item-active' : ''}}"
+      data-mode="sync"
+      bindtap="onModeChange"
+    >设备同步</view>
+  </view>
+
+  <!-- ===== 表单区域 ===== -->
+  <view class="sheet-form">
+
+    <!-- 手动输入模式 -->
+    <block wx:if="{{inputMode === 'manual'}}">
+
+      <!-- ═══ 血压表单 ═══ -->
+      <block wx:if="{{activeTab === 'bloodPressure'}}">
+        <!-- 收缩压 + 舒张压 -->
+        <view class="form-row-bp">
+          <view class="form-field">
+            <text class="field-label">收缩压 <text class="field-required">*</text></text>
+            <input
+              class="field-input"
+              type="digit"
+              placeholder="数值"
+              placeholder-class="field-placeholder"
+              data-field="systolic"
+              value="{{systolic}}"
+              bindinput="onInputChange"
+            />
+            <text class="field-unit">mmHg</text>
+          </view>
+          <view class="form-field">
+            <text class="field-label">舒张压 <text class="field-required">*</text></text>
+            <input
+              class="field-input"
+              type="digit"
+              placeholder="数值"
+              placeholder-class="field-placeholder"
+              data-field="diastolic"
+              value="{{diastolic}}"
+              bindinput="onInputChange"
+            />
+            <text class="field-unit">mmHg</text>
+          </view>
+        </view>
+
+        <!-- 脉搏 -->
+        <view class="form-field">
+          <text class="field-label">脉搏</text>
+          <view class="field-input-wrapper">
+            <input
+              class="field-input"
+              type="digit"
+              placeholder="输入数值"
+              placeholder-class="field-placeholder"
+              data-field="pulse"
+              value="{{pulse}}"
+              bindinput="onInputChange"
+            />
+            <text class="field-unit">bpm</text>
+          </view>
+        </view>
+
+        <!-- 测量时间 -->
+        <view class="form-field">
+          <text class="field-label">测量时间 <text class="field-required">*</text></text>
+          <view class="field-input-wrapper">
+            <text class="field-text">{{recordTime}}</text>
+            <text class="field-arrow">›</text>
+          </view>
+        </view>
+
+        <!-- 测量场景 -->
+        <view class="form-field">
+          <text class="field-label">测量场景</text>
+          <view class="scene-row">
+            <view
+              wx:for="{{sceneOptions.bloodPressure}}"
+              wx:key="*this"
+              class="scene-pill {{selectedScene === item ? 'scene-pill-active' : ''}}"
+              data-scene="{{item}}"
+              bindtap="onSceneSelect"
+            >{{item}}</view>
+          </view>
+        </view>
+
+        <!-- 备注 -->
+        <view class="form-field">
+          <text class="field-label">备注</text>
+          <input
+            class="field-input-textarea"
+            type="text"
+            placeholder="可选，测量前状态或备注…"
+            placeholder-class="field-placeholder"
+            data-field="note"
+            value="{{note}}"
+            bindinput="onInputChange"
+          />
+        </view>
+      </block>
+
+      <!-- ═══ 血糖表单 ═══ -->
+      <block wx:if="{{activeTab === 'bloodGlucose'}}">
+        <!-- 血糖值 -->
+        <view class="form-field">
+          <text class="field-label">血糖值 <text class="field-required">*</text></text>
+          <view class="field-input-wrapper">
+            <input
+              class="field-input"
+              type="digit"
+              placeholder="输入数值"
+              placeholder-class="field-placeholder"
+              data-field="glucoseValue"
+              value="{{glucoseValue}}"
+              bindinput="onInputChange"
+            />
+            <text class="field-unit">mmol/L</text>
+          </view>
+        </view>
+
+        <!-- 测量时间 -->
+        <view class="form-field">
+          <text class="field-label">测量时间 <text class="field-required">*</text></text>
+          <view class="field-input-wrapper">
+            <text class="field-text">{{recordTime}}</text>
+            <text class="field-arrow">›</text>
+          </view>
+        </view>
+
+        <!-- 测量场景 -->
+        <view class="form-field">
+          <text class="field-label">测量场景 <text class="field-required">*</text></text>
+          <view class="scene-row">
+            <view
+              wx:for="{{sceneOptions.bloodGlucose}}"
+              wx:key="*this"
+              class="scene-pill {{selectedScene === item ? 'scene-pill-active' : ''}}"
+              data-scene="{{item}}"
+              bindtap="onSceneSelect"
+            >{{item}}</view>
+          </view>
+        </view>
+
+        <!-- 备注 -->
+        <view class="form-field">
+          <text class="field-label">备注</text>
+          <input
+            class="field-input-textarea"
+            type="text"
+            placeholder="可选，饮食或运动备注…"
+            placeholder-class="field-placeholder"
+            data-field="note"
+            value="{{note}}"
+            bindinput="onInputChange"
+          />
+        </view>
+      </block>
+
+      <!-- ═══ 尿酸表单 ═══ -->
+      <block wx:if="{{activeTab === 'uricAcid'}}">
+        <!-- 尿酸值 -->
+        <view class="form-field">
+          <text class="field-label">尿酸值 <text class="field-required">*</text></text>
+          <view class="field-input-wrapper">
+            <input
+              class="field-input"
+              type="digit"
+              placeholder="输入数值"
+              placeholder-class="field-placeholder"
+              data-field="uricValue"
+              value="{{uricValue}}"
+              bindinput="onInputChange"
+            />
+            <text class="field-unit">μmol/L</text>
+          </view>
+        </view>
+
+        <!-- 测量时间 -->
+        <view class="form-field">
+          <text class="field-label">测量时间 <text class="field-required">*</text></text>
+          <view class="field-input-wrapper">
+            <text class="field-text">{{recordTime}}</text>
+            <text class="field-arrow">›</text>
+          </view>
+        </view>
+
+        <!-- 测量场景 -->
+        <view class="form-field">
+          <text class="field-label">测量场景</text>
+          <view class="scene-row">
+            <view
+              wx:for="{{sceneOptions.uricAcid}}"
+              wx:key="*this"
+              class="scene-pill {{selectedScene === item ? 'scene-pill-active' : ''}}"
+              data-scene="{{item}}"
+              bindtap="onSceneSelect"
+            >{{item}}</view>
+          </view>
+        </view>
+
+        <!-- 备注 -->
+        <view class="form-field">
+          <text class="field-label">备注</text>
+          <input
+            class="field-input-textarea"
+            type="text"
+            placeholder="可选，饮食或备注…"
+            placeholder-class="field-placeholder"
+            data-field="note"
+            value="{{note}}"
+            bindinput="onInputChange"
+          />
+        </view>
+      </block>
+    </block>
+
+    <!-- 设备同步模式（占位） -->
+    <block wx:if="{{inputMode === 'sync'}}">
+      <view class="sync-placeholder">
+        <text class="sync-placeholder-text">设备同步将在后续接入</text>
+      </view>
+    </block>
+  </view>
+
+  <!-- 底部按钮 -->
+  <view class="sheet-actions">
+    <view class="btn btn-cancel" bindtap="onCancel">取消</view>
+    <view class="btn btn-save" bindtap="onSave">保存</view>
+  </view>
+
+</view>
