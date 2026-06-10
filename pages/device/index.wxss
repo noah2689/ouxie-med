@@ -1,12 +1,18 @@
 /* ═══════════════════════════════════════════════
-   瓯械健康 · 设备管理页 — Phase 6
+   瓯械健康 · 设备管理页 — Phase 8.5
    ═══════════════════════════════════════════════ */
 
 page {
   background-color: #F5F6F8;
 }
 
-.page {
+.page-wrapper {
+  position: relative;
+  height: 100vh;
+  background-color: #F5F6F8;
+}
+
+.page-scroll {
   height: 100vh;
   background-color: #F5F6F8;
 }
@@ -220,16 +226,35 @@ page {
   padding: 2rpx 10rpx;
 }
 
-.rec-btn {
+.rec-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
   flex-shrink: 0;
+  margin-left: 20rpx;
+}
+
+.rec-btn {
+  min-width: 112rpx;
+  height: 56rpx;
+  border-radius: 16rpx;
   font-size: 12px;
   font-weight: 500;
-  color: #2EAB8A;
-  border: 1px solid #C8E0D0;
-  background: #F0F9F5;
-  border-radius: 16rpx;
-  padding: 12rpx 28rpx;
-  margin-left: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rec-btn-connect {
+  color: #FFFFFF;
+  background: #2EAB8A;
+  border: none;
+}
+
+.rec-btn-shop {
+  color: #8E8E9A;
+  background: #FFFFFF;
+  border: 1px solid #D8D8E0;
 }
 
 /* ── 说明区域 ── */
@@ -259,4 +284,164 @@ page {
 /* ── 底部间隔 ── */
 .bottom-spacer {
   height: 48rpx;
+}
+
+/* ═══ 连接设备弹窗 ═══ */
+.sheet-mask {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.35);
+  z-index: 1000;
+}
+
+.connect-sheet {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #FFFFFF;
+  border-radius: 32rpx 32rpx 0 0;
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 -2rpx 16rpx rgba(0, 0, 0, 0.08);
+}
+
+.sheet-handle {
+  display: flex;
+  justify-content: center;
+  padding: 20rpx 0 12rpx;
+  flex-shrink: 0;
+}
+
+.handle-bar {
+  width: 72rpx;
+  height: 8rpx;
+  border-radius: 4rpx;
+  background: #D8D8E0;
+}
+
+.sheet-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 40rpx 24rpx;
+  flex-shrink: 0;
+}
+
+.sheet-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1A1A2E;
+}
+
+.sheet-close {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 50%;
+  border: 1px solid #D8D8E0;
+  background: #F8F9FA;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-icon {
+  font-size: 14px;
+  color: #8E8E9A;
+  line-height: 1;
+}
+
+.connect-body {
+  padding: 0 40rpx 24rpx;
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* 搜索中 */
+.connect-status {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 80rpx 0;
+}
+
+.connect-spinner {
+  font-size: 36px;
+  color: #2EAB8A;
+  margin-bottom: 24rpx;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.connect-status-text {
+  font-size: 14px;
+  color: #4A4A5A;
+}
+
+/* 发现设备 */
+.connect-found-text {
+  display: block;
+  font-size: 13px;
+  color: #8E8E9A;
+  margin-bottom: 24rpx;
+}
+
+.connect-device-list {
+  margin-bottom: 20rpx;
+}
+
+.connect-device-item {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  padding: 24rpx 0;
+  border-bottom: 1px solid #F0F0F2;
+}
+
+.connect-device-dot {
+  width: 24rpx;
+  height: 24rpx;
+  border-radius: 50%;
+  border: 2px solid #D8D8E0;
+  flex-shrink: 0;
+}
+
+.connect-device-info {
+  flex: 1;
+}
+
+.connect-device-name {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: #1A1A2E;
+  margin-bottom: 4rpx;
+}
+
+.connect-signal {
+  display: block;
+  font-size: 12px;
+  color: #B8B8C4;
+}
+
+.connect-hint {
+  display: block;
+  font-size: 12px;
+  color: #B8B8C4;
+  text-align: center;
+}
+
+.connect-footer {
+  padding: 24rpx 40rpx;
+  padding-bottom: calc(24rpx + env(safe-area-inset-bottom));
+  border-top: 1px solid #F0F0F2;
+  flex-shrink: 0;
 }

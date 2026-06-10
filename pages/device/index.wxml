@@ -1,65 +1,125 @@
-<!-- 瓯械健康 · 设备管理页 — Phase 6 -->
-<scroll-view class="page" scroll-y>
+<!-- 瓯械健康 · 设备管理页 — Phase 8.5 设备连接 -->
+<view class="page-wrapper">
 
-  <!-- ═══ ① 顶部说明卡片 ═══ -->
-  <view class="intro-card">
-    <text class="intro-title">已连接设备</text>
-    <text class="intro-desc">查看家庭健康设备的连接状态和数据同步情况</text>
-    <view class="intro-stats">
-      <view class="intro-stat">
-        <text class="intro-stat-num">{{connectedCount}}</text>
-        <text class="intro-stat-lbl">已连接</text>
-      </view>
-      <view class="intro-stat">
-        <text class="intro-stat-num">{{pendingCount}}</text>
-        <text class="intro-stat-lbl">待添加</text>
-      </view>
-    </view>
-  </view>
+  <scroll-view class="page-scroll" scroll-y>
 
-  <!-- ═══ ② 已连接设备列表 ═══ -->
-  <view class="section">
-    <text class="section-title">已连接设备</text>
-    <view class="device-card" wx:for="{{connectedDevices}}" wx:key="id">
-      <view class="device-header">
-        <view class="device-status-dot device-dot-{{item.statusLevel}}"></view>
-        <view class="device-info">
-          <text class="device-name">{{item.name}}</text>
-          <text class="device-status-text">{{item.statusText}}</text>
+    <!-- ═══ ① 顶部说明卡片 ═══ -->
+    <view class="intro-card">
+      <text class="intro-title">已连接设备</text>
+      <text class="intro-desc">查看家庭健康设备的连接状态和数据同步情况</text>
+      <view class="intro-stats">
+        <view class="intro-stat">
+          <text class="intro-stat-num">{{connectedCount}}</text>
+          <text class="intro-stat-lbl">已连接</text>
+        </view>
+        <view class="intro-stat">
+          <text class="intro-stat-num">{{pendingCount}}</text>
+          <text class="intro-stat-lbl">待添加</text>
         </view>
       </view>
-      <view class="device-body">
-        <text class="device-sync">数据同步正常</text>
-        <text class="device-meta">最近同步：{{item.lastSyncText}}</text>
-        <text class="device-meta">关联成员：本人</text>
+    </view>
+
+    <!-- ═══ ② 已连接设备列表 ═══ -->
+    <view class="section">
+      <text class="section-title">已连接设备</text>
+      <view class="device-card" wx:for="{{connectedDevices}}" wx:key="id">
+        <view class="device-header">
+          <view class="device-status-dot device-dot-{{item.statusLevel}}"></view>
+          <view class="device-info">
+            <text class="device-name">{{item.name}}</text>
+            <text class="device-status-text">{{item.statusText}}</text>
+          </view>
+        </view>
+        <view class="device-body">
+          <text class="device-sync">数据同步正常</text>
+          <text class="device-meta">最近同步：{{item.lastSyncText}}</text>
+          <text class="device-meta">关联成员：本人</text>
+        </view>
+        <view class="device-actions">
+          <view class="dev-btn dev-btn-outline" data-id="{{item.id}}" bindtap="onViewSyncRecords">查看同步记录</view>
+          <view class="dev-btn dev-btn-brand" data-id="{{item.id}}" bindtap="onResyncDevice">重新同步</view>
+        </view>
       </view>
-      <view class="device-actions">
-        <view class="dev-btn dev-btn-outline" data-id="{{item.id}}" bindtap="onViewSyncRecords">查看同步记录</view>
-        <view class="dev-btn dev-btn-brand" data-id="{{item.id}}" bindtap="onResyncDevice">重新同步</view>
+    </view>
+
+    <!-- ═══ ③ 推荐添加设备 ═══ -->
+    <view class="section">
+      <text class="section-title">推荐添加设备</text>
+      <view class="rec-card" wx:for="{{recommendedDevices}}" wx:key="id" data-id="{{item.id}}" data-name="{{item.name}}">
+        <view class="rec-body">
+          <text class="rec-name">{{item.name}}</text>
+          <text class="rec-desc">{{item.description}}</text>
+          <text class="rec-reason">{{item.reason}}</text>
+        </view>
+        <view class="rec-actions">
+          <view class="rec-btn rec-btn-connect" data-id="{{item.id}}" data-name="{{item.name}}" bindtap="onConnectDevice">连接</view>
+          <view class="rec-btn rec-btn-shop" data-id="{{item.id}}" bindtap="onShopDevice">商城</view>
+        </view>
       </view>
+    </view>
+
+    <!-- ═══ ④ 设备说明 ═══ -->
+    <view class="section">
+      <view class="note-card">
+        <text class="note-title">设备同步说明</text>
+        <text class="note-body">设备数据仅用于记录展示，当前 Demo 使用本地 mock 数据模拟同步状态。</text>
+      </view>
+    </view>
+
+    <view class="bottom-spacer"></view>
+  </scroll-view>
+
+  <!-- ═══ 连接设备弹窗 ═══ -->
+  <view wx:if="{{showConnectSheet}}" class="sheet-mask" bindtap="closeConnectSheet"></view>
+  <view wx:if="{{showConnectSheet}}" class="connect-sheet" catchtap="noop">
+
+    <!-- 拖拽条 -->
+    <view class="sheet-handle">
+      <view class="handle-bar"></view>
+    </view>
+
+    <!-- 标题 -->
+    <view class="sheet-header">
+      <text class="sheet-title">连接设备</text>
+      <view class="sheet-close" bindtap="closeConnectSheet">
+        <text class="close-icon">✕</text>
+      </view>
+    </view>
+
+    <!-- Step 1: 搜索中 -->
+    <view wx:if="{{connectStep === 'searching'}}" class="connect-body">
+      <view class="connect-status">
+        <text class="connect-spinner">⟳</text>
+        <text class="connect-status-text">正在搜索设备...</text>
+      </view>
+    </view>
+
+    <!-- Step 2: 发现设备 -->
+    <view wx:if="{{connectStep === 'found'}}" class="connect-body">
+      <text class="connect-found-text">发现 {{foundDevices.length}} 台设备</text>
+      <view class="connect-device-list">
+        <view
+          class="connect-device-item"
+          wx:for="{{foundDevices}}"
+          wx:key="id"
+          data-id="{{item.id}}"
+          data-name="{{item.name}}"
+          bindtap="onSelectDevice"
+        >
+          <view class="connect-device-dot"></view>
+          <view class="connect-device-info">
+            <text class="connect-device-name">{{item.name}}</text>
+            <text class="connect-signal">信号强度：{{item.signal}}</text>
+          </view>
+        </view>
+      </view>
+      <text class="connect-hint">点击设备开始连接</text>
+    </view>
+
+    <!-- 底部按钮 -->
+    <view class="connect-footer">
+      <view class="dev-btn dev-btn-outline" bindtap="closeConnectSheet">取消</view>
     </view>
   </view>
 
-  <!-- ═══ ③ 推荐添加设备 ═══ -->
-  <view class="section">
-    <text class="section-title">推荐添加设备</text>
-    <view class="rec-card" wx:for="{{recommendedDevices}}" wx:key="id">
-      <view class="rec-body">
-        <text class="rec-name">{{item.name}}</text>
-        <text class="rec-desc">{{item.description}}</text>
-        <text class="rec-reason">{{item.reason}}</text>
-      </view>
-      <view class="rec-btn" bindtap="onAddDevice">添加设备</view>
-    </view>
-  </view>
-
-  <!-- ═══ ④ 设备说明 ═══ -->
-  <view class="section">
-    <view class="note-card">
-      <text class="note-title">设备同步说明</text>
-      <text class="note-body">设备数据仅用于记录展示，当前 Demo 使用本地 mock 数据模拟同步状态。</text>
-    </view>
-  </view>
-
-  <view class="bottom-spacer"></view>
-</scroll-view>
+</view>
