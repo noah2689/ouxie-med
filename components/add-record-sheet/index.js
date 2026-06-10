@@ -16,6 +16,8 @@ Component({
     activeTab: 'bloodPressure',
     // 录入方式：manual / sync（默认设备同步）
     inputMode: 'sync',
+    isAutoSyncing: false,
+    autoSyncDone: false,
 
     // 各类型的场景选项
     sceneOptions: {
@@ -42,14 +44,25 @@ Component({
     note: ''
   },
 
+  _autoSyncTimer: null,
+
   observers: {
     'type': function (newType) {
       this.initForType(newType);
     }
   },
 
-  attached: function () {
-    this.initForType(this.properties.type);
+  lifetimes: {
+    attached: function () {
+      this.initForType(this.properties.type);
+      this.autoSync();
+    },
+    detached: function () {
+      if (this._autoSyncTimer) {
+        clearTimeout(this._autoSyncTimer);
+        this._autoSyncTimer = null;
+      }
+    }
   },
 
   methods: {
@@ -67,6 +80,28 @@ Component({
         recordTime: '刚刚',
         note: ''
       });
+    },
+
+    // 自动设备同步
+    autoSync: function () {
+      var self = this;
+      var mode = this.data.inputMode;
+      var deviceName = this.properties.syncDeviceName;
+
+      // 只有在设备同步模式且有设备时才自动同步
+      if (mode !== 'sync' || !deviceName) return;
+
+      this.setData({ isAutoSyncing: true, autoSyncDone: false });
+
+      this._autoSyncTimer = setTimeout(function () {
+        self.setData({ isAutoSyncing: false, autoSyncDone: true });
+        wx.showToast({ title: '同步成功', icon: 'success', duration: 1500 });
+
+        // 同步成功后自动关闭弹窗（模拟保存）
+        setTimeout(function () {
+          self.triggerEvent('close');
+        }, 800);
+      }, 1200);
     },
 
     // 切换指标类型 tab

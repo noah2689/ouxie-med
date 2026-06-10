@@ -36,15 +36,15 @@
   <!-- 录入方式切换 -->
   <view class="mode-row">
     <view
-      class="mode-item {{inputMode === 'manual' ? 'mode-item-active' : ''}}"
-      data-mode="manual"
-      bindtap="onModeChange"
-    >手动输入</view>
-    <view
       class="mode-item {{inputMode === 'sync' ? 'mode-item-active' : ''}}"
       data-mode="sync"
       bindtap="onModeChange"
     >设备同步</view>
+    <view
+      class="mode-item {{inputMode === 'manual' ? 'mode-item-active' : ''}}"
+      data-mode="manual"
+      bindtap="onModeChange"
+    >手动输入</view>
   </view>
 
   <!-- ===== 表单区域 ===== -->
@@ -261,8 +261,17 @@
 
     <!-- 设备同步模式 -->
     <block wx:if="{{inputMode === 'sync'}}">
-      <!-- 已有可用设备 -->
-      <view wx:if="{{syncDeviceName}}" class="sync-area">
+      <!-- 正在自动同步 -->
+      <view wx:if="{{isAutoSyncing}}" class="sync-placeholder">
+        <view class="syncing-dots">
+          <view class="s-dot"></view>
+          <view class="s-dot"></view>
+          <view class="s-dot"></view>
+        </view>
+        <text class="sync-placeholder-text">正在同步设备数据...</text>
+      </view>
+      <!-- 同步完成 + 已有可用设备 -->
+      <view wx:elif="{{syncDeviceName}}" class="sync-area">
         <view class="sync-row">
           <view class="sync-device-info">
             <view class="sync-status-row">
