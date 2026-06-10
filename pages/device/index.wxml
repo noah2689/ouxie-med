@@ -89,7 +89,11 @@
     <!-- Step 1: 搜索中 -->
     <view wx:if="{{connectStep === 'searching'}}" class="connect-body">
       <view class="connect-status">
-        <text class="connect-spinner">⟳</text>
+        <view class="connect-dots">
+          <view class="c-dot"></view>
+          <view class="c-dot"></view>
+          <view class="c-dot"></view>
+        </view>
         <text class="connect-status-text">正在搜索设备...</text>
       </view>
     </view>
