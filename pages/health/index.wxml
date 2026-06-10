@@ -1,4 +1,4 @@
-<!-- 瓯械健康 · 健康首页 — Phase 2 高保真还原 + Phase 3 添加记录弹窗 -->
+<!-- 瓯械健康 · 健康首页 — Phase 5 成员切换 -->
 <view class="page-wrapper">
 
   <scroll-view class="page-scroll" scroll-y>
@@ -42,36 +42,26 @@
         wx:key="type"
         wx:for-index="idx"
       >
-        <!-- 卡片头 -->
         <view class="ic-header">
           <text class="ic-name">{{item.name}}</text>
-          <text
-            wx:if="{{item.statusText}}"
-            class="tag tag-{{item.statusLevel}}"
-          >{{item.statusText}}</text>
+          <text wx:if="{{item.statusText}}" class="tag tag-{{item.statusLevel}}">{{item.statusText}}</text>
         </view>
 
-        <!-- 血压双值 -->
         <view wx:if="{{item.type === 'bloodPressure'}}" class="bp-row">
           <text class="bp-val">{{item.displayValue}}</text>
           <text class="bp-unit-after">mmHg</text>
         </view>
 
-        <!-- 普通单值 -->
         <view wx:elif="{{item.displayValue && !item.isDeviceCard}}" class="ic-val-row">
           <text class="ic-val">{{item.displayValue}}</text>
           <text class="ic-unit">{{item.unit}}</text>
         </view>
 
-        <!-- 子信息 -->
         <text wx:if="{{item.subValue}}" class="ic-meta">{{item.subValue}}</text>
-
-        <!-- 时间 + 场景 -->
         <text wx:if="{{item.recordTime}}" class="ic-meta">
           {{item.recordTime}}{{item.recordScene ? ' · ' + item.recordScene : ''}}
         </text>
 
-        <!-- 设备状态 -->
         <view wx:if="{{item.isDeviceCard}}" class="dvc-body">
           <view class="dvc-status-row">
             <view class="dvc-dot dvc-dot-ok"></view>
@@ -81,27 +71,18 @@
           <view class="dvc-hint">{{item.deviceHint}}</view>
         </view>
 
-        <!-- 按钮区 -->
         <view class="ic-actions">
-          <view
-            wx:if="{{item.hasRecordAction}}"
+          <view wx:if="{{item.hasRecordAction}}"
             class="ic-btn ic-btn-rec"
-            data-type="{{item.type}}"
-            data-name="{{item.name}}"
-            bindtap="onRecordTap"
-          >记录</view>
-          <view
-            wx:if="{{item.hasTrendAction}}"
+            data-type="{{item.type}}" data-name="{{item.name}}"
+            bindtap="onRecordTap">记录</view>
+          <view wx:if="{{item.hasTrendAction}}"
             class="ic-btn ic-btn-trend"
-            data-type="{{item.type}}"
-            data-name="{{item.name}}"
-            bindtap="onTrendTap"
-          >趋势</view>
-          <view
-            wx:if="{{item.isDeviceCard}}"
+            data-type="{{item.type}}" data-name="{{item.name}}"
+            bindtap="onTrendTap">趋势</view>
+          <view wx:if="{{item.isDeviceCard}}"
             class="ic-btn ic-btn-manage"
-            bindtap="onDeviceManageTap"
-          >管理设备</view>
+            bindtap="onDeviceManageTap">管理设备</view>
         </view>
       </view>
     </view>
@@ -116,30 +97,35 @@
         </view>
       </view>
       <view class="rem-card">
-        <view
-          class="rem-item"
-          wx:for="{{todayReminders}}"
-          wx:key="id"
-        >
+        <view class="rem-item" wx:for="{{todayReminders}}" wx:key="id">
           <view class="rem-dot rem-dot-{{item.level}}"></view>
           <text class="rem-text">{{item.text}}</text>
         </view>
       </view>
     </view>
 
-    <!-- 底部间隔 -->
     <view class="bottom-spacer"></view>
   </scroll-view>
 
   <!-- ═══ 添加记录弹窗 ═══ -->
-  <!-- 遮罩层 — 兄弟节点，不嵌套弹窗 -->
   <view wx:if="{{showRecordSheet}}" class="sheet-mask" bindtap="closeRecordSheet"></view>
-  <!-- 弹窗本体 — 独立兄弟节点，z-index 高于遮罩 -->
   <view wx:if="{{showRecordSheet}}" class="record-sheet" catchtap="noop">
     <add-record-sheet
       type="{{currentRecordType}}"
       bind:close="closeRecordSheet"
       bind:save="onSheetSave"
+    />
+  </view>
+
+  <!-- ═══ 成员切换弹窗 ═══ -->
+  <view wx:if="{{showMemberSheet}}" class="sheet-mask" bindtap="closeMemberSheet"></view>
+  <view wx:if="{{showMemberSheet}}" class="member-sheet" catchtap="noop">
+    <member-switch-sheet
+      members="{{members}}"
+      currentMemberId="{{currentMemberId}}"
+      bind:close="closeMemberSheet"
+      bind:select="onMemberSelect"
+      bind:manage="onManageMembers"
     />
   </view>
 

@@ -1,6 +1,64 @@
-<!-- 瓯械健康 · 家庭成员页 —— Phase 1 骨架占位 -->
-<view class="page-placeholder">
-  <text class="page-title">家庭成员</text>
-  <text class="page-desc">管理家庭成员及其健康档案</text>
-  <text class="page-hint">Phase 5 将完成本页完整功能</text>
-</view>
+<!-- 瓯械健康 · 家庭成员页 — Phase 5 -->
+<scroll-view class="page" scroll-y>
+
+  <!-- 顶部说明 -->
+  <view class="page-intro">
+    <text class="intro-title">家庭成员</text>
+    <text class="intro-desc">管理家庭成员信息，查看不同成员的健康记录状态</text>
+  </view>
+
+  <!-- 成员列表 -->
+  <view class="member-list">
+    <view
+      class="member-card"
+      wx:for="{{members}}"
+      wx:key="id"
+      data-id="{{item.id}}"
+      bindtap="onMemberSelect"
+    >
+      <!-- 头部：头像 + 名称 + 状态 -->
+      <view class="mc-header">
+        <view class="mc-avatar {{currentMemberId === item.id ? 'mc-avatar-active' : ''}}">
+          <text class="mc-avatar-text">{{item.avatarText}}</text>
+        </view>
+        <view class="mc-info">
+          <view class="mc-name-row">
+            <text class="mc-name">{{item.name}}</text>
+            <text class="mc-relation">{{item.relation}}</text>
+          </view>
+          <text class="mc-meta">最近记录：{{item.recentRecordText}}</text>
+        </view>
+        <view class="mc-status">
+          <text class="mc-status-tag {{currentMemberId === item.id ? 'mc-status-current' : ''}}">
+            {{currentMemberId === item.id ? '当前查看' : '已添加'}}
+          </text>
+        </view>
+      </view>
+
+      <!-- 关注指标 -->
+      <view class="mc-focus">
+        <text class="mc-focus-label">关注指标：</text>
+        <view class="mc-focus-tags">
+          <text
+            class="mc-focus-tag"
+            wx:for="{{item.healthFocus}}"
+            wx:key="*this"
+          >{{item}}</text>
+        </view>
+      </view>
+
+      <!-- 底部操作区 -->
+      <view class="mc-actions">
+        <text class="mc-action-link">查看记录 ›</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 添加成员入口 -->
+  <view class="add-member" bindtap="onAddMember">
+    <text class="add-member-icon">+</text>
+    <text class="add-member-text">添加家庭成员</text>
+  </view>
+
+  <view class="bottom-spacer"></view>
+</scroll-view>

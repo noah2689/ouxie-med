@@ -1,6 +1,110 @@
-<!-- 瓯械健康 · 指标详情页 —— Phase 1 骨架占位 -->
-<view class="page-placeholder">
-  <text class="page-title">指标详情</text>
-  <text class="page-desc">查看血压、血糖、尿酸等指标的详细数据和趋势</text>
-  <text class="page-hint">Phase 4 将完成本页完整功能</text>
-</view>
+<!-- 瓯械健康 · 指标详情页 — Phase 4 -->
+<scroll-view class="page" scroll-y>
+
+  <!-- ═══ ① 顶部成员信息 ═══ -->
+  <view class="member-bar">
+    <text class="member-label">当前查看：</text>
+    <text class="member-name">本人</text>
+  </view>
+
+  <!-- ═══ ② 核心指标卡片 ═══ -->
+  <view class="detail-card core-card">
+    <view class="core-header">
+      <text class="core-name">{{metricName}}</text>
+      <text class="tag tag-{{detailData.statusLevel}}">{{detailData.statusText}}</text>
+    </view>
+
+    <!-- 血压双值 -->
+    <view wx:if="{{metricType === 'bloodPressure'}}" class="core-bp-row">
+      <view class="core-bp-item">
+        <text class="core-val">128</text>
+        <text class="core-label">收缩压 mmHg</text>
+      </view>
+      <view class="core-bp-sep"></view>
+      <view class="core-bp-item">
+        <text class="core-val">82</text>
+        <text class="core-label">舒张压 mmHg</text>
+      </view>
+    </view>
+
+    <!-- 血糖/尿酸单值 -->
+    <view wx:else class="core-single-row">
+      <text class="core-val">{{detailData.displayValue}}</text>
+      <text class="core-unit">{{detailData.unit}}</text>
+    </view>
+
+    <!-- 脉搏（仅血压） -->
+    <text wx:if="{{metricType === 'bloodPressure'}}" class="core-pulse">72 bpm · 脉搏</text>
+
+    <!-- 测量时间和场景 -->
+    <text class="core-meta">今日 07:30 · {{detailData.scene}}</text>
+
+    <!-- 说明 -->
+    <view class="core-desc">
+      <text class="core-desc-text">{{detailData.description}}</text>
+    </view>
+  </view>
+
+  <!-- ═══ ③ 时间筛选 ═══ -->
+  <view class="filter-row">
+    <view
+      wx:for="{{rangeOptions}}"
+      wx:key="value"
+      class="filter-pill {{activeRange === item.value ? 'filter-pill-active' : ''}}"
+      data-value="{{item.value}}"
+      bindtap="onRangeChange"
+    >{{item.label}}</view>
+  </view>
+
+  <!-- ═══ ④ 趋势图占位 ═══ -->
+  <view class="detail-card chart-card">
+    <text class="chart-card-title">趋势变化</text>
+    <view class="chart-area">
+      <view class="chart-grid">
+        <view class="chart-grid-line"></view>
+        <view class="chart-grid-line"></view>
+        <view class="chart-grid-line"></view>
+        <view class="chart-grid-line"></view>
+      </view>
+      <!-- 简单折线占位 -->
+      <view class="chart-svg-placeholder">
+        <view class="chart-line chart-line-bp"></view>
+      </view>
+    </view>
+    <text class="chart-hint">{{detailData.chartHint}}</text>
+  </view>
+
+  <!-- ═══ ⑤ 最近记录 ═══ -->
+  <view class="hist-section">
+    <view class="hist-header">
+      <text class="hist-title">最近记录</text>
+      <view class="hist-more" bindtap="onViewAllRecords">
+        <text class="hist-more-text">查看全部</text>
+        <text class="hist-more-arrow">›</text>
+      </view>
+    </view>
+    <view class="hist-card">
+      <view
+        class="hist-item"
+        wx:for="{{recentRecords}}"
+        wx:key="id"
+      >
+        <view class="hist-left">
+          <text class="hist-value">{{item.displayValue}}</text>
+          <text class="hist-meta">{{item.scene}} · {{item.formattedTime}}</text>
+        </view>
+        <view class="hist-right">
+          <text class="tag-sm tag-sm-{{item.statusLevel}}">{{item.statusText}}</text>
+          <text wx:if="{{item.sourceText}}" class="hist-source">{{item.sourceText}}</text>
+        </view>
+      </view>
+
+      <!-- 无记录占位 -->
+      <view wx:if="{{recentRecords.length === 0}}" class="hist-empty">
+        <text class="hist-empty-text">暂无记录</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="bottom-spacer"></view>
+</scroll-view>

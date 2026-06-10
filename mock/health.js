@@ -274,6 +274,411 @@ const reminders = [
   }
 ];
 
+// 详情页指标配置
+const typeConfig = {
+  bloodPressure: {
+    name: '血压',
+    unit: 'mmHg',
+    displayValue: '128/82',
+    statusText: '正常范围',
+    statusLevel: 'normal',
+    scene: '晨起',
+    description: '最近记录保持稳定',
+    chartHint: '近 7 天记录较平稳'
+  },
+  bloodGlucose: {
+    name: '血糖',
+    unit: 'mmol/L',
+    displayValue: '6.2',
+    statusText: '空腹记录',
+    statusLevel: 'recorded',
+    scene: '空腹',
+    description: '建议继续保持固定时间记录',
+    chartHint: '建议保持固定场景记录'
+  },
+  uricAcid: {
+    name: '尿酸',
+    unit: 'μmol/L',
+    displayValue: '428',
+    statusText: '需要关注',
+    statusLevel: 'attention',
+    scene: '日常',
+    description: '近期记录较少，建议固定周期记录',
+    chartHint: '记录较少，建议继续观察'
+  }
+};
+
+// 详情页和记录页使用的完整记录数据
+const detailRecords = [
+  // === 血压记录 ===
+  {
+    id: 'rec-bp-001',
+    type: 'bloodPressure',
+    typeName: '血压',
+    displayValue: '128/82',
+    unit: 'mmHg',
+    scene: '晨起',
+    measuredAt: '2026-06-10T07:30:00',
+    statusText: '正常范围',
+    statusLevel: 'normal',
+    source: 'manual',
+    sourceText: '手动记录',
+    memberId: 'self'
+  },
+  {
+    id: 'rec-bp-002',
+    type: 'bloodPressure',
+    typeName: '血压',
+    displayValue: '122/78',
+    unit: 'mmHg',
+    scene: '睡前',
+    measuredAt: '2026-06-09T21:00:00',
+    statusText: '正常范围',
+    statusLevel: 'normal',
+    source: 'device',
+    sourceText: '设备同步',
+    memberId: 'self'
+  },
+  {
+    id: 'rec-bp-003',
+    type: 'bloodPressure',
+    typeName: '血压',
+    displayValue: '130/85',
+    unit: 'mmHg',
+    scene: '晨起',
+    measuredAt: '2026-06-08T07:20:00',
+    statusText: '正常范围',
+    statusLevel: 'normal',
+    source: 'manual',
+    sourceText: '手动记录',
+    memberId: 'self'
+  },
+  {
+    id: 'rec-bp-004',
+    type: 'bloodPressure',
+    typeName: '血压',
+    displayValue: '126/80',
+    unit: 'mmHg',
+    scene: '午后',
+    measuredAt: '2026-06-06T14:00:00',
+    statusText: '正常范围',
+    statusLevel: 'normal',
+    source: 'device',
+    sourceText: '设备同步',
+    memberId: 'self'
+  },
+  // === 血糖记录 ===
+  {
+    id: 'rec-gl-001',
+    type: 'bloodGlucose',
+    typeName: '血糖',
+    displayValue: '6.2',
+    unit: 'mmol/L',
+    scene: '空腹',
+    measuredAt: '2026-06-10T07:10:00',
+    statusText: '空腹记录',
+    statusLevel: 'recorded',
+    source: 'manual',
+    sourceText: '手动记录',
+    memberId: 'self'
+  },
+  {
+    id: 'rec-gl-002',
+    type: 'bloodGlucose',
+    typeName: '血糖',
+    displayValue: '9.8',
+    unit: 'mmol/L',
+    scene: '餐后 2 小时',
+    measuredAt: '2026-06-09T12:20:00',
+    statusText: '待观察',
+    statusLevel: 'observe',
+    source: 'manual',
+    sourceText: '手动记录',
+    memberId: 'self'
+  },
+  {
+    id: 'rec-gl-003',
+    type: 'bloodGlucose',
+    typeName: '血糖',
+    displayValue: '5.8',
+    unit: 'mmol/L',
+    scene: '空腹',
+    measuredAt: '2026-06-07T07:00:00',
+    statusText: '空腹记录',
+    statusLevel: 'recorded',
+    source: 'device',
+    sourceText: '设备同步',
+    memberId: 'self'
+  },
+  {
+    id: 'rec-gl-004',
+    type: 'bloodGlucose',
+    typeName: '血糖',
+    displayValue: '7.2',
+    unit: 'mmol/L',
+    scene: '睡前',
+    measuredAt: '2026-06-05T21:30:00',
+    statusText: '待观察',
+    statusLevel: 'observe',
+    source: 'device',
+    sourceText: '设备同步',
+    memberId: 'self'
+  },
+  // === 尿酸记录 ===
+  {
+    id: 'rec-ua-001',
+    type: 'uricAcid',
+    typeName: '尿酸',
+    displayValue: '428',
+    unit: 'μmol/L',
+    scene: '日常',
+    measuredAt: '2026-06-09T20:00:00',
+    statusText: '需要关注',
+    statusLevel: 'attention',
+    source: 'manual',
+    sourceText: '手动记录',
+    memberId: 'self'
+  },
+  {
+    id: 'rec-ua-002',
+    type: 'uricAcid',
+    typeName: '尿酸',
+    displayValue: '396',
+    unit: 'μmol/L',
+    scene: '日常',
+    measuredAt: '2026-06-05T19:30:00',
+    statusText: '正常范围',
+    statusLevel: 'normal',
+    source: 'manual',
+    sourceText: '手动记录',
+    memberId: 'self'
+  },
+  {
+    id: 'rec-ua-003',
+    type: 'uricAcid',
+    typeName: '尿酸',
+    displayValue: '385',
+    unit: 'μmol/L',
+    scene: '饭后',
+    measuredAt: '2026-06-01T20:00:00',
+    statusText: '正常范围',
+    statusLevel: 'normal',
+    source: 'device',
+    sourceText: '设备同步',
+    memberId: 'self'
+  },
+  {
+    id: 'rec-ua-004',
+    type: 'uricAcid',
+    typeName: '尿酸',
+    displayValue: '412',
+    unit: 'μmol/L',
+    scene: '日常',
+    measuredAt: '2026-05-28T08:00:00',
+    statusText: '需要关注',
+    statusLevel: 'attention',
+    source: 'manual',
+    sourceText: '手动记录',
+    memberId: 'self'
+  }
+];
+
+// 各成员对应的首页数据
+const memberHomeData = {
+  self: {
+    indicators: [
+      {
+        type: 'bloodPressure',
+        name: '血压',
+        displayValue: '128/82',
+        unit: 'mmHg',
+        subValue: '脉搏 72 bpm',
+        recordTime: '今日 07:30',
+        recordScene: '晨起',
+        statusText: '正常范围',
+        statusLevel: 'normal',
+        hasRecordAction: true,
+        hasTrendAction: true,
+        isDeviceCard: false
+      },
+      {
+        type: 'bloodGlucose',
+        name: '血糖',
+        displayValue: '6.2',
+        unit: 'mmol/L',
+        subValue: '',
+        recordTime: '今日 07:10',
+        recordScene: '空腹',
+        statusText: '空腹记录',
+        statusLevel: 'recorded',
+        hasRecordAction: true,
+        hasTrendAction: true,
+        isDeviceCard: false
+      },
+      {
+        type: 'uricAcid',
+        name: '尿酸',
+        displayValue: '428',
+        unit: 'μmol/L',
+        subValue: '',
+        recordTime: '昨天 20:00',
+        recordScene: '日常',
+        statusText: '需要关注',
+        statusLevel: 'attention',
+        hasRecordAction: true,
+        hasTrendAction: true,
+        isDeviceCard: false
+      },
+      {
+        type: 'deviceStatus',
+        name: '设备状态',
+        displayValue: '',
+        unit: '',
+        subValue: '',
+        recordTime: '',
+        recordScene: '',
+        statusText: '待完善',
+        statusLevel: 'pending',
+        hasRecordAction: false,
+        hasTrendAction: false,
+        isDeviceCard: true,
+        deviceConnectedCount: 1,
+        deviceStatusText: '已连接 1 台',
+        deviceSubText: '血压计正常同步',
+        deviceHint: '推荐添加尿酸仪'
+      }
+    ]
+  },
+  father: {
+    indicators: [
+      {
+        type: 'bloodPressure',
+        name: '血压',
+        displayValue: '135/84',
+        unit: 'mmHg',
+        subValue: '脉搏 68 bpm',
+        recordTime: '今日 08:10',
+        recordScene: '晨起',
+        statusText: '正常范围',
+        statusLevel: 'normal',
+        hasRecordAction: true,
+        hasTrendAction: true,
+        isDeviceCard: false
+      },
+      {
+        type: 'bloodGlucose',
+        name: '血糖',
+        displayValue: '6.8',
+        unit: 'mmol/L',
+        subValue: '',
+        recordTime: '今日 08:00',
+        recordScene: '空腹',
+        statusText: '空腹记录',
+        statusLevel: 'recorded',
+        hasRecordAction: true,
+        hasTrendAction: true,
+        isDeviceCard: false
+      },
+      {
+        type: 'uricAcid',
+        name: '尿酸',
+        displayValue: '402',
+        unit: 'μmol/L',
+        subValue: '',
+        recordTime: '昨天 20:30',
+        recordScene: '日常',
+        statusText: '正常范围',
+        statusLevel: 'normal',
+        hasRecordAction: true,
+        hasTrendAction: true,
+        isDeviceCard: false
+      },
+      {
+        type: 'deviceStatus',
+        name: '设备状态',
+        displayValue: '',
+        unit: '',
+        subValue: '',
+        recordTime: '',
+        recordScene: '',
+        statusText: '待完善',
+        statusLevel: 'pending',
+        hasRecordAction: false,
+        hasTrendAction: false,
+        isDeviceCard: true,
+        deviceConnectedCount: 0,
+        deviceStatusText: '未连接设备',
+        deviceSubText: '建议添加测量设备',
+        deviceHint: '推荐添加智能血压计'
+      }
+    ]
+  },
+  mother: {
+    indicators: [
+      {
+        type: 'bloodPressure',
+        name: '血压',
+        displayValue: '118/76',
+        unit: 'mmHg',
+        subValue: '脉搏 70 bpm',
+        recordTime: '昨天 20:00',
+        recordScene: '睡前',
+        statusText: '正常范围',
+        statusLevel: 'normal',
+        hasRecordAction: true,
+        hasTrendAction: true,
+        isDeviceCard: false
+      },
+      {
+        type: 'bloodGlucose',
+        name: '血糖',
+        displayValue: '5.9',
+        unit: 'mmol/L',
+        subValue: '',
+        recordTime: '昨天 19:30',
+        recordScene: '餐后 2 小时',
+        statusText: '已记录',
+        statusLevel: 'recorded',
+        hasRecordAction: true,
+        hasTrendAction: true,
+        isDeviceCard: false
+      },
+      {
+        type: 'uricAcid',
+        name: '尿酸',
+        displayValue: '360',
+        unit: 'μmol/L',
+        subValue: '',
+        recordTime: '3 天前',
+        recordScene: '日常',
+        statusText: '正常范围',
+        statusLevel: 'normal',
+        hasRecordAction: true,
+        hasTrendAction: true,
+        isDeviceCard: false
+      },
+      {
+        type: 'deviceStatus',
+        name: '设备状态',
+        displayValue: '',
+        unit: '',
+        subValue: '',
+        recordTime: '',
+        recordScene: '',
+        statusText: '待完善',
+        statusLevel: 'pending',
+        hasRecordAction: false,
+        hasTrendAction: false,
+        isDeviceCard: true,
+        deviceConnectedCount: 0,
+        deviceStatusText: '未连接设备',
+        deviceSubText: '建议添加测量设备',
+        deviceHint: '推荐添加智能血压计'
+      }
+    ]
+  }
+};
+
 // AI 快捷问题
 const quickQuestions = [
   '最近有哪些指标需要关注？',
@@ -295,5 +700,8 @@ module.exports = {
   homeIndicators,
   todayReminders,
   quickQuestions,
-  aiSessions
+  aiSessions,
+  typeConfig,
+  detailRecords,
+  memberHomeData
 };

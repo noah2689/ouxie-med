@@ -71,8 +71,32 @@ function getLatestRecord(memberId, records, metricType) {
   })[0];
 }
 
+/**
+ * 获取日期分组标签（今天/昨天/更早）
+ * @param {string} dateInput - ISO 日期字符串
+ * @returns {string} "今天" | "昨天" | "更早"
+ */
+function getDateGroup(dateInput) {
+  const date = new Date(dateInput);
+  const now = new Date();
+
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+  const target = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+
+  if (target.getTime() === today.getTime()) {
+    return '今天';
+  } else if (target.getTime() === yesterday.getTime()) {
+    return '昨天';
+  } else {
+    return '更早';
+  }
+}
+
 module.exports = {
   formatDate,
   formatRecordTime,
-  getLatestRecord
+  getLatestRecord,
+  getDateGroup
 };

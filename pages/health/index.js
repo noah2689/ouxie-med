@@ -4,26 +4,63 @@ const mockData = require('../../mock/health');
 Page({
   data: {
     memberName: '本人',
+    currentMemberId: 'self',
+    members: mockData.members,
     todayOverview: mockData.todayOverview,
     indicators: mockData.homeIndicators,
     todayReminders: mockData.todayReminders,
 
     // Phase 3：添加记录弹窗
     showRecordSheet: false,
-    currentRecordType: 'bloodPressure'
+    currentRecordType: 'bloodPressure',
+
+    // Phase 5：成员切换弹窗
+    showMemberSheet: false
   },
 
   onLoad: function () {
     console.log('[健康首页] 页面加载');
+    this.loadMemberData(this.data.currentMemberId);
   },
 
   onShow: function () {
     console.log('[健康首页] 页面显示');
+    // 每次显示时根据当前成员重新加载（处理从家庭页返回的情况）
+    const app = getApp();
+    if (app.globalData.currentMember) {
+      const member = app.globalData.currentMember;
+      if (member.id !== this.data.currentMemberId) {
+        this.setData({
+          currentMemberId: member.id,
+          memberName: member.name
+        });
+        this.loadMemberData(member.id);
+      }
+    }
+  },
+
+  // 根据成员 ID 加载首页数据
+  loadMemberData: function (memberId) {
+    const homeData = mockData.memberHomeData;
+    if (homeData && homeData[memberId]) {
+      const data = homeData[memberId];
+      this.setData({
+        indicators: data.indicators,
+        // 今日概览和提醒暂用全局 mock 数据（不细分成员）
+        todayOverview: mockData.todayOverview,
+        todayReminders: mockData.todayReminders
+      });
+    }
+    console.log('[首页] 加载成员数据:', memberId);
   },
 
   // ① 点击成员入口
   onMemberTap: function () {
-    console.log('[占位] 打开成员切换弹窗，Phase 5 实现');
+    // 如果添加记录弹窗开着，先关闭
+    if (this.data.showRecordSheet) {
+      this.setData({ showRecordSheet: false });
+    }
+    this.openMemberSheet();
   },
 
   // ② 点击提醒入口
@@ -91,28 +128,23 @@ Page({
     });
   },
 
-  // ═══ Phase 3：弹窗控制 ═══
+  // ═══ Phase 3：添加记录弹窗 ═══
 
-  // 关闭弹窗
   closeRecordSheet: function () {
     this.setData({ showRecordSheet: false });
     this.showHomeTabBar();
   },
 
-  // 阻止冒泡
   noop: function () {},
 
-  // 接收保存事件 → 更新首页数据
   onSheetSave: function (e) {
     const record = e.detail.record;
     const type = record.type;
     console.log('[保存] 记录保存:', type, record);
 
-    // ① 更新对应指标卡片
     const indicators = this.data.indicators.map(function (item) {
       if (item.type === type && !item.isDeviceCard) {
         var updatedItem = Object.assign({}, item);
-
         if (type === 'bloodPressure') {
           updatedItem.displayValue = record.systolic + '/' + record.diastolic;
           updatedItem.subValue = record.pulse ? '脉搏 ' + record.pulse + ' bpm' : '';
@@ -127,7 +159,6 @@ Page({
           updatedItem.statusText = '需要关注';
           updatedItem.statusLevel = 'attention';
         }
-
         updatedItem.recordTime = '刚刚';
         updatedItem.recordScene = record.scene;
         return updatedItem;
@@ -135,7 +166,6 @@ Page({
       return item;
     });
 
-    // ② 更新今日已记录数 +1
     var todayOverview = JSON.parse(JSON.stringify(this.data.todayOverview));
     var stats = todayOverview.stats.map(function (s) {
       if (s.label === '今日已记录') {
@@ -146,7 +176,6 @@ Page({
     todayOverview.stats = stats;
     todayOverview.subTitle = '今日已完成 ' + stats[0].value + ' 项记录，' + stats[1].value + ' 项需要关注';
 
-    // ③ 更新提醒（移除对应类型的提醒）
     var keywordMap = {
       bloodPressure: '血压',
       bloodGlucose: '血糖',
@@ -157,35 +186,80 @@ Page({
       return r.text.indexOf(keyword) === -1;
     });
 
-    // ④ 合并更新
     var updateData = {
       indicators: indicators,
       todayOverview: todayOverview,
       showRecordSheet: false
     };
-
     if (newReminders.length < this.data.todayReminders.length) {
       updateData.todayReminders = newReminders;
     }
-
     this.setData(updateData);
 
-    // ⑤ 提示
-    wx.showToast({
-      title: '已保存',
-      icon: 'success',
-      duration: 1500
-    });
-
-    // ⑥ 恢复 tabBar
+    wx.showToast({ title: '已保存', icon: 'success', duration: 1500 });
     this.showHomeTabBar();
-
     console.log('[保存] 首页数据已更新');
   },
 
-  // ═══ Phase 3.1：tabBar 控制 ═══
+  // ═══ Phase 5：成员切换弹窗 ═══
 
-  // 隐藏底部 tabBar
+  openMemberSheet: function () {
+    this.setData({ showMemberSheet: true });
+    this.hideHomeTabBar();
+  },
+
+  closeMemberSheet: function () {
+    this.setData({ showMemberSheet: false });
+    this.showHomeTabBar();
+  },
+
+  onMemberSelect: function (e) {
+    const memberId = e.detail.memberId;
+    const member = this.data.members.find(function (m) {
+      return m.id === memberId;
+    });
+    if (!member) return;
+
+    // 更新全局状态
+    const app = getApp();
+    app.globalData.currentMember = {
+      id: member.id,
+      name: member.name,
+      relation: member.relation
+    };
+
+    // 更新首页
+    this.setData({
+      currentMemberId: memberId,
+      memberName: member.name,
+      showMemberSheet: false
+    });
+
+    this.loadMemberData(memberId);
+    this.showHomeTabBar();
+
+    wx.showToast({
+      title: '已切换查看成员',
+      icon: 'none',
+      duration: 1500
+    });
+
+    console.log('[成员] 切换至:', member.name);
+  },
+
+  onManageMembers: function () {
+    this.setData({ showMemberSheet: false });
+    this.showHomeTabBar();
+    wx.navigateTo({
+      url: '/pages/family/index',
+      fail: function () {
+        console.log('[家庭] 页面跳转失败');
+      }
+    });
+  },
+
+  // ═══ tabBar 控制 ═══
+
   hideHomeTabBar: function () {
     wx.hideTabBar({
       animation: true,
@@ -195,7 +269,6 @@ Page({
     });
   },
 
-  // 显示底部 tabBar
   showHomeTabBar: function () {
     wx.showTabBar({
       animation: true,

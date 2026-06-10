@@ -1,6 +1,65 @@
-<!-- 瓯械健康 · 全部记录页 —— Phase 1 骨架占位 -->
-<view class="page-placeholder">
-  <text class="page-title">全部记录</text>
-  <text class="page-desc">查看所有健康指标的完整历史记录</text>
-  <text class="page-hint">Phase 4 将完成本页完整功能</text>
-</view>
+<!-- 瓯械健康 · 全部记录页 — Phase 4 -->
+<scroll-view class="page" scroll-y>
+
+  <!-- ═══ ① 类型筛选 ═══ -->
+  <view class="filter-section">
+    <view class="filter-group">
+      <view
+        wx:for="{{typeFilters}}"
+        wx:key="value"
+        class="filter-pill {{activeTypeFilter === item.value ? 'filter-pill-active' : ''}}"
+        data-value="{{item.value}}"
+        bindtap="onTypeFilterChange"
+      >{{item.label}}</view>
+    </view>
+    <view class="filter-group filter-group-second">
+      <view
+        wx:for="{{timeFilters}}"
+        wx:key="value"
+        class="filter-pill {{activeTimeFilter === item.value ? 'filter-pill-active' : ''}}"
+        data-value="{{item.value}}"
+        bindtap="onTimeFilterChange"
+      >{{item.label}}</view>
+    </view>
+  </view>
+
+  <!-- ═══ ② 记录列表 ═══ -->
+  <block wx:if="{{!isEmpty}}">
+    <view
+      class="date-group"
+      wx:for="{{groupedRecords}}"
+      wx:key="dateLabel"
+    >
+      <text class="date-label">{{item.dateLabel}}</text>
+      <view class="records-card">
+        <view
+          class="record-item"
+          wx:for="{{item.records}}"
+          wx:key="id"
+        >
+          <view class="rec-left">
+            <text class="rec-type">{{item.typeName}}</text>
+            <text class="rec-value">{{item.displayValue}}</text>
+            <text class="rec-unit">{{item.unit}}</text>
+          </view>
+          <view class="rec-center">
+            <text class="rec-scene">{{item.scene}}</text>
+            <text class="rec-time">{{item.formattedTime}}</text>
+            <text class="rec-source">{{item.sourceText}}</text>
+          </view>
+          <view class="rec-right">
+            <text class="tag-sm tag-sm-{{item.statusLevel}}">{{item.statusText}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <!-- ═══ 空状态 ═══ -->
+  <view wx:if="{{isEmpty}}" class="empty-state">
+    <text class="empty-title">暂无记录</text>
+    <text class="empty-desc">建议保持固定周期记录</text>
+  </view>
+
+  <view class="bottom-spacer"></view>
+</scroll-view>

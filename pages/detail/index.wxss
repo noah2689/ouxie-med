@@ -1,1 +1,428 @@
-/* 指标详情页 — Phase 1 骨架占位 */
+/* ═══════════════════════════════════════════════
+   瓯械健康 · 指标详情页 — Phase 4
+   参考：health-detail-hifi.html + design-spec.md v1.1
+   ═══════════════════════════════════════════════ */
+
+page {
+  background-color: #F5F6F8;
+}
+
+.page {
+  height: 100vh;
+  background-color: #F5F6F8;
+}
+
+/* ── 成员信息条 ── */
+.member-bar {
+  padding: 20rpx 32rpx;
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  background: #FFFFFF;
+  border-bottom: 1px solid #F0F0F2;
+}
+
+.member-label {
+  font-size: 12px;
+  color: #8E8E9A;
+}
+
+.member-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: #1A1A2E;
+}
+
+/* ── 通用卡片 ── */
+.detail-card {
+  background: #FFFFFF;
+  border: 1px solid #E8E8EE;
+  border-radius: 24rpx;
+  padding: 28rpx 32rpx;
+  margin: 0 32rpx;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+/* ═══ ② 核心指标卡片 ═══ */
+.core-card {
+  margin-top: 24rpx;
+}
+
+.core-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.core-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #4A4A5A;
+}
+
+/* ── 标签 ── */
+.tag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 4rpx 16rpx;
+  border-radius: 8rpx;
+  line-height: 1.4;
+  flex-shrink: 0;
+}
+
+.tag-normal {
+  color: #5B9E7A;
+  border: 1px solid #C8E0D0;
+  background: #F0F9F5;
+}
+
+.tag-attention {
+  color: #E8913A;
+  border: 1px solid #F0D5A8;
+  background: #FFF8F0;
+}
+
+.tag-recorded {
+  color: #7A8C9E;
+  border: 1px solid #D0D5DA;
+  background: #F5F6F8;
+}
+
+.tag-observe {
+  color: #8A9BB5;
+  border: 1px dashed #D0D8E0;
+  background: #F5F7FA;
+}
+
+.tag-pending {
+  color: #B0A090;
+  border: 1px solid #E0D8D0;
+  background: #FAF8F5;
+}
+
+/* ── 血压双值 ── */
+.core-bp-row {
+  display: flex;
+  gap: 32rpx;
+  align-items: center;
+  margin-bottom: 12rpx;
+}
+
+.core-bp-item {
+  flex: 1;
+  text-align: center;
+}
+
+.core-bp-sep {
+  width: 1px;
+  background: #E8E8EE;
+  align-self: stretch;
+  min-height: 96rpx;
+}
+
+.core-val {
+  display: block;
+  font-size: 36px;
+  font-weight: 700;
+  color: #1A1A2E;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.core-label {
+  display: block;
+  font-size: 11px;
+  color: #8E8E9A;
+  margin-top: 4rpx;
+  text-align: center;
+}
+
+/* ── 单值 ── */
+.core-single-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8rpx;
+  justify-content: center;
+  margin-bottom: 12rpx;
+}
+
+.core-unit {
+  font-size: 14px;
+  color: #8E8E9A;
+}
+
+/* ── 脉搏 ── */
+.core-pulse {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: #4A4A5A;
+  text-align: center;
+  margin-bottom: 8rpx;
+  font-variant-numeric: tabular-nums;
+}
+
+.core-meta {
+  display: block;
+  font-size: 12px;
+  color: #8E8E9A;
+  text-align: center;
+  margin-bottom: 12rpx;
+}
+
+.core-desc {
+  border-top: 1px solid #F0F0F2;
+  padding-top: 16rpx;
+  margin-top: 4rpx;
+}
+
+.core-desc-text {
+  font-size: 12px;
+  color: #8E8E9A;
+  line-height: 1.5;
+}
+
+/* ═══ ③ 时间筛选 ═══ */
+.filter-row {
+  display: flex;
+  gap: 16rpx;
+  margin: 24rpx 32rpx 0;
+  overflow-x: auto;
+}
+
+.filter-row::-webkit-scrollbar {
+  display: none;
+}
+
+.filter-pill {
+  font-size: 12px;
+  font-weight: 400;
+  padding: 10rpx 28rpx;
+  border: 1px solid #D8D8E0;
+  border-radius: 32rpx;
+  color: #8E8E9A;
+  background: #FFFFFF;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.filter-pill-active {
+  color: #2EAB8A;
+  border-color: #2EAB8A;
+  background: #E8F6F1;
+  font-weight: 500;
+}
+
+/* ═══ ④ 趋势图占位 ═══ */
+.chart-card {
+  margin-top: 24rpx;
+}
+
+.chart-card-title {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: #8E8E9A;
+  margin-bottom: 16rpx;
+}
+
+.chart-area {
+  height: 260rpx;
+  background: #F8F9FB;
+  border: 1px solid #F0F0F2;
+  border-radius: 16rpx;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 12rpx;
+}
+
+.chart-grid {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20rpx 28rpx 12rpx;
+}
+
+.chart-grid-line {
+  display: block;
+  height: 0;
+  border-top: 1px solid #E8E8EE;
+}
+
+.chart-svg-placeholder {
+  position: absolute;
+  inset: 0;
+  padding: 20rpx 28rpx 12rpx;
+}
+
+.chart-line {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+/* 简单折线占位 */
+.chart-line-bp::before {
+  content: '';
+  position: absolute;
+  top: 30%;
+  left: 5%;
+  width: 90%;
+  height: 2px;
+  background: linear-gradient(90deg,
+    transparent 0%, #4A8C9E 5%, #4A8C9E 20%,
+    #8AB8C8 20%, #8AB8C8 40%,
+    #4A8C9E 40%, #4A8C9E 60%,
+    #8AB8C8 60%, #8AB8C8 80%,
+    #4A8C9E 80%, #4A8C9E 95%, transparent 100%
+  );
+}
+
+.chart-hint {
+  display: block;
+  font-size: 12px;
+  color: #8E8E9A;
+  line-height: 1.5;
+}
+
+/* ═══ ⑤ 最近记录 ═══ */
+.hist-section {
+  margin: 24rpx 32rpx 0;
+}
+
+.hist-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.hist-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1A1A2E;
+}
+
+.hist-more {
+  display: flex;
+  align-items: center;
+  gap: 4rpx;
+}
+
+.hist-more-text {
+  font-size: 12px;
+  color: #8E8E9A;
+}
+
+.hist-more-arrow {
+  font-size: 14px;
+  color: #8E8E9A;
+  line-height: 1;
+}
+
+.hist-card {
+  background: #FFFFFF;
+  border: 1px solid #E8E8EE;
+  border-radius: 20rpx;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.hist-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 22rpx 28rpx;
+  border-bottom: 1px solid #F0F0F2;
+}
+
+.hist-item:last-child {
+  border-bottom: none;
+}
+
+.hist-left {
+  flex: 1;
+  min-width: 0;
+}
+
+.hist-value {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1A1A2E;
+  margin-bottom: 4rpx;
+  font-variant-numeric: tabular-nums;
+}
+
+.hist-meta {
+  font-size: 11px;
+  color: #B8B8C4;
+  line-height: 1.5;
+}
+
+.hist-right {
+  text-align: right;
+  margin-left: 16rpx;
+  flex-shrink: 0;
+}
+
+/* ── 小标签 ── */
+.tag-sm {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 500;
+  padding: 2rpx 12rpx;
+  border-radius: 6rpx;
+  line-height: 1.4;
+}
+
+.tag-sm-normal {
+  color: #5B9E7A;
+  border: 1px solid #C8E0D0;
+  background: #F0F9F5;
+}
+
+.tag-sm-attention {
+  color: #E8913A;
+  border: 1px solid #F0D5A8;
+  background: #FFF8F0;
+}
+
+.tag-sm-recorded {
+  color: #7A8C9E;
+  border: 1px solid #D0D5DA;
+  background: #F5F6F8;
+}
+
+.tag-sm-observe {
+  color: #8A9BB5;
+  border: 1px dashed #D0D8E0;
+  background: #F5F7FA;
+}
+
+.hist-source {
+  display: block;
+  font-size: 10px;
+  color: #C0C0C8;
+  margin-top: 4rpx;
+}
+
+/* ── 空状态 ── */
+.hist-empty {
+  padding: 48rpx 0;
+  text-align: center;
+}
+
+.hist-empty-text {
+  font-size: 13px;
+  color: #B8B8C4;
+}
+
+/* ── 底部间隔 ── */
+.bottom-spacer {
+  height: 48rpx;
+}

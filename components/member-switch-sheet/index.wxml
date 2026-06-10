@@ -1,0 +1,52 @@
+<!-- 成员切换底部弹窗组件 -->
+<view class="sheet-content">
+
+  <!-- 拖拽条 -->
+  <view class="sheet-handle">
+    <view class="handle-bar"></view>
+  </view>
+
+  <!-- 标题 -->
+  <view class="sheet-header">
+    <text class="sheet-title">切换查看成员</text>
+    <view class="sheet-close" bindtap="onClose">
+      <text class="close-icon">✕</text>
+    </view>
+  </view>
+
+  <!-- 成员列表 -->
+  <view class="member-list">
+    <view
+      class="member-item {{activeId === item.id ? 'member-active' : ''}}"
+      wx:for="{{members}}"
+      wx:key="id"
+      data-id="{{item.id}}"
+      bindtap="onSelect"
+    >
+      <!-- 头像 -->
+      <view class="member-avatar {{activeId === item.id ? 'avatar-active' : ''}}">
+        <text class="avatar-text">{{item.avatarText}}</text>
+      </view>
+
+      <!-- 信息 -->
+      <view class="member-info">
+        <view class="member-name-row">
+          <text class="member-name">{{item.name}}</text>
+          <text class="member-relation">{{item.relation}}</text>
+        </view>
+        <text class="member-meta">{{item.recentRecordText}}</text>
+      </view>
+
+      <!-- 选中标识 -->
+      <view class="member-check {{activeId === item.id ? 'check-active' : ''}}">
+        <text wx:if="{{activeId === item.id}}" class="check-mark">✓</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部入口 -->
+  <view class="sheet-footer" bindtap="onManage">
+    <text class="footer-link">管理家庭成员</text>
+  </view>
+
+</view>

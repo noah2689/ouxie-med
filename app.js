@@ -7,7 +7,7 @@ App({
       name: '本人',
       relation: '本人'
     },
-    // 家庭成员列表
+    // 家庭成员列表（启动时从 mock 加载）
     members: [],
     // 指标数据缓存
     metricData: {
@@ -22,7 +22,9 @@ App({
   },
 
   onLaunch: function () {
-    // 小程序启动时的初始化
-    console.log('[瓯械健康] 小程序启动');
+    // 从 mock 数据初始化成员列表
+    const mockData = require('./mock/health');
+    this.globalData.members = mockData.members;
+    console.log('[瓯械健康] 小程序启动，加载成员:', this.globalData.members.length, '人');
   }
 });

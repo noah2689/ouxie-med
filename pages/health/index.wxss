@@ -502,3 +502,17 @@
   flex-direction: column;
   box-shadow: 0 -2rpx 16rpx rgba(0, 0, 0, 0.08);
 }
+
+/* ── 成员切换弹窗 ── */
+.member-sheet {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #FFFFFF;
+  border-radius: 32rpx 32rpx 0 0;
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 -2rpx 16rpx rgba(0, 0, 0, 0.08);
+}
