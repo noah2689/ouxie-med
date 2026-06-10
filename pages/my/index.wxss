@@ -1,2 +1,224 @@
-/* 我的 — Phase 1 骨架占位 */
-/* 后续阶段将替换为本页完整样式 */
+/* ═══════════════════════════════════════════════
+   瓯械健康 · 我的 — Phase 7.5 高保真还原
+   参考：my-hifi.html + design-spec.md v1.1
+   ═══════════════════════════════════════════════ */
+
+page {
+  background-color: #F5F6F8;
+}
+
+.page {
+  height: 100vh;
+  background-color: #F5F6F8;
+}
+
+/* ── ① 用户信息卡片 ── */
+.profile-card {
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+  margin: 24rpx 32rpx 0;
+  background: #FFFFFF;
+  border: 1px solid #E8E8EE;
+  border-radius: 24rpx;
+  padding: 28rpx 32rpx;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.pc-avatar {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  border: 1.5px solid #E8E8EE;
+  background: #F8F9FA;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: #8E8E9A;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.pc-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.pc-name {
+  display: block;
+  font-size: 17px;
+  font-weight: 600;
+  color: #1A1A2E;
+  margin-bottom: 4rpx;
+}
+
+.pc-detail {
+  display: block;
+  font-size: 12px;
+  color: #8E8E9A;
+  margin-bottom: 12rpx;
+}
+
+.pc-progress {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.pc-bar {
+  flex: 1;
+  height: 12rpx;
+  background: #EEF0F2;
+  border-radius: 6rpx;
+  overflow: hidden;
+}
+
+.pc-fill {
+  height: 100%;
+  background: #2EAB8A;
+  border-radius: 6rpx;
+}
+
+.pc-pct {
+  font-size: 12px;
+  font-weight: 600;
+  color: #2EAB8A;
+  flex-shrink: 0;
+}
+
+/* ── ② 健康档案卡片 ── */
+.hlth-card {
+  margin: 24rpx 32rpx 0;
+  background: #FFFFFF;
+  border: 1px solid #E8E8EE;
+  border-radius: 24rpx;
+  padding: 28rpx 32rpx;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.hlth-title {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1A1A2E;
+  margin-bottom: 20rpx;
+}
+
+.hlth-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24rpx;
+}
+
+.hlth-item {
+  background: #F8F9FA;
+  border: 1px solid #EEF0F2;
+  border-radius: 16rpx;
+  padding: 16rpx 20rpx;
+}
+
+.hlth-lbl {
+  display: block;
+  font-size: 10px;
+  color: #B8B8C4;
+  letter-spacing: 0.4px;
+  margin-bottom: 6rpx;
+  text-transform: uppercase;
+}
+
+.hlth-val {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1A1A2E;
+}
+
+.hlth-unit {
+  font-size: 11px;
+  color: #8E8E9A;
+  font-weight: 400;
+  margin-left: 4rpx;
+}
+
+/* ── 区块标题 ── */
+.section-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: #B8B8C4;
+  padding: 28rpx 32rpx 12rpx;
+  letter-spacing: 0.5px;
+}
+
+/* ── ③④ 菜单卡片 ── */
+.menu-card {
+  margin: 0 32rpx;
+  background: #FFFFFF;
+  border: 1px solid #E8E8EE;
+  border-radius: 24rpx;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.menu-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 28rpx 32rpx;
+  border-bottom: 1px solid #F0F0F2;
+}
+
+.menu-item:last-child {
+  border-bottom: none;
+}
+
+.menu-left {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  min-width: 0;
+}
+
+.menu-icon {
+  width: 40rpx;
+  height: 40rpx;
+  border: 1.5px solid #D8D8E0;
+  border-radius: 10rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8px;
+  color: #B8B8C4;
+  flex-shrink: 0;
+  background: #F8F9FA;
+  text-align: center;
+  line-height: 40rpx;
+}
+
+.menu-label {
+  font-size: 14px;
+  color: #4A4A5A;
+}
+
+.menu-right {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  flex-shrink: 0;
+}
+
+.menu-hint {
+  font-size: 11px;
+  color: #B8B8C4;
+}
+
+.menu-arrow {
+  font-size: 14px;
+  color: #B8B8C4;
+  line-height: 1;
+}
+
+/* ── 底部间隔 ── */
+.bottom-spacer {
+  height: 48rpx;
+}

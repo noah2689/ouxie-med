@@ -1,6 +1,110 @@
-<!-- 瓯械健康 · 我的 —— Phase 1 骨架占位 -->
-<view class="page-placeholder">
-  <text class="page-title">我的</text>
-  <text class="page-desc">管理个人信息、家庭成员和系统设置</text>
-  <text class="page-hint">后续阶段将完成本页完整功能</text>
-</view>
+<!-- 瓯械健康 · 我的 — Phase 7.5 高保真还原 -->
+<scroll-view class="page" scroll-y>
+
+  <!-- ═══ ① 用户信息卡片 ═══ -->
+  <view class="profile-card">
+    <view class="pc-avatar">本</view>
+    <view class="pc-info">
+      <text class="pc-name">{{memberName}}</text>
+      <text class="pc-detail">{{memberGender}} · {{memberAge}}</text>
+      <view class="pc-progress">
+        <view class="pc-bar">
+          <view class="pc-fill" style="width: {{profilePercent}}%;"></view>
+        </view>
+        <text class="pc-pct">{{profilePercent}}%</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- ═══ ② 健康档案 ═══ -->
+  <view class="hlth-card">
+    <text class="hlth-title">健康档案</text>
+    <view class="hlth-grid">
+      <view class="hlth-item">
+        <text class="hlth-lbl">身高</text>
+        <text class="hlth-val">175 <text class="hlth-unit">cm</text></text>
+      </view>
+      <view class="hlth-item">
+        <text class="hlth-lbl">体重</text>
+        <text class="hlth-val">72 <text class="hlth-unit">kg</text></text>
+      </view>
+      <view class="hlth-item">
+        <text class="hlth-lbl">关注指标</text>
+        <text class="hlth-val">血压 <text class="hlth-unit">· 尿酸</text></text>
+      </view>
+      <view class="hlth-item">
+        <text class="hlth-lbl">记录习惯</text>
+        <text class="hlth-val">晨起 <text class="hlth-unit">· 睡前</text></text>
+      </view>
+    </view>
+  </view>
+
+  <!-- ═══ ③ 健康管理菜单 ═══ -->
+  <text class="section-label">健康管理</text>
+  <view class="menu-card">
+    <view class="menu-item" bindtap="goFamily">
+      <view class="menu-left">
+        <text class="menu-icon">👤</text>
+        <text class="menu-label">家庭成员</text>
+      </view>
+      <view class="menu-right">
+        <text class="menu-hint">{{memberCount}} 位成员</text>
+        <text class="menu-arrow">›</text>
+      </view>
+    </view>
+    <view class="menu-item" bindtap="goReminder">
+      <view class="menu-left">
+        <text class="menu-icon">🔔</text>
+        <text class="menu-label">提醒设置</text>
+      </view>
+      <view class="menu-right">
+        <text class="menu-hint">每日 {{reminderCount}} 个提醒</text>
+        <text class="menu-arrow">›</text>
+      </view>
+    </view>
+    <view class="menu-item" bindtap="goDevice">
+      <view class="menu-left">
+        <text class="menu-icon">⚙</text>
+        <text class="menu-label">设备管理</text>
+      </view>
+      <view class="menu-right">
+        <text class="menu-hint">已连接 {{deviceCount}} 台</text>
+        <text class="menu-arrow">›</text>
+      </view>
+    </view>
+    <view class="menu-item" bindtap="goRecords">
+      <view class="menu-left">
+        <text class="menu-icon">📋</text>
+        <text class="menu-label">全部记录</text>
+      </view>
+      <view class="menu-right">
+        <text class="menu-arrow">›</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- ═══ ④ 通用设置菜单 ═══ -->
+  <text class="section-label">通用设置</text>
+  <view class="menu-card">
+    <view class="menu-item" bindtap="onPrivacyTap">
+      <view class="menu-left">
+        <text class="menu-icon">🔒</text>
+        <text class="menu-label">隐私与数据</text>
+      </view>
+      <view class="menu-right">
+        <text class="menu-arrow">›</text>
+      </view>
+    </view>
+    <view class="menu-item" bindtap="onAboutTap">
+      <view class="menu-left">
+        <text class="menu-icon">ℹ</text>
+        <text class="menu-label">关于瓯械健康</text>
+      </view>
+      <view class="menu-right">
+        <text class="menu-arrow">›</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="bottom-spacer"></view>
+</scroll-view>
