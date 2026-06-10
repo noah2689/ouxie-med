@@ -50,7 +50,10 @@ Page({
 
   // 加载并筛选记录
   loadRecords: function (typeFilter, timeFilter) {
-    var allRecords = mockData.detailRecords || [];
+    // 合并设备同步记录
+    var app = getApp();
+    var syncedRecords = app.globalData.syncedRecords || [];
+    var allRecords = (mockData.detailRecords || []).concat(syncedRecords);
 
     // 类型筛选
     if (typeFilter !== 'all') {
@@ -59,8 +62,8 @@ Page({
       });
     }
 
-    // 时间筛选（基于当前日期 2026-06-10）
-    var now = new Date('2026-06-10T23:59:59');
+    // 时间筛选
+    var now = new Date();
     if (timeFilter !== 'all') {
       var days = parseInt(timeFilter);
       var cutoff = new Date(now);

@@ -43,10 +43,37 @@ Page({
   loadMemberData: function (memberId) {
     const homeData = mockData.memberHomeData;
     if (homeData && homeData[memberId]) {
-      const data = homeData[memberId];
+      var data = homeData[memberId];
+
+      // 合并设备同步记录：检查是否有当前成员的最新 BP 同步记录
+      var app = getApp();
+      var syncedRecords = app.globalData.syncedRecords || [];
+      var latestSync = null;
+      for (var i = syncedRecords.length - 1; i >= 0; i--) {
+        if (syncedRecords[i].memberId === memberId && syncedRecords[i].type === 'bloodPressure') {
+          latestSync = syncedRecords[i];
+          break;
+        }
+      }
+
+      // 如果有同步记录，更新血压卡片
+      if (latestSync) {
+        var indicators = data.indicators.map(function (item) {
+          if (item.type === 'bloodPressure') {
+            return Object.assign({}, item, {
+              displayValue: latestSync.displayValue,
+              recordTime: '刚刚',
+              recordScene: latestSync.scene,
+              subValue: '数据来源 · 设备同步'
+            });
+          }
+          return item;
+        });
+        data.indicators = indicators;
+      }
+
       this.setData({
         indicators: data.indicators,
-        // 今日概览和提醒暂用全局 mock 数据（不细分成员）
         todayOverview: mockData.todayOverview,
         todayReminders: mockData.todayReminders
       });

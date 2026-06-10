@@ -56,8 +56,16 @@ Page({
     const name = nameMap[type] || '指标';
     const config = this.data.statusConfig[type];
 
+    // 合并设备同步记录
+    const app = getApp();
+    const syncedRecords = app.globalData.syncedRecords || [];
+    const allRecords = (mockData.detailRecords || []).concat(
+      syncedRecords.filter(function (s) {
+        return s.type === type;
+      })
+    );
+
     // 加载该类型的最近记录（3 条）
-    const allRecords = mockData.detailRecords || [];
     const typeRecords = allRecords.filter(function (r) {
       return r.type === type;
     }).sort(function (a, b) {
@@ -68,10 +76,23 @@ Page({
       });
     });
 
+    // 如果有同步记录，核心卡片优先展示最新值
+    var detailConfig = Object.assign({}, config);
+    if (typeRecords.length > 0 && syncedRecords.length > 0) {
+      var newest = typeRecords[0];
+      for (var i = 0; i < syncedRecords.length; i++) {
+        if (syncedRecords[i].type === type && new Date(syncedRecords[i].measuredAt) >= new Date(newest.measuredAt)) {
+          newest = syncedRecords[i];
+        }
+      }
+      detailConfig.displayValue = newest.displayValue;
+      detailConfig.scene = newest.scene;
+    }
+
     this.setData({
       metricType: type,
       metricName: name,
-      detailData: config,
+      detailData: detailConfig,
       recentRecords: typeRecords
     });
 

@@ -18,7 +18,9 @@ App({
     // 设备列表
     deviceList: [],
     // AI 会话列表
-    aiSessions: []
+    aiSessions: [],
+    // 设备同步记录（运行时可追加）
+    syncedRecords: []
   },
 
   onLaunch: function () {
