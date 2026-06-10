@@ -1,0 +1,950 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=390, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>瓯械健康 — 健康首页高保真 UI</title>
+<style>
+/* ═══════════════════════════════════════════════
+   高保真 UI — 瓯械健康 · 健康首页
+   设计规范 v1.1  |  390 × 844 WeChat Mini Program
+   ═══════════════════════════════════════════════ */
+
+/* ── Tokens ── */
+:root {
+  /* Brand */
+  --brand: #2EAB8A;
+  --brand-soft: #E8F6F1;
+  --brand-press: #269C7A;
+  --surface-brand: #F0F9F5;
+  --surface-warn: #FFF8F0;
+  --surface-info: #F5F7FA;
+
+  /* Backgrounds */
+  --bg-page: #F5F6F8;
+  --bg-card: #FFFFFF;
+  --bg-input: #F8F9FA;
+  --bg-press: #F0F1F3;
+  --bg-overlay: rgba(0,0,0,0.40);
+  --bg-tab-bar: #FFFFFF;
+  --bg-nav-bar: #FFFFFF;
+
+  /* Foreground */
+  --fg-primary: #1A1A2E;
+  --fg-body: #4A4A5A;
+  --fg-secondary: #8E8E9A;
+  --fg-placeholder: #B8B8C4;
+  --fg-disabled: #C8C8D4;
+  --fg-on-brand: #FFFFFF;
+
+  /* Borders */
+  --border-card: #E8E8EE;
+  --border-divider: #F0F0F2;
+  --border-input: #D8D8E0;
+  --border-strong: #C8C8D0;
+
+  /* State colors */
+  --state-attention: #E8913A;
+  --state-attention-bg: #FFF8F0;
+  --state-attention-border: #F0D5A8;
+  --state-normal: #5B9E7A;
+  --state-normal-bg: #F0F9F5;
+  --state-normal-border: #C8E0D0;
+  --state-rec: #7A8C9E;
+  --state-rec-bg: #F5F6F8;
+  --state-rec-border: #D0D5DA;
+  --state-pending: #B0A090;
+  --state-pending-bg: #FAF8F5;
+  --state-pending-border: #E0D8D0;
+
+  /* Elevation */
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.04);
+  --shadow-raised: 0 2px 8px rgba(0,0,0,0.06);
+  --shadow-tab: 0 -1px 3px rgba(0,0,0,0.04);
+
+  /* Motions */
+  --motion-fast: 150ms;
+  --motion-base: 200ms;
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* ── Reset & Base ── */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{
+  display:flex;flex-direction:column;align-items:center;
+  min-height:100vh;padding:20px 0;
+  background:#D0D1D6;
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── Demo toggle ── */
+.demo-bar{
+  display:flex;gap:6px;margin-bottom:12px;
+  background:#fff;border-radius:20px;padding:4px;
+  box-shadow:0 2px 8px rgba(0,0,0,.08)
+}
+.demo-bar .db-btn{
+  padding:6px 20px;border-radius:16px;
+  font-size:13px;color:var(--fg-secondary);cursor:pointer;
+  transition:all var(--motion-fast) var(--ease);
+  user-select:none;border:none;background:transparent;
+  font-family:inherit
+}
+.demo-bar .db-btn.on{background:var(--brand);color:var(--fg-on-brand)}
+.demo-bar .db-btn:active{opacity:.8}
+
+/* ── Phone frame ── */
+.phone{
+  width:390px;height:844px;
+  background:var(--bg-page);
+  border-radius:40px;overflow:hidden;
+  box-shadow:0 0 0 1px rgba(0,0,0,.08),0 8px 32px rgba(0,0,0,.15);
+  display:flex;flex-direction:column;
+  position:relative
+}
+
+/* ── Status bar ── */
+.status-bar{
+  height:44px;background:var(--bg-nav-bar);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 28px;flex-shrink:0
+}
+.s-time{font-size:15px;font-weight:700;color:var(--fg-primary);letter-spacing:.3px}
+.s-icons{display:flex;align-items:center;gap:6px}
+.s-icons .s-sig{display:flex;gap:2px;align-items:flex-end;height:12px}
+.s-icons .s-sig span{display:block;width:3px;background:#B0B0BC;border-radius:1px}
+.s-icons .s-sig span:nth-child(1){height:5px}
+.s-icons .s-sig span:nth-child(2){height:8px}
+.s-icons .s-sig span:nth-child(3){height:11px}
+.s-icons .s-network{font-size:11px;color:var(--fg-secondary);font-weight:500;letter-spacing:.3px}
+.s-icons .s-battery{display:flex;align-items:center;gap:3px}
+.s-icons .s-battery .s-pct{font-size:11px;color:var(--fg-secondary);font-weight:500}
+.s-icons .s-battery .s-bat{
+  width:22px;height:11px;border:1px solid #B0B0BC;border-radius:3px;
+  position:relative;background:transparent
+}
+.s-icons .s-battery .s-bat::after{
+  content:'';position:absolute;right:-4px;top:2.5px;
+  width:2px;height:4px;background:#B0B0BC;border-radius:0 1px 1px 0
+}
+
+/* ── Navigation bar ── */
+.nav{
+  height:44px;background:var(--bg-nav-bar);
+  display:flex;align-items:center;justify-content:center;
+  border-bottom:1px solid var(--border-divider);flex-shrink:0;position:relative
+}
+.nav .n-title{font-size:17px;font-weight:600;color:var(--fg-primary)}
+.nav .n-capsule{
+  position:absolute;right:14px;top:50%;transform:translateY(-50%);
+  width:70px;height:26px;border:1px solid #D0D0D8;border-radius:13px;
+  display:flex;align-items:center;justify-content:center;gap:5px
+}
+.nav .n-capsule .c-bar{width:16px;height:2px;background:#C0C0C8;border-radius:1px}
+.nav .n-capsule .c-dot{width:4px;height:4px;border-radius:50%;background:#C0C0C8}
+
+/* ── Scrollable content ── */
+.content{
+  flex:1;overflow-y:auto;background:var(--bg-page);
+  -webkit-overflow-scrolling:touch;
+  scroll-behavior:smooth
+}
+.content::-webkit-scrollbar{display:none}
+
+/* ── Section container ── */
+.sec{margin-bottom:12px}
+
+/* ── ① Top action row ── */
+.top-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:10px 16px;background:var(--bg-card);
+  border-bottom:1px solid var(--border-divider)
+}
+.top-row .tr-member{
+  font-size:14px;font-weight:500;color:var(--fg-primary);
+  display:flex;align-items:center;gap:4px;cursor:pointer;
+  transition:opacity var(--motion-fast) var(--ease)
+}
+.top-row .tr-member:active{opacity:.7}
+.top-row .tr-member .tr-arrw{
+  display:inline-block;
+  width:0;height:0;
+  border-left:4px solid transparent;border-right:4px solid transparent;
+  border-top:5px solid var(--fg-secondary);margin-top:2px
+}
+.top-row .tr-remind{
+  font-size:13px;color:var(--fg-secondary);
+  display:flex;align-items:center;gap:4px;cursor:pointer;
+  transition:opacity var(--motion-fast) var(--ease)
+}
+.top-row .tr-remind:active{opacity:.7}
+.tr-remind .tr-bell{
+  width:16px;height:16px;position:relative;display:inline-block;flex-shrink:0
+}
+.tr-remind .tr-bell::before{
+  content:'';position:absolute;top:0;left:2px;
+  width:12px;height:11px;
+  border:1.5px solid var(--fg-secondary);border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;
+  background:transparent
+}
+.tr-remind .tr-bell::after{
+  content:'';position:absolute;bottom:2px;left:50%;transform:translateX(-50%);
+  width:8px;height:2px;background:var(--fg-secondary);border-radius:1px
+}
+
+/* ── ② Today overview card ── */
+.ov-card{
+  background:var(--bg-card);
+  border:1px solid var(--border-card);border-radius:12px;
+  padding:14px 16px 12px;margin:12px 16px 0;
+  box-shadow:var(--shadow-card)
+}
+.ov-card .ov-summary{
+  font-size:18px;font-weight:700;color:var(--fg-primary);
+  line-height:1.4;margin-bottom:2px
+}
+.ov-card .ov-sub{
+  font-size:12px;color:var(--fg-secondary);margin-bottom:10px
+}
+.ov-card .ov-stats{
+  display:flex;gap:8px;margin-bottom:10px
+}
+.ov-card .ov-stat{
+  flex:1;
+  background:var(--bg-input);border:1px solid #EEF0F2;
+  border-radius:8px;padding:7px 4px;text-align:center
+}
+.ov-card .ov-stat .ov-num{
+  font-size:22px;font-weight:700;color:var(--fg-primary);
+  line-height:1.2;
+  font-variant-numeric:tabular-nums
+}
+.ov-card .ov-stat .ov-num.ov-alert{color:var(--state-attention)}
+.ov-card .ov-stat .ov-lbl{
+  font-size:11px;color:var(--fg-secondary);margin-top:2px
+}
+.ov-card .ai-entry{
+  display:flex;align-items:center;gap:6px;
+  padding:8px 10px;
+  background:var(--surface-brand);border:1px solid #DCE8E0;border-radius:8px;
+  font-size:13px;color:var(--fg-body);cursor:pointer;
+  transition:all var(--motion-fast) var(--ease)
+}
+.ov-card .ai-entry:active{background:#DFF0EA}
+.ov-card .ai-entry .ai-badge{
+  width:22px;height:22px;border-radius:50%;
+  background:var(--brand);color:var(--fg-on-brand);
+  display:flex;align-items:center;justify-content:center;
+  font-size:9px;font-weight:700;flex-shrink:0;
+  letter-spacing:.3px
+}
+.ov-card .ai-entry .ai-arrow{
+  margin-left:auto;font-size:16px;color:var(--brand);
+  font-weight:400;line-height:1
+}
+
+/* ── ③ Key indicator grid (2×2) ── */
+.ind-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;
+  margin:12px 16px 0
+}
+.ind-card{
+  background:var(--bg-card);
+  border:1px solid var(--border-card);border-radius:10px;
+  padding:14px;box-shadow:var(--shadow-card)
+}
+.ind-card .ic-hd{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:6px
+}
+.ind-card .ic-hd .ic-name{font-size:14px;font-weight:600;color:var(--fg-body)}
+.ind-card .ic-val{
+  font-size:24px;font-weight:700;color:var(--fg-primary);
+  line-height:1.2;margin-bottom:1px;
+  font-variant-numeric:tabular-nums
+}
+.ind-card .ic-val .ic-unit{font-size:11px;font-weight:400;color:var(--fg-secondary)}
+.ind-card .ic-meta{
+  font-size:11px;color:var(--fg-secondary);margin-bottom:6px;
+  line-height:1.3
+}
+.ind-card .ic-acts{
+  display:flex;gap:6px;padding-top:6px;border-top:1px solid var(--border-divider)
+}
+.ic-acts .ic-btn{
+  font-size:12px;font-weight:400;color:var(--fg-body);
+  border:1px solid var(--border-input);border-radius:5px;
+  padding:3px 10px;
+  background:var(--bg-input);cursor:pointer;
+  transition:all var(--motion-fast) var(--ease)
+}
+.ic-acts .ic-btn:active{background:var(--bg-press)}
+.ic-acts .ic-btn.ic-b{background:var(--bg-card);border-color:var(--border-strong)}
+
+/* ── BP value (systolic / diastolic dual) ── */
+.bp-row{display:flex;align-items:baseline;gap:1px;margin-bottom:1px}
+.bp-row .bp-val{font-size:24px;font-weight:700;color:var(--fg-primary);line-height:1.2;font-variant-numeric:tabular-nums}
+.bp-row .bp-sep{font-size:18px;font-weight:400;color:var(--fg-secondary);margin:0 1px}
+.bp-unit{font-size:11px;font-weight:400;color:var(--fg-secondary);margin-bottom:4px;line-height:1.2}
+
+/* ── Tags ── */
+.tag{
+  display:inline-block;font-size:11px;font-weight:500;
+  padding:2px 7px;border-radius:4px;line-height:1.4
+}
+.tag-attention{
+  color:var(--state-attention);
+  border:1px solid var(--state-attention-border);
+  background:var(--state-attention-bg)
+}
+.tag-normal{
+  color:var(--state-normal);
+  border:1px solid var(--state-normal-border);
+  background:var(--state-normal-bg)
+}
+.tag-rec{
+  color:var(--state-rec);
+  border:1px solid var(--state-rec-border);
+  background:var(--state-rec-bg)
+}
+.tag-pending{
+  color:var(--state-pending);
+  border:1px solid var(--state-pending-border);
+  background:var(--state-pending-bg)
+}
+
+/* ── Device status card ── */
+.dvc .dvc-row{display:flex;align-items:center;gap:5px;margin-bottom:3px}
+.dvc .dvc-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--state-normal);flex-shrink:0
+}
+.dvc .dvc-main{font-size:14px;font-weight:600;color:var(--fg-primary)}
+.dvc .dvc-sub{font-size:11px;color:var(--fg-secondary);margin-bottom:3px}
+.dvc .dvc-hint{
+  font-size:11px;color:var(--fg-body);
+  border:1px dashed var(--state-pending-border);
+  background:var(--state-pending-bg);border-radius:4px;
+  padding:3px 7px;margin-bottom:6px;display:inline-block
+}
+.dvc .ic-acts .ic-btn.dvc-btn{width:100%;text-align:center}
+
+/* ── ④ Reminder section ── */
+.rem-sec{margin:0 16px}
+.rem-sec .rem-title{
+  font-size:14px;font-weight:600;color:var(--fg-primary);
+  margin-bottom:8px;
+  display:flex;justify-content:space-between;align-items:center
+}
+.rem-sec .rem-more{
+  font-size:12px;color:var(--fg-secondary);font-weight:400;cursor:pointer;
+  transition:opacity var(--motion-fast) var(--ease)
+}
+.rem-sec .rem-more:active{opacity:.6}
+.rem-list{
+  background:var(--bg-card);
+  border:1px solid var(--border-card);border-radius:10px;overflow:hidden;
+  box-shadow:var(--shadow-card)
+}
+.rem-item{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:11px 14px;border-bottom:1px solid var(--border-divider)
+}
+.rem-item:last-child{border-bottom:none}
+.rem-item .rem-dot{
+  width:6px;height:6px;border-radius:50%;margin-top:4px;flex-shrink:0
+}
+.rem-item .rem-dot.r-attention{background:var(--state-attention)}
+.rem-item .rem-dot.r-info{background:var(--fg-placeholder)}
+.rem-item .rem-txt{font-size:13px;color:var(--fg-body);line-height:1.5}
+
+/* ── ⑤ Device recommendation carousel ── */
+.car-sec{margin:0 16px}
+.car-sec .car-title{
+  font-size:14px;font-weight:600;color:var(--fg-primary);margin-bottom:8px
+}
+.car-track{
+  display:flex;gap:10px;overflow-x:auto;padding-bottom:4px;
+  -webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory
+}
+.car-track::-webkit-scrollbar{display:none}
+.car-card{
+  min-width:215px;max-width:220px;
+  background:var(--bg-card);
+  border:1px solid var(--border-card);border-radius:10px;
+  padding:12px 14px;
+  flex-shrink:0;scroll-snap-align:start;
+  box-shadow:var(--shadow-card)
+}
+.car-card .cc-reason{
+  font-size:10px;font-weight:500;color:var(--fg-secondary);
+  border:1px solid var(--border-input);background:var(--bg-input);
+  border-radius:3px;padding:1px 6px;display:inline-block;margin-bottom:6px
+}
+.car-card .cc-img{
+  width:50px;height:50px;
+  background:var(--bg-input);border:1px solid var(--border-card);
+  border-radius:8px;float:right;margin-left:6px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:9px;color:var(--fg-placeholder);flex-shrink:0
+}
+.car-card .cc-name{
+  font-size:14px;font-weight:600;color:var(--fg-primary);margin-bottom:2px
+}
+.car-card .cc-desc{
+  font-size:11px;color:var(--fg-secondary);line-height:1.5;
+  margin-bottom:8px;overflow:hidden
+}
+.car-card .cc-btn{
+  font-size:11px;font-weight:500;color:var(--fg-body);
+  border:1px solid var(--border-input);border-radius:5px;
+  padding:4px 12px;
+  background:var(--bg-input);display:inline-block;cursor:pointer;
+  transition:all var(--motion-fast) var(--ease)
+}
+.car-card .cc-btn:active{background:var(--bg-press)}
+.car-dots{
+  display:flex;align-items:center;justify-content:center;gap:5px;margin-top:8px
+}
+.car-dots .cd{
+  width:5px;height:5px;border-radius:50%;
+  background:#D8D8E0;transition:all var(--motion-base) var(--ease)
+}
+.car-dots .cd.on{width:16px;border-radius:3px;background:var(--fg-secondary)}
+
+/* ── Bottom spacer ── */
+.content-spacer{height:6px}
+
+/* ── ⑥ Bottom tab bar ── */
+.tab-bar{
+  height:50px;
+  background:var(--bg-tab-bar);
+  border-top:1px solid var(--border-divider);
+  box-shadow:var(--shadow-tab);
+  display:flex;align-items:center;justify-content:space-around;
+  flex-shrink:0;
+  padding-bottom:env(safe-area-inset-bottom,0)
+}
+.tab-item{
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+  cursor:pointer;transition:opacity var(--motion-fast) var(--ease)
+}
+.tab-item:active{opacity:.7}
+.tab-item .tb-icon{width:22px;height:22px;display:flex;align-items:center;justify-content:center}
+.tab-item .tb-lbl{font-size:10px;font-weight:500;letter-spacing:.3px}
+.tab-item .tb-icon,.tab-item .tb-lbl{color:#B0B0BC;transition:color var(--motion-fast) var(--ease)}
+.tab-item.on .tb-icon,.tab-item.on .tb-lbl{color:var(--brand)}
+
+/* Tab SVG icons */
+.tb-icon svg{display:block}
+
+/* ── Member switch bottom sheet ── */
+.ms-overlay{
+  display:none;position:absolute;inset:0;z-index:100;
+  background:var(--bg-overlay);
+  align-items:flex-end;justify-content:center;
+  animation:fadeIn var(--motion-base) var(--ease)
+}
+.ms-overlay.show{display:flex}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.ms-sheet{
+  width:100%;max-height:65%;
+  background:var(--bg-card);
+  border-radius:16px 16px 0 0;
+  padding:10px 16px calc(16px + env(safe-area-inset-bottom,0));
+  display:flex;flex-direction:column;
+  animation:slideUp var(--motion-base) var(--ease)
+}
+@keyframes slideUp{from{transform:translateY(40px);opacity:0}to{transform:translateY(0);opacity:1}}
+.ms-bar{
+  width:36px;height:4px;
+  background:#D8D8E0;border-radius:2px;
+  margin:0 auto 12px;flex-shrink:0
+}
+.ms-header{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:6px
+}
+.ms-header .ms-title{font-size:16px;font-weight:600;color:var(--fg-primary)}
+
+/* ── Member list ── */
+.ms-list{flex:1;overflow-y:auto;min-height:0}
+.ms-list::-webkit-scrollbar{display:none}
+.ms-item{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 0;cursor:pointer;
+  transition:background var(--motion-fast) var(--ease);
+  border-radius:8px;margin:0 -8px;padding:12px 8px
+}
+.ms-item:active{background:var(--bg-press)}
+.ms-avatar{
+  width:40px;height:40px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;font-weight:600;flex-shrink:0;
+  background:var(--bg-input);color:var(--fg-secondary);
+  border:1.5px solid var(--border-card);
+  font-family:inherit
+}
+.ms-item.on .ms-avatar{
+  background:var(--surface-brand);
+  color:var(--brand);
+  border-color:var(--brand)
+}
+.ms-info{flex:1;min-width:0}
+.ms-info .ms-name{
+  font-size:14px;font-weight:500;color:var(--fg-primary);
+  display:flex;align-items:center;gap:6px;margin-bottom:1px
+}
+.ms-info .ms-name .ms-rel{
+  font-size:11px;font-weight:400;color:var(--fg-secondary)
+}
+.ms-info .ms-meta{font-size:11px;color:var(--fg-placeholder);line-height:1.3}
+.ms-check{
+  width:18px;height:18px;border-radius:50%;flex-shrink:0;
+  border:2px solid var(--border-card);
+  display:flex;align-items:center;justify-content:center;
+  transition:all var(--motion-fast) var(--ease)
+}
+.ms-item.on .ms-check{
+  background:var(--brand);
+  border-color:var(--brand)
+}
+.ms-check svg{display:block;opacity:0;transition:opacity var(--motion-fast) var(--ease)}
+.ms-item.on .ms-check svg{opacity:1}
+
+/* ── Sheet footer ── */
+.ms-footer{
+  display:flex;gap:10px;margin-top:10px;
+  padding-top:10px;border-top:1px solid var(--border-divider)
+}
+.ms-footer .ms-fbtn{
+  flex:1;text-align:center;
+  font-size:13px;font-weight:400;
+  padding:10px 0;border-radius:8px;
+  cursor:pointer;
+  transition:all var(--motion-fast) var(--ease)
+}
+.ms-footer .ms-fbtn:active{background:var(--bg-press)}
+.ms-footer .ms-fbtn.ms-fb2{
+  color:var(--fg-secondary);border:1px solid var(--border-input);background:var(--bg-card)
+}
+.ms-footer .ms-fbtn.ms-fbt{
+  color:var(--fg-secondary);background:transparent;border:none
+}
+</style>
+</head>
+<body>
+
+<!-- ── Demo toggle ── -->
+<div class="demo-bar" id="demoBar">
+  <button class="db-btn on" data-state="home">首页</button>
+  <button class="db-btn" data-state="sheet">成员弹窗</button>
+</div>
+
+<!-- ═══ Phone frame ═══ -->
+<div class="phone" id="phone">
+
+  <!-- ── Status bar ── -->
+  <div class="status-bar">
+    <span class="s-time">9:41</span>
+    <div class="s-icons">
+      <div class="s-sig"><span></span><span></span><span></span></div>
+      <span class="s-network">5G</span>
+      <div class="s-battery">
+        <span class="s-pct">87%</span>
+        <span class="s-bat"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Navigation bar ── -->
+  <div class="nav">
+    <span class="n-title">健康</span>
+    <div class="n-capsule">
+      <span class="c-bar"></span>
+      <span class="c-dot"></span>
+    </div>
+  </div>
+
+  <!-- ── Scrollable content ── -->
+  <div class="content" id="contentArea">
+
+    <!-- ─── ① 轻量操作行 ─── -->
+    <div class="top-row">
+      <div class="tr-member" id="trMember">
+        本人 <span class="tr-arrw"></span>
+      </div>
+      <div class="tr-remind">
+        <span class="tr-bell"></span> 提醒
+      </div>
+    </div>
+
+    <!-- ─── ② 今日健康概览卡片 ─── -->
+    <div class="ov-card">
+      <div class="ov-summary">今日有 2 项指标需要关注</div>
+      <div class="ov-sub">保持每日记录，及时了解健康趋势</div>
+      <div class="ov-stats">
+        <div class="ov-stat">
+          <div class="ov-num ov-alert">2</div>
+          <div class="ov-lbl">需关注</div>
+        </div>
+        <div class="ov-stat">
+          <div class="ov-num">3</div>
+          <div class="ov-lbl">今日已记录</div>
+        </div>
+        <div class="ov-stat">
+          <div class="ov-num" style="font-size:19px">07:30</div>
+          <div class="ov-lbl">最近同步</div>
+        </div>
+      </div>
+      <div class="ai-entry" id="aiEntry">
+        <span class="ai-badge">AI</span>
+        <span>AI 解读今日健康数据</span>
+        <span class="ai-arrow">›</span>
+      </div>
+    </div>
+
+    <!-- ─── ③ 关键指标卡片区 (2×2) ─── -->
+    <div class="ind-grid">
+
+      <!-- 血压 -->
+      <div class="ind-card">
+        <div class="ic-hd">
+          <span class="ic-name">血压</span>
+          <span class="tag tag-attention">需要关注</span>
+        </div>
+        <div class="bp-row"><span class="bp-val">128</span><span class="bp-sep">/</span><span class="bp-val">82</span></div>
+        <div class="bp-unit">mmHg</div>
+        <div class="ic-meta">今日 07:30 · 晨起</div>
+        <div class="ic-acts">
+          <span class="ic-btn">记录</span>
+          <span class="ic-btn ic-b">趋势</span>
+        </div>
+      </div>
+
+      <!-- 血糖 -->
+      <div class="ind-card">
+        <div class="ic-hd">
+          <span class="ic-name">血糖</span>
+          <span class="tag tag-rec">空腹记录</span>
+        </div>
+        <div class="ic-val">6.2 <span class="ic-unit">mmol/L</span></div>
+        <div class="ic-meta">空腹 · 今日 07:00</div>
+        <div class="ic-acts">
+          <span class="ic-btn">记录</span>
+          <span class="ic-btn ic-b">趋势</span>
+        </div>
+      </div>
+
+      <!-- 尿酸 -->
+      <div class="ind-card">
+        <div class="ic-hd">
+          <span class="ic-name">尿酸</span>
+          <span class="tag tag-attention">需要关注</span>
+        </div>
+        <div class="ic-val">428 <span class="ic-unit">μmol/L</span></div>
+        <div class="ic-meta">昨天 20:00</div>
+        <div class="ic-acts">
+          <span class="ic-btn">记录</span>
+          <span class="ic-btn ic-b">趋势</span>
+        </div>
+      </div>
+
+      <!-- 设备状态 -->
+      <div class="ind-card dvc">
+        <div class="ic-hd">
+          <span class="ic-name">设备状态</span>
+          <span class="tag tag-pending">待完善</span>
+        </div>
+        <div class="dvc-row">
+          <span class="dvc-dot"></span>
+          <span class="dvc-main">已连接 1 台</span>
+        </div>
+        <div class="dvc-sub">血压计正常同步</div>
+        <div class="dvc-hint">推荐添加尿酸仪</div>
+        <div class="ic-acts">
+          <span class="ic-btn dvc-btn">管理设备</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── ④ 今日提醒 ─── -->
+    <div class="rem-sec sec">
+      <div class="rem-title">
+        <span>今日提醒</span>
+        <span class="rem-more" id="remMore">全部记录 &gt;</span>
+      </div>
+      <div class="rem-list">
+        <div class="rem-item">
+          <span class="rem-dot r-info"></span>
+          <span class="rem-txt">血糖餐后 2 小时未记录</span>
+        </div>
+        <div class="rem-item">
+          <span class="rem-dot r-attention"></span>
+          <span class="rem-txt">血压连续 3 天需要关注，建议记录</span>
+        </div>
+        <div class="rem-item">
+          <span class="rem-dot r-info"></span>
+          <span class="rem-txt">尿酸记录还不连续，建议补充记录</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── ⑤ 健康设备推荐小轮播 ─── -->
+    <div class="car-sec sec">
+      <div class="car-title">健康设备推荐</div>
+      <div class="car-track">
+        <!-- Card 1 -->
+        <div class="car-card">
+          <span class="cc-reason">尿酸记录还不连续</span>
+          <div class="cc-img">设备</div>
+          <div class="cc-name">智能尿酸仪</div>
+          <div class="cc-desc">定期记录尿酸变化，帮助关注饮食和代谢风险</div>
+          <span class="cc-btn">了解设备</span>
+        </div>
+        <!-- Card 2 -->
+        <div class="car-card">
+          <span class="cc-reason">建议补充血糖监测</span>
+          <div class="cc-img">设备</div>
+          <div class="cc-name">智能血糖仪</div>
+          <div class="cc-desc">补充空腹和餐后血糖记录，完善健康趋势判断</div>
+          <span class="cc-btn">添加设备</span>
+        </div>
+        <!-- Card 3 -->
+        <div class="car-card">
+          <span class="cc-reason">基础身体数据待完善</span>
+          <div class="cc-img">设备</div>
+          <div class="cc-name">智能体脂秤</div>
+          <div class="cc-desc">补充体重和体脂数据，辅助长期健康管理</div>
+          <span class="cc-btn">查看详情</span>
+        </div>
+      </div>
+      <div class="car-dots">
+        <span class="cd on"></span>
+        <span class="cd"></span>
+        <span class="cd"></span>
+      </div>
+    </div>
+
+    <div class="content-spacer"></div>
+  </div><!-- /content -->
+
+  <!-- ── Bottom Tab Bar ── -->
+  <div class="tab-bar">
+    <div class="tab-item on">
+      <span class="tb-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M12 9l-2 2m0 0l-2 2m2-2l2 2m-2-2l2-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity=".5"/>
+        </svg>
+      </span>
+      <span class="tb-lbl">健康</span>
+    </div>
+    <div class="tab-item">
+      <span class="tb-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <span class="tb-lbl">AI 助手</span>
+    </div>
+    <div class="tab-item">
+      <span class="tb-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          <path d="M4 21c0-4.418 3.582-8 8-8s8 3.582 8 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <span class="tb-lbl">我的</span>
+    </div>
+  </div>
+
+  <!-- ═══ Member switch bottom sheet overlay ═══ -->
+  <div class="ms-overlay" id="msOverlay">
+    <div class="ms-sheet">
+      <div class="ms-bar"></div>
+      <div class="ms-header">
+        <span class="ms-title">切换成员</span>
+      </div>
+      <div class="ms-list">
+        <div class="ms-item on" data-relation="本人">
+          <div class="ms-avatar">本</div>
+          <div class="ms-info">
+            <div class="ms-name">
+              本人
+              <span class="ms-rel">本人</span>
+            </div>
+            <div class="ms-meta">今日已记录 · 需要关注</div>
+          </div>
+          <div class="ms-check">
+            <svg width="9" height="7" viewBox="0 0 10 8" fill="none">
+              <path d="M1 4l2.5 2.5L8.5 1" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+        <div class="ms-item" data-relation="母亲">
+          <div class="ms-avatar">母</div>
+          <div class="ms-info">
+            <div class="ms-name">
+              母亲
+              <span class="ms-rel">母亲</span>
+            </div>
+            <div class="ms-meta">昨天有记录 · 尿酸需要关注</div>
+          </div>
+          <div class="ms-check">
+            <svg width="9" height="7" viewBox="0 0 10 8" fill="none">
+              <path d="M1 4l2.5 2.5L8.5 1" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+        <div class="ms-item" data-relation="父亲">
+          <div class="ms-avatar">父</div>
+          <div class="ms-info">
+            <div class="ms-name">
+              父亲
+              <span class="ms-rel">父亲</span>
+            </div>
+            <div class="ms-meta">3 天前记录 · 记录较少</div>
+          </div>
+          <div class="ms-check">
+            <svg width="9" height="7" viewBox="0 0 10 8" fill="none">
+              <path d="M1 4l2.5 2.5L8.5 1" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div class="ms-footer">
+        <span class="ms-fbtn ms-fbt">添加家庭成员</span>
+        <span class="ms-fbtn ms-fb2">管理家庭成员</span>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /phone -->
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+
+  // ── Toggle home / sheet states ──
+  const demoBtns = document.querySelectorAll('.db-btn');
+  const overlay = $('msOverlay');
+  const trMember = $('trMember');
+
+  demoBtns.forEach(btn => {
+    btn.addEventListener('click', function(){
+      demoBtns.forEach(b => b.classList.remove('on'));
+      this.classList.add('on');
+      if(this.dataset.state === 'sheet'){
+        overlay.classList.add('show');
+      } else {
+        overlay.classList.remove('show');
+      }
+    });
+  });
+
+  // ── Click "本人 ▾" → open sheet ──
+  trMember.addEventListener('click', function(){
+    overlay.classList.toggle('show');
+    const homeBtn = demoBtns[0];
+    const sheetBtn = demoBtns[1];
+    if(overlay.classList.contains('show')){
+      sheetBtn.classList.add('on');
+      homeBtn.classList.remove('on');
+    } else {
+      homeBtn.classList.add('on');
+      sheetBtn.classList.remove('on');
+    }
+  });
+
+  // ── Click overlay background → close ──
+  overlay.addEventListener('click', function(e){
+    if(e.target === this){
+      this.classList.remove('show');
+      demoBtns[0].classList.add('on');
+      demoBtns[1].classList.remove('on');
+    }
+  });
+
+  // ── Click member item → switch + auto-close + update top text ──
+  document.querySelectorAll('.ms-item').forEach(item => {
+    item.addEventListener('click', function(e){
+      e.stopPropagation();
+      document.querySelectorAll('.ms-item').forEach(i => i.classList.remove('on'));
+      this.classList.add('on');
+      // Update top member display text
+      const relation = this.dataset.relation || '本人';
+      trMember.childNodes[0].textContent = relation + ' ';
+      // Auto-close sheet
+      overlay.classList.remove('show');
+      demoBtns[0].classList.add('on');
+      demoBtns[1].classList.remove('on');
+    });
+  });
+
+  // ── Click placeholder navigation entries (console.log) ──
+
+  // AI 解读 → AI 健康助手页
+  $('aiEntry').addEventListener('click', function(){
+    console.log('[导航占位] AI 解读今日健康数据 → AI 健康助手页');
+  });
+
+  // 全部记录 > → 全部记录页
+  $('remMore').addEventListener('click', function(){
+    console.log('[导航占位] 全部记录 → 全部记录页');
+  });
+
+  // 提醒 → 提醒设置页
+  document.querySelector('.tr-remind').addEventListener('click', function(){
+    console.log('[导航占位] 提醒 → 提醒设置页');
+  });
+
+  // Indicator card buttons (记录 / 趋势)
+  document.querySelectorAll('.ind-card').forEach(card => {
+    const nameEl = card.querySelector('.ic-name');
+    const name = nameEl ? nameEl.textContent.trim() : '';
+    const btns = card.querySelectorAll('.ic-btn');
+    btns.forEach(btn => {
+      const text = btn.textContent.trim();
+      if(text === '记录' && name !== '设备状态') {
+        btn.addEventListener('click', function(){
+          console.log('[弹窗占位] 打开添加' + name + '记录弹窗');
+        });
+      }
+      if(text === '趋势') {
+        btn.addEventListener('click', function(){
+          console.log('[导航占位] ' + name + '「趋势」→ ' + name + '详情页');
+        });
+      }
+    });
+  });
+
+  // 管理设备 → 设备管理页
+  const dvcBtn = document.querySelector('.dvc-btn');
+  if(dvcBtn) {
+    dvcBtn.addEventListener('click', function(){
+      console.log('[导航占位] 管理设备 → 设备管理页');
+    });
+  }
+
+  // Bottom Tab items
+  document.querySelectorAll('.tab-item').forEach(item => {
+    const lbl = (item.querySelector('.tb-lbl') || {}).textContent || '';
+    item.addEventListener('click', function(){
+      if(this.classList.contains('on')) return;
+      document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('on'));
+      this.classList.add('on');
+      if(lbl === 'AI 助手'){
+        console.log('[导航占位] 底部 Tab → AI 健康助手页');
+      } else if(lbl === '我的'){
+        console.log('[导航占位] 底部 Tab → 我的页面');
+      }
+    });
+  });
+
+})();
+</script>
+
+</body>
+</html>

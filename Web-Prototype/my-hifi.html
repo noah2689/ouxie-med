@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=390, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>瓯械健康 — 我的 高保真 UI</title>
+<style>
+/* ═══════════════════════════════════════════════
+   高保真 UI — 瓯械健康 · 我的页面
+   设计规范 v1.1  |  390 × 844 WeChat Mini Program
+   ═══════════════════════════════════════════════ */
+
+/* ── Tokens (inherited from home page hi-fi) ── */
+:root {
+  --brand: #2EAB8A;
+  --brand-soft: #E8F6F1;
+  --brand-press: #269C7A;
+  --surface-brand: #F0F9F5;
+  --surface-warn: #FFF8F0;
+  --surface-info: #F5F7FA;
+
+  --bg-page: #F5F6F8;
+  --bg-card: #FFFFFF;
+  --bg-input: #F8F9FA;
+  --bg-press: #F0F1F3;
+  --bg-overlay: rgba(0,0,0,0.40);
+  --bg-tab-bar: #FFFFFF;
+  --bg-nav-bar: #FFFFFF;
+
+  --fg-primary: #1A1A2E;
+  --fg-body: #4A4A5A;
+  --fg-secondary: #8E8E9A;
+  --fg-placeholder: #B8B8C4;
+  --fg-disabled: #C8C8D4;
+  --fg-on-brand: #FFFFFF;
+
+  --border-card: #E8E8EE;
+  --border-divider: #F0F0F2;
+  --border-input: #D8D8E0;
+  --border-strong: #C8C8D0;
+
+  --state-attention: #E8913A;
+  --state-attention-bg: #FFF8F0;
+  --state-attention-border: #F0D5A8;
+  --state-rec: #7A8C9E;
+  --state-rec-bg: #F5F6F8;
+  --state-rec-border: #D0D5DA;
+  --state-pending: #B0A090;
+  --state-pending-bg: #FAF8F5;
+  --state-pending-border: #E0D8D0;
+
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.04);
+  --shadow-raised: 0 2px 8px rgba(0,0,0,0.06);
+  --shadow-tab: 0 -1px 3px rgba(0,0,0,0.04);
+
+  --motion-fast: 150ms;
+  --motion-base: 200ms;
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* ── Reset & Base ── */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{
+  display:flex;flex-direction:column;align-items:center;
+  min-height:100vh;padding:20px 0;
+  background:#D0D1D6;
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── Demo toggle (single page, no switch needed) ── */
+
+/* ── Phone frame ── */
+.phone{
+  width:390px;height:844px;
+  background:var(--bg-page);
+  border-radius:40px;overflow:hidden;
+  box-shadow:0 0 0 1px rgba(0,0,0,.08),0 8px 32px rgba(0,0,0,.15);
+  display:flex;flex-direction:column;
+  position:relative
+}
+
+/* ── Status bar ── */
+.status-bar{
+  height:44px;background:var(--bg-nav-bar);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 28px;flex-shrink:0
+}
+.s-time{font-size:15px;font-weight:700;color:var(--fg-primary);letter-spacing:.3px}
+.s-icons{display:flex;align-items:center;gap:6px}
+.s-icons .s-sig{display:flex;gap:2px;align-items:flex-end;height:12px}
+.s-icons .s-sig span{display:block;width:3px;background:#B0B0BC;border-radius:1px}
+.s-icons .s-sig span:nth-child(1){height:5px}
+.s-icons .s-sig span:nth-child(2){height:8px}
+.s-icons .s-sig span:nth-child(3){height:11px}
+.s-icons .s-network{font-size:11px;color:var(--fg-secondary);font-weight:500;letter-spacing:.3px}
+.s-icons .s-battery{display:flex;align-items:center;gap:3px}
+.s-icons .s-battery .s-pct{font-size:11px;color:var(--fg-secondary);font-weight:500}
+.s-icons .s-battery .s-bat{
+  width:22px;height:11px;border:1px solid #B0B0BC;border-radius:3px;
+  position:relative;background:transparent
+}
+.s-icons .s-battery .s-bat::after{
+  content:'';position:absolute;right:-4px;top:2.5px;
+  width:2px;height:4px;background:#B0B0BC;border-radius:0 1px 1px 0
+}
+
+/* ── Navigation bar (Tab page, no back) ── */
+.nav{
+  height:44px;background:var(--bg-nav-bar);
+  display:flex;align-items:center;justify-content:center;
+  border-bottom:1px solid var(--border-divider);flex-shrink:0;position:relative
+}
+.nav .n-title{font-size:17px;font-weight:600;color:var(--fg-primary)}
+.nav .n-capsule{
+  position:absolute;right:14px;top:50%;transform:translateY(-50%);
+  width:70px;height:26px;border:1px solid #D0D0D8;border-radius:13px;
+  display:flex;align-items:center;justify-content:center;gap:5px
+}
+.nav .n-capsule .c-bar{width:16px;height:2px;background:#C0C0C8;border-radius:1px}
+.nav .n-capsule .c-dot{width:4px;height:4px;border-radius:50%;background:#C0C0C8}
+
+/* ── Scrollable content ── */
+.content{
+  flex:1;overflow-y:auto;background:var(--bg-page);
+  -webkit-overflow-scrolling:touch;scroll-behavior:smooth
+}
+.content::-webkit-scrollbar{display:none}
+.content-spacer{height:6px}
+.sec{margin-bottom:12px}
+
+/* ── Section group label ── */
+.s-grp{
+  font-size:12px;font-weight:500;color:var(--fg-placeholder);
+  padding:14px 16px 6px;letter-spacing:.5px
+}
+
+/* ── ① User info card ── */
+.profile-card{
+  background:var(--bg-card);
+  border:1px solid var(--border-card);border-radius:12px;
+  padding:18px 16px;margin:12px 16px 0;
+  display:flex;align-items:center;gap:14px;
+  box-shadow:var(--shadow-card)
+}
+.pc-avatar{
+  width:50px;height:50px;border-radius:50%;
+  border:1.5px solid var(--border-card);background:var(--bg-input);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;color:var(--fg-secondary);font-weight:600;
+  font-family:inherit
+}
+.pc-info{flex:1;min-width:0}
+.pc-name{font-size:17px;font-weight:600;color:var(--fg-primary);margin-bottom:2px}
+.pc-detail{font-size:12px;color:var(--fg-secondary);line-height:1.5;margin-bottom:6px}
+.pc-progress{display:flex;align-items:center;gap:8px}
+.pc-bar{
+  flex:1;height:6px;background:#EEF0F2;border-radius:3px;overflow:hidden
+}
+.pc-bar .pc-fill{
+  height:100%;background:var(--brand);border-radius:3px;
+  transition:width var(--motion-base) var(--ease)
+}
+.pc-pct{font-size:12px;font-weight:600;color:var(--brand);flex-shrink:0}
+
+/* ── ② Health profile overview card ── */
+.hlth-card{
+  background:var(--bg-card);
+  border:1px solid var(--border-card);border-radius:12px;
+  padding:16px;margin:12px 16px 0;
+  box-shadow:var(--shadow-card)
+}
+.hlth-card .hl-title{
+  font-size:14px;font-weight:600;color:var(--fg-primary);margin-bottom:10px
+}
+.hlth-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.hlth-item{
+  background:var(--bg-input);border:1px solid #EEF0F2;
+  border-radius:8px;padding:8px 10px
+}
+.hlth-item .hl-lbl{font-size:10px;color:var(--fg-placeholder);text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px}
+.hlth-item .hl-val{font-size:14px;font-weight:600;color:var(--fg-primary)}
+.hlth-item .hl-val .hl-sm{font-size:11px;color:var(--fg-secondary);font-weight:400;margin-left:3px}
+
+/* ── ③ Menu list ── */
+.menu-list{
+  background:var(--bg-card);
+  border:1px solid var(--border-card);border-radius:12px;
+  margin:0 16px;overflow:hidden;
+  box-shadow:var(--shadow-card)
+}
+.menu-item{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:15px 16px;border-bottom:1px solid var(--border-divider);
+  font-size:14px;color:var(--fg-body);cursor:pointer;
+  transition:background var(--motion-fast) var(--ease)
+}
+.menu-item:last-child{border-bottom:none}
+.menu-item:active{background:var(--bg-press)}
+.menu-item .mi-left{
+  display:flex;align-items:center;gap:10px;min-width:0
+}
+.menu-item .mi-icon{
+  width:20px;height:20px;
+  border:1.5px solid var(--border-input);border-radius:5px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:8px;color:var(--fg-placeholder);flex-shrink:0;
+  background:var(--bg-input)
+}
+.menu-item .mi-label{color:var(--fg-body)}
+.menu-item .mi-right{
+  display:flex;align-items:center;gap:6px
+}
+.menu-item .mi-hint{
+  font-size:11px;color:var(--fg-placeholder)
+}
+.menu-item .mi-arrw{
+  font-size:14px;color:var(--fg-placeholder);flex-shrink:0
+}
+
+/* ── ④ Bottom tab bar ── */
+.tab-bar{
+  height:50px;
+  background:var(--bg-tab-bar);
+  border-top:1px solid var(--border-divider);
+  box-shadow:var(--shadow-tab);
+  display:flex;align-items:center;justify-content:space-around;
+  flex-shrink:0;
+  padding-bottom:env(safe-area-inset-bottom,0)
+}
+.tab-item{
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+  cursor:pointer;transition:opacity var(--motion-fast) var(--ease)
+}
+.tab-item:active{opacity:.7}
+.tab-item .tb-icon{width:22px;height:22px;display:flex;align-items:center;justify-content:center}
+.tab-item .tb-lbl{font-size:10px;font-weight:500;letter-spacing:.3px}
+.tab-item .tb-icon,.tab-item .tb-lbl{color:#B0B0BC;transition:color var(--motion-fast) var(--ease)}
+.tab-item.on .tb-icon,.tab-item.on .tb-lbl{color:var(--brand)}
+.tb-icon svg{display:block}
+</style>
+</head>
+<body>
+
+<!-- ═══ Phone frame ═══ -->
+<div class="phone">
+
+  <!-- ── Status bar ── -->
+  <div class="status-bar">
+    <span class="s-time">9:41</span>
+    <div class="s-icons">
+      <div class="s-sig"><span></span><span></span><span></span></div>
+      <span class="s-network">5G</span>
+      <div class="s-battery">
+        <span class="s-pct">87%</span>
+        <span class="s-bat"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Navigation bar ── -->
+  <div class="nav">
+    <span class="n-title">我的</span>
+    <div class="n-capsule">
+      <span class="c-bar"></span>
+      <span class="c-dot"></span>
+    </div>
+  </div>
+
+  <!-- ── Scrollable content ── -->
+  <div class="content">
+
+    <!-- ─── ① 用户信息卡片 ─── -->
+    <div class="profile-card">
+      <div class="pc-avatar">本</div>
+      <div class="pc-info">
+        <div class="pc-name">本人</div>
+        <div class="pc-detail">男 · 32 岁</div>
+        <div class="pc-progress">
+          <div class="pc-bar"><div class="pc-fill" style="width:70%"></div></div>
+          <span class="pc-pct">70%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── ② 健康档案概览卡片 ─── -->
+    <div class="hlth-card">
+      <div class="hl-title">健康档案</div>
+      <div class="hlth-grid">
+        <div class="hlth-item">
+          <div class="hl-lbl">身高</div>
+          <div class="hl-val">175 <span class="hl-sm">cm</span></div>
+        </div>
+        <div class="hlth-item">
+          <div class="hl-lbl">体重</div>
+          <div class="hl-val">72 <span class="hl-sm">kg</span></div>
+        </div>
+        <div class="hlth-item">
+          <div class="hl-lbl">慢病关注</div>
+          <div class="hl-val">血压 <span class="hl-sm">· 尿酸</span></div>
+        </div>
+        <div class="hlth-item">
+          <div class="hl-lbl">记录习惯</div>
+          <div class="hl-val">晨起 <span class="hl-sm">· 睡前</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── ③ 功能菜单列表 ─── -->
+    <div class="s-grp">健康管理</div>
+    <div class="menu-list" style="margin-bottom:12px">
+      <div class="menu-item" data-nav="家庭成员">
+        <div class="mi-left">
+          <span class="mi-icon">👤</span>
+          <span class="mi-label">家庭成员</span>
+        </div>
+        <div class="mi-right">
+          <span class="mi-hint">3 位成员</span>
+          <span class="mi-arrw">›</span>
+        </div>
+      </div>
+      <div class="menu-item" data-nav="提醒设置">
+        <div class="mi-left">
+          <span class="mi-icon">🔔</span>
+          <span class="mi-label">提醒设置</span>
+        </div>
+        <div class="mi-right">
+          <span class="mi-hint">每日 3 个提醒</span>
+          <span class="mi-arrw">›</span>
+        </div>
+      </div>
+      <div class="menu-item" data-nav="设备管理">
+        <div class="mi-left">
+          <span class="mi-icon">⚙</span>
+          <span class="mi-label">设备管理</span>
+        </div>
+        <div class="mi-right">
+          <span class="mi-hint">已连接 1 台</span>
+          <span class="mi-arrw">›</span>
+        </div>
+      </div>
+      <div class="menu-item" data-nav="全部记录">
+        <div class="mi-left">
+          <span class="mi-icon">📋</span>
+          <span class="mi-label">全部记录</span>
+        </div>
+        <div class="mi-right">
+          <span class="mi-arrw">›</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="s-grp">通用设置</div>
+    <div class="menu-list">
+      <div class="menu-item" data-nav="隐私与数据">
+        <div class="mi-left">
+          <span class="mi-icon">🔒</span>
+          <span class="mi-label">隐私与数据</span>
+        </div>
+        <div class="mi-right">
+          <span class="mi-arrw">›</span>
+        </div>
+      </div>
+      <div class="menu-item" data-nav="关于瓯械健康">
+        <div class="mi-left">
+          <span class="mi-icon">ℹ</span>
+          <span class="mi-label">关于瓯械健康</span>
+        </div>
+        <div class="mi-right">
+          <span class="mi-arrw">›</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-spacer"></div>
+  </div><!-- /content -->
+
+  <!-- ── Bottom Tab Bar ── -->
+  <div class="tab-bar">
+    <div class="tab-item" data-tab="健康">
+      <span class="tb-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M12 9l-2 2m0 0l-2 2m2-2l2 2m-2-2l2-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity=".5"/>
+        </svg>
+      </span>
+      <span class="tb-lbl">健康</span>
+    </div>
+    <div class="tab-item" data-tab="AI 助手">
+      <span class="tb-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <span class="tb-lbl">AI 助手</span>
+    </div>
+    <div class="tab-item on" data-tab="我的">
+      <span class="tb-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          <path d="M4 21c0-4.418 3.582-8 8-8s8 3.582 8 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <span class="tb-lbl">我的</span>
+    </div>
+  </div>
+
+</div><!-- /phone -->
+
+<script>
+(function(){
+  // ── Navigation menu console.log ──
+  document.querySelectorAll('.menu-item[data-nav]').forEach(item => {
+    item.addEventListener('click', function(){
+      const nav = this.dataset.nav;
+      const map = {
+        '家庭成员': '进入家庭成员页',
+        '提醒设置': '进入提醒设置页',
+        '设备管理': '进入设备管理页',
+        '全部记录': '进入全部记录页',
+        '隐私与数据': '进入隐私与数据页',
+        '关于瓯械健康': '进入关于瓯械健康页'
+      };
+      const action = map[nav] || '进入' + nav;
+      console.log('[导航占位] ' + action);
+    });
+  });
+
+  // ── Bottom Tab console.log ──
+  document.querySelectorAll('.tab-item').forEach(item => {
+    item.addEventListener('click', function(){
+      if(this.classList.contains('on')) {
+        console.log('[Tab 占位] 当前已在我的页面');
+        return;
+      }
+      const tab = this.dataset.tab;
+      const map = {
+        '健康': '切换到健康首页',
+        'AI 助手': '切换到 AI 助手'
+      };
+      console.log('[Tab 占位] ' + (map[tab] || ''));
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

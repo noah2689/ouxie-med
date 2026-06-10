@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>提醒设置 — 瓯械健康</title>
+<style>
+/* ═══════════════════════════════════════════
+   瓯械健康 — 提醒设置页高保真 UI
+   视觉系统继承 health-home-hifi / my-hifi / family-hifi
+   ═══════════════════════════════════════════ */
+:root {
+  /* Brand */
+  --brand: #2EAB8A;
+  --brand-light: #F0F9F5;
+
+  /* Surface */
+  --bg-page: #F5F6F8;
+  --surface: #FFFFFF;
+  --bg-input: #F8F9FA;
+  --bg-press: #F2F3F5;
+
+  /* Foreground */
+  --fg-primary: #1A1A2E;
+  --fg-body: #4A4A5A;
+  --fg-muted: #8E8E9A;
+  --fg-placeholder: #B8B8C4;
+
+  /* Border */
+  --border: #E8E8EE;
+  --border-input: #D8D8E0;
+
+  /* Status */
+  --state-warn: #E8913A;
+  --state-ok: #5B9E7A;
+  --state-neutral: #8A9BB5;
+  --state-pending: #B0A090;
+
+  /* Typography */
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", system-ui, sans-serif;
+  --font-mono: ui-monospace, "JetBrains Mono", Menlo, monospace;
+
+  /* Spacing */
+  --space-4: 16px;
+  --space-3: 12px;
+  --space-2: 8px;
+
+  /* Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+
+  /* Elevation */
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.04);
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;font-family:var(--font);background:var(--bg-page);-webkit-font-smoothing:antialiased;color:var(--fg-primary)}
+body{display:flex;justify-content:center;align-items:flex-start}
+a{text-decoration:none;color:inherit}
+
+/* ═══════ Phone frame ═══════ */
+.phone{width:390px;min-height:844px;background:var(--bg-page);position:relative;overflow:hidden}
+
+/* ═══════ System status bar ═══════ */
+.status-bar{height:44px;background:var(--surface);display:flex;align-items:center;justify-content:space-between;padding:0 var(--space-4);position:sticky;top:0;z-index:10}
+.s-time{font-size:14px;font-weight:600;color:var(--fg-primary);letter-spacing:.3px}
+.s-right{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--fg-muted);font-weight:500;letter-spacing:.5px}
+.s-bat{display:inline-block;width:22px;height:11px;border:1px solid var(--fg-muted);border-radius:2px;position:relative}
+.s-bat::after{content:'';position:absolute;right:-3px;top:2px;width:2px;height:5px;background:var(--fg-muted);border-radius:0 1px 1px 0}
+.s-bat::before{content:'';display:block;width:14px;height:7px;background:var(--fg-muted);border-radius:1px;margin:1px}
+
+/* ═══════ Navigation bar ═══════ */
+.nav{height:44px;background:var(--surface);display:flex;align-items:center;justify-content:center;position:relative;border-bottom:1px solid var(--border);position:sticky;top:44px;z-index:10}
+.n-back{position:absolute;left:4px;top:50%;transform:translateY(-50%);width:40px;height:40px;display:flex;align-items:center;justify-content:center;cursor:pointer;border-radius:var(--radius-sm)}
+.n-back:active{background:var(--bg-press)}
+.n-back svg{width:20px;height:20px;stroke:var(--fg-primary);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.n-title{font-size:17px;font-weight:600;color:var(--fg-primary);letter-spacing:.3px}
+.n-capsule{position:absolute;right:8px;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:4px;width:60px;height:24px;background:var(--bg-input);border-radius:20px;padding:0 8px;justify-content:flex-end}
+.n-capsule .c-bar{width:16px;height:2px;background:var(--fg-primary);border-radius:1px;opacity:.4}
+.n-capsule .c-dot{width:6px;height:6px;background:var(--fg-primary);border-radius:50%;opacity:.4}
+
+/* ═══════ Content area ═══════ */
+.content{padding:var(--space-3) var(--space-4);padding-bottom:32px}
+
+/* ═══════ Top summary card ═══════ */
+.summary-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:var(--space-4);box-shadow:var(--shadow-card);margin-bottom:var(--space-3);display:flex;align-items:center;gap:var(--space-3)}
+.summary-dot{width:10px;height:10px;border-radius:50%;background:var(--brand);flex-shrink:0}
+.summary-text{flex:1}
+.summary-title{font-size:16px;font-weight:600;color:var(--fg-primary);margin-bottom:2px}
+.summary-desc{font-size:13px;color:var(--fg-muted);line-height:1.4}
+.summary-tag{font-size:12px;font-weight:500;color:var(--brand);background:var(--brand-light);padding:2px 10px;border-radius:20px;white-space:nowrap}
+
+/* ═══════ Reminder card ═══════ */
+.rem-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:var(--space-4);box-shadow:var(--shadow-card);margin-bottom:var(--space-3);cursor:pointer}
+.rem-card:active{background:var(--bg-press)}
+.rem-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-2)}
+.rem-header-left{display:flex;align-items:center;gap:8px}
+.rem-name{font-size:15px;font-weight:600;color:var(--fg-primary)}
+.rem-status{font-size:11px;padding:1px 8px;border-radius:10px;font-weight:500}
+.rem-status.on{color:var(--brand);background:var(--brand-light)}
+.rem-status.off{color:var(--state-neutral);background:rgba(138,155,181,0.12)}
+.rem-meta{font-size:13px;color:var(--fg-muted);margin-bottom:6px}
+.rem-meta span{margin-right:8px}
+.rem-highlight{font-weight:500;color:var(--fg-body)}
+.rem-desc{font-size:13px;color:var(--fg-muted);line-height:1.4}
+
+/* ═══════ Custom switch ═══════ */
+.switch{position:relative;width:36px;height:20px;flex-shrink:0;cursor:pointer}
+.switch-track{width:36px;height:20px;border-radius:10px;transition:background .2s;position:absolute;top:0;left:0}
+.switch-track.on{background:var(--brand)}
+.switch-track.off{background:var(--border-input)}
+.switch-thumb{position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;transition:transform .2s;box-shadow:0 1px 2px rgba(0,0,0,.15)}
+.switch.on .switch-thumb{transform:translateX(16px)}
+.switch.off .switch-thumb{transform:translateX(0)}
+
+/* ═══════ Add card ═══════ */
+.add-card{background:var(--surface);border:1px dashed var(--border);border-radius:var(--radius-md);padding:var(--space-4);text-align:center;box-shadow:var(--shadow-card)}
+.add-title{font-size:15px;font-weight:600;color:var(--fg-primary);margin-bottom:4px}
+.add-desc{font-size:13px;color:var(--fg-muted);margin-bottom:var(--space-3);line-height:1.4}
+.add-btn{display:inline-block;padding:10px 28px;background:var(--brand);color:#fff;font-size:14px;font-weight:500;border-radius:var(--radius-sm);border:none;cursor:pointer}
+.add-btn:active{opacity:.85}
+
+</style>
+</head>
+<body>
+
+<div class="phone" id="app">
+
+  <div class="status-bar">
+    <span class="s-time">9:41</span>
+    <div class="s-right">
+      <span style="font-size:11px;color:#888;font-weight:500;letter-spacing:.5px">5G</span>
+      <span style="font-size:11px;color:#888;font-weight:500">87%</span>
+      <span class="s-bat"></span>
+    </div>
+  </div>
+
+  <!-- ═══ Navigation ═══ -->
+  <div class="nav">
+    <div class="n-back" id="btnBack">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+    </div>
+    <span class="n-title">提醒设置</span>
+    <div class="n-capsule">
+      <span class="c-bar"></span>
+      <span class="c-dot"></span>
+    </div>
+  </div>
+
+    <div class="content">
+
+      <!-- Top summary card -->
+      <div class="summary-card">
+        <div class="summary-dot"></div>
+        <div class="summary-text">
+          <div class="summary-title">记录提醒</div>
+          <div class="summary-desc">按时记录有助于观察健康数据变化趋势</div>
+        </div>
+        <span class="summary-tag">每日 3 个提醒</span>
+      </div>
+
+      <!-- Reminder 1: 晨起血压记录 -->
+      <div class="rem-card" data-reminder="morning-bp">
+        <div class="rem-header">
+          <div class="rem-header-left">
+            <span class="rem-name">晨起血压记录</span>
+            <span class="rem-status on">已开启</span>
+          </div>
+          <div class="switch on" data-switch="morning-bp">
+            <div class="switch-track on"></div>
+            <div class="switch-thumb"></div>
+          </div>
+        </div>
+        <div class="rem-meta">
+          <span class="rem-highlight">本人</span>
+          <span>·</span>
+          <span>血压</span>
+          <span>·</span>
+          <span>07:30</span>
+          <span>·</span>
+          <span>每天</span>
+        </div>
+        <div class="rem-desc">适合晨起后记录血压</div>
+      </div>
+
+      <!-- Reminder 2: 空腹血糖记录 -->
+      <div class="rem-card" data-reminder="fasting-glucose">
+        <div class="rem-header">
+          <div class="rem-header-left">
+            <span class="rem-name">空腹血糖记录</span>
+            <span class="rem-status on">已开启</span>
+          </div>
+          <div class="switch on" data-switch="fasting-glucose">
+            <div class="switch-track on"></div>
+            <div class="switch-thumb"></div>
+          </div>
+        </div>
+        <div class="rem-meta">
+          <span class="rem-highlight">本人</span>
+          <span>·</span>
+          <span>血糖</span>
+          <span>·</span>
+          <span>07:00</span>
+          <span>·</span>
+          <span>每天</span>
+        </div>
+        <div class="rem-desc">早餐前记录空腹血糖</div>
+      </div>
+
+      <!-- Reminder 3: 睡前血压记录 -->
+      <div class="rem-card" data-reminder="bedtime-bp">
+        <div class="rem-header">
+          <div class="rem-header-left">
+            <span class="rem-name">睡前血压记录</span>
+            <span class="rem-status off">已关闭</span>
+          </div>
+          <div class="switch off" data-switch="bedtime-bp">
+            <div class="switch-track off"></div>
+            <div class="switch-thumb"></div>
+          </div>
+        </div>
+        <div class="rem-meta">
+          <span class="rem-highlight">父亲</span>
+          <span>·</span>
+          <span>血压</span>
+          <span>·</span>
+          <span>21:00</span>
+          <span>·</span>
+          <span>每天</span>
+        </div>
+        <div class="rem-desc">睡前观察血压变化</div>
+      </div>
+
+      <!-- Add reminder -->
+      <div class="add-card">
+        <div class="add-title">添加记录提醒</div>
+        <div class="add-desc">为不同成员和指标设置独立提醒，减少漏记</div>
+        <button class="add-btn" id="btnAdd">添加提醒</button>
+      </div>
+
+    </div><!-- /content -->
+</div><!-- /phone -->
+
+<script>
+(function(){
+  const btnBack = document.getElementById('btnBack');
+  if (btnBack) {
+    btnBack.addEventListener('click', function(){
+      console.log('[导航占位] 提醒设置返回上一页');
+    });
+  }
+
+  // Reminder card clicks
+  const reminderCards = document.querySelectorAll('.rem-card');
+  const reminderNames = {
+    'morning-bp': '晨起血压记录',
+    'fasting-glucose': '空腹血糖记录',
+    'bedtime-bp': '睡前血压记录'
+  };
+  reminderCards.forEach(function(card){
+    card.addEventListener('click', function(e){
+      // Don't trigger if clicking the switch
+      if(e.target.closest('.switch')) return;
+      var key = this.getAttribute('data-reminder');
+      var name = reminderNames[key] || '提醒';
+      console.log('[提醒占位] 查看' + name + '提醒');
+    });
+  });
+
+  // Switch toggles
+  const switches = document.querySelectorAll('.switch');
+  switches.forEach(function(sw){
+    sw.addEventListener('click', function(e){
+      e.stopPropagation();
+      var isOn = this.classList.contains('on');
+      var track = this.querySelector('.switch-track');
+      if (isOn) {
+        this.classList.remove('on');
+        this.classList.add('off');
+        track.classList.remove('on');
+        track.classList.add('off');
+        // Update status label
+        var card = this.closest('.rem-card');
+        if (card) {
+          var statusEl = card.querySelector('.rem-status');
+          if (statusEl) {
+            statusEl.textContent = '已关闭';
+            statusEl.className = 'rem-status off';
+          }
+        }
+      } else {
+        this.classList.remove('off');
+        this.classList.add('on');
+        track.classList.remove('off');
+        track.classList.add('on');
+        var card = this.closest('.rem-card');
+        if (card) {
+          var statusEl = card.querySelector('.rem-status');
+          if (statusEl) {
+            statusEl.textContent = '已开启';
+            statusEl.className = 'rem-status on';
+          }
+        }
+      }
+      console.log('[提醒占位] 切换提醒开关');
+    });
+  });
+
+  // Add reminder button
+  const btnAdd = document.getElementById('btnAdd');
+  if (btnAdd) {
+    btnAdd.addEventListener('click', function(){
+      console.log('[弹窗占位] 打开添加提醒');
+    });
+  }
+})();
+</script>
+
+</body>
+</html>

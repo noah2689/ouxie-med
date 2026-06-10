@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=390, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>瓯械健康 — 设备管理高保真 UI</title>
+<style>
+/* ═══════════════════════════════════════════════
+   高保真 UI — 瓯械健康 · 设备管理页
+   设计规范 v1.1  |  390 × 844 WeChat Mini Program
+   ═══════════════════════════════════════════════ */
+
+/* ── Tokens (inherited from home page hi-fi) ── */
+:root {
+  --brand: #2EAB8A;
+  --brand-soft: #E8F6F1;
+  --brand-press: #269C7A;
+  --surface-brand: #F0F9F5;
+  --surface-warn: #FFF8F0;
+  --surface-info: #F5F7FA;
+
+  --bg-page: #F5F6F8;
+  --bg-card: #FFFFFF;
+  --bg-input: #F8F9FA;
+  --bg-press: #F0F1F3;
+  --bg-overlay: rgba(0,0,0,0.40);
+  --bg-tab-bar: #FFFFFF;
+  --bg-nav-bar: #FFFFFF;
+
+  --fg-primary: #1A1A2E;
+  --fg-body: #4A4A5A;
+  --fg-secondary: #8E8E9A;
+  --fg-placeholder: #B8B8C4;
+  --fg-disabled: #C8C8D4;
+  --fg-on-brand: #FFFFFF;
+
+  --border-card: #E8E8EE;
+  --border-divider: #F0F0F2;
+  --border-input: #D8D8E0;
+  --border-strong: #C8C8D0;
+
+  --state-attention: #E8913A;
+  --state-attention-bg: #FFF8F0;
+  --state-attention-border: #F0D5A8;
+  --state-normal: #5B9E7A;
+  --state-normal-bg: #F0F9F5;
+  --state-normal-border: #C8E0D0;
+  --state-rec: #7A8C9E;
+  --state-rec-bg: #F5F6F8;
+  --state-rec-border: #D0D5DA;
+  --state-pending: #B0A090;
+  --state-pending-bg: #FAF8F5;
+  --state-pending-border: #E0D8D0;
+  --state-observe: #8A9BB5;
+  --state-observe-bg: #F5F7FA;
+  --state-observe-border: #D0D8E0;
+
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.04);
+  --shadow-raised: 0 2px 8px rgba(0,0,0,0.06);
+  --motion-fast: 150ms;
+  --motion-base: 200ms;
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* ── Reset & Base ── */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+body{
+  display:flex;flex-direction:column;align-items:center;
+  min-height:100vh;padding:20px 0;
+  background:#D0D1D6;
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── Phone frame ── */
+.phone{
+  width:390px;height:844px;
+  background:var(--bg-page);
+  border-radius:40px;overflow:hidden;
+  box-shadow:0 0 0 1px rgba(0,0,0,.08),0 8px 32px rgba(0,0,0,.15);
+  display:flex;flex-direction:column;position:relative
+}
+
+/* ── Status bar ── */
+.status-bar{
+  height:44px;background:var(--bg-nav-bar);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 28px;flex-shrink:0
+}
+.s-time{font-size:15px;font-weight:700;color:var(--fg-primary);letter-spacing:.3px}
+.s-icons{display:flex;align-items:center;gap:6px}
+.s-icons .s-sig{display:flex;gap:2px;align-items:flex-end;height:12px}
+.s-icons .s-sig span{display:block;width:3px;background:#B0B0BC;border-radius:1px}
+.s-icons .s-sig span:nth-child(1){height:5px}
+.s-icons .s-sig span:nth-child(2){height:8px}
+.s-icons .s-sig span:nth-child(3){height:11px}
+.s-icons .s-network{font-size:11px;color:var(--fg-secondary);font-weight:500;letter-spacing:.3px}
+.s-icons .s-battery{display:flex;align-items:center;gap:3px}
+.s-icons .s-battery .s-pct{font-size:11px;color:var(--fg-secondary);font-weight:500}
+.s-icons .s-battery .s-bat{
+  width:22px;height:11px;border:1px solid #B0B0BC;border-radius:3px;position:relative;background:transparent
+}
+.s-icons .s-battery .s-bat::after{
+  content:'';position:absolute;right:-4px;top:2.5px;
+  width:2px;height:4px;background:#B0B0BC;border-radius:0 1px 1px 0
+}
+
+/* ── Navigation bar ── */
+.nav{
+  height:44px;background:var(--bg-nav-bar);
+  display:flex;align-items:center;justify-content:center;
+  border-bottom:1px solid var(--border-divider);flex-shrink:0;position:relative
+}
+.nav .n-back{
+  position:absolute;left:8px;top:50%;transform:translateY(-50%);
+  display:flex;align-items:center;gap:3px;
+  font-size:13px;color:var(--fg-secondary);cursor:pointer;
+  padding:6px 10px;z-index:2;
+  transition:opacity var(--motion-fast) var(--ease);border:none;background:transparent;font-family:inherit
+}
+.nav .n-back:active{opacity:.7}
+.nav .n-back::before{
+  content:'';display:inline-block;
+  width:8px;height:8px;
+  border-left:2px solid var(--fg-secondary);
+  border-bottom:2px solid var(--fg-secondary);
+  transform:rotate(45deg)
+}
+.nav .n-title{font-size:17px;font-weight:600;color:var(--fg-primary)}
+.nav .n-capsule{
+  position:absolute;right:14px;top:50%;transform:translateY(-50%);
+  width:70px;height:26px;border:1px solid #D0D0D8;border-radius:13px;
+  display:flex;align-items:center;justify-content:center;gap:5px
+}
+.nav .n-capsule .c-bar{width:16px;height:2px;background:#C0C0C8;border-radius:1px}
+.nav .n-capsule .c-dot{width:4px;height:4px;border-radius:50%;background:#C0C0C8}
+
+/* ── Scrollable content ── */
+.content{
+  flex:1;overflow-y:auto;background:var(--bg-page);
+  -webkit-overflow-scrolling:touch;scroll-behavior:smooth
+}
+.content::-webkit-scrollbar{display:none}
+.sec{margin-bottom:12px}
+
+/* ── Device overview stats card ── */
+.dv-sum{
+  background:var(--bg-card);
+  border:1px solid var(--border-card);border-radius:12px;
+  padding:16px;margin:12px 16px 0;
+  display:flex;justify-content:space-around;text-align:center;
+  box-shadow:var(--shadow-card)
+}
+.dv-sum .dv-item{flex:1}
+.dv-sum .dv-num{
+  font-size:28px;font-weight:700;color:var(--fg-primary);line-height:1.2;
+  font-variant-numeric:tabular-nums
+}
+.dv-sum .dv-lbl{font-size:11px;color:var(--fg-secondary);margin-top:3px}
+.dv-sum .dv-sep{width:1px;background:var(--border-divider);align-self:stretch}
+
+/* ── Device list cards ── */
+.dvc-list{margin:12px 16px 0}
+.dvc-card{
+  background:var(--bg-card);
+  border:1px solid var(--border-card);border-radius:12px;
+  padding:16px;margin-bottom:10px;
+  box-shadow:var(--shadow-card)
+}
+.dvc-card:last-child{margin-bottom:0}
+
+.dvc-card .dc-hd{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:6px
+}
+.dvc-card .dc-name{
+  font-size:15px;font-weight:600;color:var(--fg-primary);
+  display:flex;align-items:center;gap:6px
+}
+.dvc-card .dc-name .dc-icon{
+  width:20px;height:20px;
+  border:1.5px solid var(--border-input);border-radius:4px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:8px;color:var(--fg-placeholder);flex-shrink:0;background:var(--bg-input)
+}
+.dvc-card .dc-type{font-size:11px;color:var(--fg-placeholder);margin-bottom:3px}
+.dvc-card .dc-info{
+  font-size:12px;color:var(--fg-secondary);margin-bottom:4px;line-height:1.5
+}
+.dvc-card .dc-hint{
+  font-size:11px;color:var(--fg-secondary);
+  border:1px dashed var(--state-pending-border);
+  background:var(--state-pending-bg);border-radius:4px;
+  padding:4px 8px;margin-bottom:10px;display:inline-block;line-height:1.5
+}
+.dvc-card .dc-acts{
+  display:flex;gap:8px;
+  padding-top:10px;border-top:1px solid var(--border-divider)
+}
+.dvc-card .dc-btn{
+  font-size:12px;font-weight:400;color:var(--fg-body);
+  border:1px solid var(--border-input);border-radius:5px;
+  padding:5px 14px;background:var(--bg-card);cursor:pointer;
+  transition:all var(--motion-fast) var(--ease)
+}
+.dvc-card .dc-btn:active{background:var(--bg-press)}
+.dvc-card .dc-btn.dc-prim{
+  color:var(--fg-on-brand);background:var(--brand);border-color:var(--brand)
+}
+.dvc-card .dc-btn.dc-prim:active{background:var(--brand-press)}
+.dvc-card .dc-btn.dc-danger{
+  color:var(--fg-secondary);border-color:var(--border-input)
+}
+
+/* ── Status tags ── */
+.dc-sts{
+  display:inline-block;font-size:10px;font-weight:500;
+  padding:2px 7px;border-radius:3px;line-height:1.4
+}
+.dc-sts.s-connected{
+  color:var(--state-normal);border:1px solid var(--state-normal-border);
+  background:var(--state-normal-bg)
+}
+.dc-sts.s-disconnected{
+  color:var(--state-observe);border:1px solid var(--state-observe-border);
+  background:var(--state-observe-bg)
+}
+.dc-sts.s-pending{
+  color:var(--state-pending);border:1px dashed var(--state-pending-border);
+  background:var(--state-pending-bg)
+}
+.dc-sts.s-optional{
+  color:var(--state-rec);border:1px solid var(--state-rec-border);
+  background:var(--state-rec-bg)
+}
+
+/* ── Device connection dot ── */
+.dc-conn-dot{
+  display:inline-block;width:6px;height:6px;border-radius:50%;
+  vertical-align:middle;margin-right:4px
+}
+.dc-conn-dot.connected{background:var(--state-normal)}
+.dc-conn-dot.disconnected{background:var(--fg-placeholder)}
+
+/* ── Add device guide card ── */
+.dv-guide{
+  background:var(--bg-card);
+  border:1px solid var(--border-card);border-radius:12px;
+  padding:18px 16px;margin:12px 16px 0;text-align:center;
+  box-shadow:var(--shadow-card)
+}
+.dv-guide .dg-title{
+  font-size:15px;font-weight:600;color:var(--fg-primary);margin-bottom:4px
+}
+.dv-guide .dg-desc{
+  font-size:12px;color:var(--fg-secondary);margin-bottom:12px;line-height:1.6
+}
+.dv-guide .dg-btn{
+  font-size:13px;font-weight:500;color:var(--fg-on-brand);
+  background:var(--brand);border:none;border-radius:8px;
+  padding:10px 28px;display:inline-block;cursor:pointer;
+  transition:all var(--motion-fast) var(--ease)
+}
+.dv-guide .dg-btn:active{background:var(--brand-press)}
+
+/* ── Sync indicator ── */
+.dc-sync-row{
+  display:flex;align-items:center;gap:6px;margin-bottom:8px
+}
+.dc-sync-row .sync-dot{
+  width:6px;height:6px;border-radius:50%;background:var(--state-normal)
+}
+.dc-sync-row .sync-txt{font-size:11px;color:var(--fg-secondary)}
+
+/* ── Content spacer ── */
+.content-spacer{height:6px}
+</style>
+</head>
+<body>
+
+<!-- ═══ Phone frame ═══ -->
+<div class="phone">
+
+  <!-- ── Status bar ── -->
+  <div class="status-bar">
+    <span class="s-time">9:41</span>
+    <div class="s-icons">
+      <div class="s-sig"><span></span><span></span><span></span></div>
+      <span class="s-network">5G</span>
+      <div class="s-battery"><span class="s-pct">87%</span><span class="s-bat"></span></div>
+    </div>
+  </div>
+
+  <!-- ── Navigation bar ── -->
+  <div class="nav">
+    <button class="n-back" id="backBtn">返回</button>
+    <span class="n-title">设备管理</span>
+    <div class="n-capsule"><span class="c-bar"></span><span class="c-dot"></span></div>
+  </div>
+
+  <!-- ── Scrollable content ── -->
+  <div class="content">
+
+    <!-- ─── ① 设备概览卡片 ─── -->
+    <div class="dv-sum">
+      <div class="dv-item">
+        <div class="dv-num">1</div>
+        <div class="dv-lbl">已连接</div>
+      </div>
+      <div class="dv-sep"></div>
+      <div class="dv-item">
+        <div class="dv-num">1</div>
+        <div class="dv-lbl">可同步</div>
+      </div>
+      <div class="dv-sep"></div>
+      <div class="dv-item">
+        <div class="dv-num">2</div>
+        <div class="dv-lbl">待完善</div>
+      </div>
+    </div>
+
+    <!-- ─── ② 设备列表 ─── -->
+    <div class="dvc-list">
+
+      <!-- ═══ 智能血压计 — 已连接 ═══ -->
+      <div class="dvc-card" data-device="智能血压计">
+        <div class="dc-hd">
+          <span class="dc-name">
+            <span class="dc-icon">仪</span>
+            智能血压计
+          </span>
+          <span class="dc-sts s-connected">已连接</span>
+        </div>
+        <div class="dc-type">血压设备</div>
+        <div class="dc-sync-row">
+          <span class="sync-dot"></span>
+          <span class="sync-txt">数据同步正常</span>
+        </div>
+        <div class="dc-info">最近同步：今日 07:30</div>
+        <div class="dc-acts">
+          <span class="dc-btn dc-prim sync-btn">同步</span>
+          <span class="dc-btn dc-danger unbind-btn">解绑</span>
+        </div>
+      </div>
+
+      <!-- ═══ 智能血糖仪 — 未连接 ═══ -->
+      <div class="dvc-card" data-device="智能血糖仪">
+        <div class="dc-hd">
+          <span class="dc-name">
+            <span class="dc-icon">仪</span>
+            智能血糖仪
+          </span>
+          <span class="dc-sts s-disconnected">未连接</span>
+        </div>
+        <div class="dc-type">血糖设备</div>
+        <div class="dc-info">可用于补充空腹和餐后血糖记录</div>
+        <div class="dc-info">最近同步：暂无</div>
+        <div class="dc-acts">
+          <span class="dc-btn connect-btn">连接</span>
+          <span class="dc-btn dc-danger ignore-btn">忽略</span>
+        </div>
+      </div>
+
+      <!-- ═══ 智能尿酸仪 — 推荐添加 ═══ -->
+      <div class="dvc-card" data-device="智能尿酸仪">
+        <div class="dc-hd">
+          <span class="dc-name">
+            <span class="dc-icon">仪</span>
+            智能尿酸仪
+          </span>
+          <span class="dc-sts s-pending">推荐添加</span>
+        </div>
+        <div class="dc-type">尿酸设备</div>
+        <div class="dc-info">最近同步：暂无</div>
+        <div class="dc-hint">尿酸记录还不连续，建议补充设备</div>
+        <div class="dc-acts">
+          <span class="dc-btn dc-prim add-dev-btn">添加设备</span>
+          <span class="dc-btn dc-danger skip-btn">稍后</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ─── ③ 添加设备引导卡片 ─── -->
+    <div class="dv-guide sec">
+      <div class="dg-title">添加更多健康设备</div>
+      <div class="dg-desc">连接设备后，可减少手动输入，<br>保持健康数据连续</div>
+      <span class="dg-btn" id="guideAddBtn">添加设备</span>
+    </div>
+
+    <div class="content-spacer"></div>
+  </div><!-- /content -->
+
+</div><!-- /phone -->
+
+
+<script>
+(function(){
+  // ── 返回按钮 ──
+  document.getElementById('backBtn').addEventListener('click', function(){
+    console.log('[导航占位] 设备管理返回上一页');
+  });
+
+  // ── 设备操作按钮 ──
+  // 同步
+  document.querySelectorAll('.sync-btn').forEach(btn => {
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      const card = this.closest('.dvc-card');
+      const name = card ? card.dataset.device : '设备';
+      console.log('[设备占位] 同步' + name + '数据');
+    });
+  });
+
+  // 解绑
+  document.querySelectorAll('.unbind-btn').forEach(btn => {
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      const card = this.closest('.dvc-card');
+      const name = card ? card.dataset.device : '设备';
+      console.log('[设备占位] 解绑' + name);
+    });
+  });
+
+  // 连接
+  document.querySelectorAll('.connect-btn').forEach(btn => {
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      const card = this.closest('.dvc-card');
+      const name = card ? card.dataset.device : '设备';
+      console.log('[设备占位] 连接' + name);
+    });
+  });
+
+  // 忽略
+  document.querySelectorAll('.ignore-btn').forEach(btn => {
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      const card = this.closest('.dvc-card');
+      const name = card ? card.dataset.device : '设备';
+      console.log('[设备占位] 忽略' + name);
+    });
+  });
+
+  // 添加设备
+  document.querySelectorAll('.add-dev-btn, #guideAddBtn').forEach(btn => {
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      const card = this.closest('.dvc-card');
+      if(card){
+        const name = card.dataset.device || '设备';
+        console.log('[设备占位] 添加' + name);
+      } else {
+        console.log('[设备占位] 添加健康设备');
+      }
+    });
+  });
+
+  // 稍后
+  document.querySelectorAll('.skip-btn').forEach(btn => {
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      const card = this.closest('.dvc-card');
+      const name = card ? card.dataset.device : '设备';
+      console.log('[设备占位] 稍后添加' + name);
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

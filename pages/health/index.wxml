@@ -1,0 +1,6 @@
+<!-- 瓯械健康 · 健康首页 —— Phase 1 骨架占位 -->
+<view class="page-placeholder">
+  <text class="page-title">健康</text>
+  <text class="page-desc">家庭健康概览，记录与管理家庭成员的健康指标</text>
+  <text class="page-hint">Phase 2 将完成高保真首页还原</text>
+</view>

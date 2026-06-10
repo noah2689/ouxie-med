@@ -1,0 +1,6 @@
+<!-- 瓯械健康 · AI 助手 —— Phase 1 骨架占位 -->
+<view class="page-placeholder">
+  <text class="page-title">AI 助手</text>
+  <text class="page-desc">AI 辅助解读健康数据，了解近期指标趋势变化</text>
+  <text class="page-hint">Phase 7 将完成 AI 助手完整功能</text>
+</view>

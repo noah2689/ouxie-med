@@ -1,0 +1,6 @@
+<!-- 瓯械健康 · 指标详情页 —— Phase 1 骨架占位 -->
+<view class="page-placeholder">
+  <text class="page-title">指标详情</text>
+  <text class="page-desc">查看血压、血糖、尿酸等指标的详细数据和趋势</text>
+  <text class="page-hint">Phase 4 将完成本页完整功能</text>
+</view>

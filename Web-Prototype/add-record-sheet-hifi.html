@@ -1,0 +1,832 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=390, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>瓯械健康 — 添加记录底部弹窗 高保真 UI</title>
+<style>
+/* ═══════════════════════════════════════════════
+   高保真 UI — 瓯械健康 · 添加记录底部弹窗
+   设计规范 v1.1  |  390 × 844 WeChat Mini Program
+   ═══════════════════════════════════════════════ */
+
+:root {
+  --brand: #2EAB8A;
+  --brand-soft: #E8F6F1;
+  --brand-press: #269C7A;
+  --surface-brand: #F0F9F5;
+
+  --bg-page: #F5F6F8;
+  --bg-card: #FFFFFF;
+  --bg-input: #F8F9FA;
+  --bg-press: #F0F1F3;
+  --bg-overlay: rgba(0,0,0,0.40);
+  --bg-tab-bar: #FFFFFF;
+  --bg-nav-bar: #FFFFFF;
+
+  --fg-primary: #1A1A2E;
+  --fg-body: #4A4A5A;
+  --fg-secondary: #8E8E9A;
+  --fg-placeholder: #B8B8C4;
+  --fg-disabled: #C8C8D4;
+  --fg-on-brand: #FFFFFF;
+
+  --border-card: #E8E8EE;
+  --border-divider: #F0F0F2;
+  --border-input: #D8D8E0;
+  --border-strong: #C8C8D0;
+
+  --state-attention: #E8913A;
+  --state-attention-bg: #FFF8F0;
+  --state-attention-border: #F0D5A8;
+  --state-normal: #5B9E7A;
+  --state-rec: #7A8C9E;
+
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.04);
+  --shadow-raised: 0 2px 8px rgba(0,0,0,0.06);
+
+  --motion-fast: 150ms;
+  --motion-base: 200ms;
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+}
+
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+/* ── Page view visibility (show only one at a time) ── */
+.pg-view{display:none}
+.pg-view.active{display:block}
+body{
+  display:flex;flex-direction:column;align-items:center;
+  min-height:100vh;padding:20px 0;
+  background:#D0D1D6;
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── Demo toggle ── */
+.demo-bar{
+  display:flex;gap:6px;margin-bottom:12px;
+  background:#fff;border-radius:20px;padding:4px;
+  box-shadow:0 2px 8px rgba(0,0,0,.08)
+}
+.demo-bar .db-btn{
+  padding:6px 20px;border-radius:16px;
+  font-size:13px;color:var(--fg-secondary);cursor:pointer;
+  transition:all var(--motion-fast) var(--ease);
+  user-select:none;border:none;background:transparent;
+  font-family:inherit
+}
+.demo-bar .db-btn.on{background:var(--brand);color:var(--fg-on-brand)}
+.demo-bar .db-btn:active{opacity:.8}
+
+/* ── Phone frame ── */
+.phone{
+  width:390px;height:844px;
+  background:var(--bg-page);
+  border-radius:40px;overflow:hidden;
+  box-shadow:0 0 0 1px rgba(0,0,0,.08),0 8px 32px rgba(0,0,0,.15);
+  display:flex;flex-direction:column;
+  position:relative
+}
+
+/* ── Status bar ── */
+.status-bar{
+  height:44px;background:var(--bg-nav-bar);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 28px;flex-shrink:0
+}
+.s-time{font-size:15px;font-weight:700;color:var(--fg-primary);letter-spacing:.3px}
+.s-icons{display:flex;align-items:center;gap:6px}
+.s-icons .s-sig{display:flex;gap:2px;align-items:flex-end;height:12px}
+.s-icons .s-sig span{display:block;width:3px;background:#B0B0BC;border-radius:1px}
+.s-icons .s-sig span:nth-child(1){height:5px}
+.s-icons .s-sig span:nth-child(2){height:8px}
+.s-icons .s-sig span:nth-child(3){height:11px}
+.s-icons .s-network{font-size:11px;color:var(--fg-secondary);font-weight:500;letter-spacing:.3px}
+.s-icons .s-battery{display:flex;align-items:center;gap:3px}
+.s-icons .s-battery .s-pct{font-size:11px;color:var(--fg-secondary);font-weight:500}
+.s-icons .s-battery .s-bat{
+  width:22px;height:11px;border:1px solid #B0B0BC;border-radius:3px;
+  position:relative;background:transparent
+}
+.s-icons .s-battery .s-bat::after{
+  content:'';position:absolute;right:-4px;top:2.5px;
+  width:2px;height:4px;background:#B0B0BC;border-radius:0 1px 1px 0
+}
+
+/* ── Navigation bar ── */
+.nav{
+  height:44px;background:var(--bg-nav-bar);
+  display:flex;align-items:center;justify-content:center;
+  border-bottom:1px solid var(--border-divider);flex-shrink:0;position:relative
+}
+.nav .n-title{font-size:17px;font-weight:600;color:var(--fg-primary)}
+.nav .n-capsule{
+  position:absolute;right:14px;top:50%;transform:translateY(-50%);
+  width:70px;height:26px;border:1px solid #D0D0D8;border-radius:13px;
+  display:flex;align-items:center;justify-content:center;gap:5px
+}
+.nav .n-capsule .c-bar{width:16px;height:2px;background:#C0C0C8;border-radius:1px}
+.nav .n-capsule .c-dot{width:4px;height:4px;border-radius:50%;background:#C0C0C8}
+
+/* ── Dimmed background content ── */
+.bg-content{
+  flex:1;overflow:hidden;background:var(--bg-page);
+  display:flex;flex-direction:column;gap:10px;padding:12px 16px;
+  filter:saturate(0.5);
+  user-select:none;pointer-events:none
+}
+.bg-block{
+  height:60px;background:#E8E8EE;border-radius:10px;flex-shrink:0
+}
+.bg-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.bg-grid .bg-block{height:85px}
+.bg-blocks{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.bg-blocks .bg-block{height:40px}
+
+/* ── Overlay (dimming the bg) ── */
+.overlay{
+  position:absolute;inset:0;top:88px;
+  background:var(--bg-overlay);
+  z-index:5
+}
+
+/* ── Bottom Sheet ── */
+.bottom-sheet{
+  position:absolute;bottom:0;left:0;right:0;
+  height:530px;background:var(--bg-card);
+  border-radius:16px 16px 0 0;
+  z-index:10;display:flex;flex-direction:column;
+  box-shadow:var(--shadow-raised);
+  animation:slideUp var(--motion-base) var(--ease)
+}
+@keyframes slideUp{from{transform:translateY(30px);opacity:0}to{transform:translateY(0);opacity:1}}
+
+/* ── Handle bar ── */
+.bs-handle{
+  display:flex;justify-content:center;padding:10px 0 6px;flex-shrink:0
+}
+.bs-handle .handle-bar{
+  width:36px;height:4px;border-radius:2px;background:#D8D8E0
+}
+
+/* ── Header (title + close) ── */
+.bs-header{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:0 20px 12px;flex-shrink:0
+}
+.bs-header .bs-title{font-size:16px;font-weight:600;color:var(--fg-primary)}
+.bs-header .bs-close{
+  width:28px;height:28px;border-radius:50%;
+  border:1px solid var(--border-input);background:var(--bg-input);
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;color:var(--fg-secondary);cursor:pointer;
+  transition:all var(--motion-fast) var(--ease);
+  font-family:inherit;line-height:1
+}
+.bs-header .bs-close:active{background:var(--bg-press)}
+
+/* ── Indicator type tabs (segmented control) ── */
+.type-tabs{
+  display:flex;margin:0 20px;gap:0;flex-shrink:0;
+  background:#F0F1F3;border-radius:8px;padding:2px
+}
+.type-tab{
+  flex:1;text-align:center;
+  font-size:13px;font-weight:500;padding:7px 0;
+  color:var(--fg-secondary);border-radius:6px;
+  cursor:pointer;transition:all var(--motion-fast) var(--ease);
+  user-select:none
+}
+.type-tab.on{
+  background:var(--bg-card);
+  color:var(--brand);font-weight:600;
+  box-shadow:0 1px 2px rgba(0,0,0,.06)
+}
+.type-tab:active{opacity:.8}
+
+/* ── Entry mode toggle (capsule segmented) ── */
+.mode-row{
+  display:flex;gap:0;margin:10px 20px 0;flex-shrink:0;
+  background:var(--bg-input);border-radius:16px;padding:2px;
+  align-self:flex-start
+}
+.mode-item{
+  font-size:12px;font-weight:500;padding:5px 16px;border-radius:14px;
+  color:var(--fg-secondary);cursor:pointer;
+  transition:all var(--motion-fast) var(--ease);user-select:none
+}
+.mode-item.on{
+  background:var(--brand);color:var(--fg-on-brand);
+  box-shadow:0 1px 2px rgba(0,0,0,.08)
+}
+.mode-item:active{opacity:.8}
+
+/* ── Mode toggle visibility ── */
+.bs-form-fields{display:block}
+.bs-form.mode-sync .bs-form-fields{display:none}
+.bs-sync-area{display:none}
+.bs-form.mode-sync .bs-sync-area{display:block}
+
+/* ── Scrollable form area ── */
+.bs-form{
+  flex:1;overflow-y:auto;padding:4px 20px 0;
+  -webkit-overflow-scrolling:touch
+}
+.bs-form::-webkit-scrollbar{display:none}
+
+/* ── Field group ── */
+.fld{margin-bottom:14px}
+.fld .fld-lbl{
+  font-size:14px;font-weight:500;color:var(--fg-body);margin-bottom:6px
+}
+.fld .fld-lbl .fld-req{color:var(--state-attention);margin-left:2px;font-weight:400;font-size:13px}
+.fld .fld-inp{
+  width:100%;height:44px;
+  border:1px solid var(--border-input);border-radius:8px;
+  padding:0 14px;font-size:14px;color:var(--fg-primary);background:var(--bg-input);
+  display:flex;align-items:center;cursor:pointer;
+  transition:border-color var(--motion-fast) var(--ease)
+}
+.fld .fld-inp:active{border-color:var(--brand)}
+.fld .fld-inp .fld-ph{color:var(--fg-placeholder)}
+.fld .fld-inp .fld-unit{color:var(--fg-secondary);font-size:13px;margin-left:auto}
+.fld .fld-inp .fld-arrw{color:var(--fg-placeholder);font-size:14px;margin-left:6px;line-height:1}
+.fld .fld-inp .fld-val{font-size:14px;color:var(--fg-primary);font-variant-numeric:tabular-nums}
+
+/* ── Dual BP input row ── */
+.fld-bp-row{
+  display:flex;gap:12px;margin-bottom:14px
+}
+.fld-bp-row .fld{flex:1;margin-bottom:0}
+
+/* ── Textarea ── */
+.fld .fld-ta{
+  width:100%;min-height:56px;
+  border:1px solid var(--border-input);border-radius:8px;
+  padding:10px 14px;font-size:14px;color:var(--fg-primary);
+  background:var(--bg-input);font-family:inherit;resize:none;
+  display:block;line-height:1.5;
+  transition:border-color var(--motion-fast) var(--ease);cursor:text
+}
+.fld .fld-ta .fld-ph{color:var(--fg-placeholder)}
+
+/* ── Scene pills ── */
+.scene-row{
+  display:flex;gap:8px;flex-wrap:wrap;margin-top:2px
+}
+.scene-pill{
+  font-size:12px;font-weight:500;padding:6px 14px;
+  border:1px solid var(--border-input);border-radius:16px;
+  color:var(--fg-secondary);background:var(--bg-card);
+  cursor:pointer;transition:all var(--motion-fast) var(--ease);
+  user-select:none
+}
+.scene-pill.on{
+  color:var(--brand);
+  border-color:var(--brand);
+  background:var(--surface-brand)
+}
+.scene-pill:active{opacity:.7}
+
+/* ── Divider (between form and sync) ── */
+.bs-divider{
+  height:1px;background:var(--border-divider);margin:6px 0 14px
+}
+
+/* ── Device sync section ── */
+.sync-area{
+  border:1px solid var(--border-card);border-radius:10px;
+  padding:14px 16px;margin-bottom:14px;
+  background:var(--bg-card);box-shadow:var(--shadow-card)
+}
+.sync-area .sync-title{
+  font-size:13px;font-weight:500;color:var(--fg-body);
+  margin-bottom:10px
+}
+.sync-area .sync-row{
+  display:flex;justify-content:space-between;align-items:center
+}
+.sync-area .sync-device{
+  font-size:13px;color:var(--fg-body)
+}
+.sync-area .sync-device .dvc-name{color:var(--fg-primary);font-weight:500}
+.sync-area .sync-time{font-size:11px;color:var(--fg-placeholder);margin-top:3px}
+.sync-area .sync-btn{
+  font-size:12px;font-weight:500;padding:6px 16px;
+  border:1px solid var(--border-input);border-radius:6px;
+  color:var(--fg-body);background:var(--bg-card);
+  cursor:pointer;transition:all var(--motion-fast) var(--ease);user-select:none
+}
+.sync-area .sync-btn:active{background:var(--bg-press)}
+.sync-area .sync-empty{
+  font-size:13px;color:var(--fg-placeholder);text-align:center;padding:8px 0
+}
+.sync-area .sync-empty .sync-link{
+  color:var(--brand);cursor:pointer;font-weight:500;
+  transition:opacity var(--motion-fast) var(--ease)
+}
+.sync-area .sync-empty .sync-link:active{opacity:.7}
+.sync-area .sync-status{
+  display:flex;align-items:center;gap:5px;margin-bottom:2px
+}
+.sync-area .sync-status .sync-dot{
+  width:6px;height:6px;border-radius:50%;background:var(--state-normal);flex-shrink:0
+}
+.sync-area .sync-status .sync-label{font-size:12px;color:var(--state-normal);font-weight:500}
+
+/* ── Bottom buttons ── */
+.bs-actions{
+  display:flex;gap:12px;padding:12px 20px 20px;
+  padding-bottom:calc(20px + env(safe-area-inset-bottom,0));
+  border-top:1px solid var(--border-divider);flex-shrink:0
+}
+.bs-actions .bs-btn{
+  flex:1;height:44px;border-radius:8px;font-size:15px;font-weight:500;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all var(--motion-fast) var(--ease);user-select:none;
+  font-family:inherit
+}
+.bs-actions .bs-cancel{
+  border:1px solid var(--border-input);
+  color:var(--fg-body);background:var(--bg-card)
+}
+.bs-actions .bs-cancel:active{background:var(--bg-press)}
+.bs-actions .bs-save{
+  border:none;color:var(--fg-on-brand);background:var(--brand);font-weight:600;
+  box-shadow:0 1px 3px rgba(46,171,138,.25)
+}
+.bs-actions .bs-save:active{background:var(--brand-press)}
+
+/* ── Sync indicator dot ── */
+.sync-dot-g{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--state-normal);flex-shrink:0;
+  display:inline-block;vertical-align:middle
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ Demo toggle ═══ -->
+<div class="demo-bar" id="demoBar">
+  <button class="db-btn on" data-page="bp">血压</button>
+  <button class="db-btn" data-page="glucose">血糖</button>
+  <button class="db-btn" data-page="ua">尿酸</button>
+</div>
+
+<!-- ============================================================ -->
+<!-- ═══ 添加血压记录 ═══ -->
+<!-- ============================================================ -->
+<div class="pg-view active" id="pg-bp">
+<div class="phone">
+
+  <!-- ═══ Status bar ═══ -->
+  <div class="status-bar">
+    <span class="s-time">9:41</span>
+    <div class="s-icons">
+      <div class="s-sig"><span></span><span></span><span></span></div>
+      <span class="s-network">5G</span>
+      <div class="s-battery">
+        <span class="s-pct">87%</span>
+        <span class="s-bat"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ Navigation bar ═══ -->
+  <div class="nav">
+    <span class="n-title">健康</span>
+    <div class="n-capsule"><span class="c-bar"></span><span class="c-dot"></span></div>
+  </div>
+
+  <!-- ═══ Dimmed background content (simulating health home) ═══ -->
+  <div class="bg-content">
+    <!-- 顶部轻操作行 -->
+    <div class="bg-block" style="height:36px;border-radius:8px"></div>
+    <!-- 今日健康概览卡片 -->
+    <div class="bg-block" style="height:80px;border-radius:10px"></div>
+    <!-- 2×2 指标卡片 -->
+    <div class="bg-grid">
+      <div class="bg-block" style="height:90px;border-radius:10px"></div>
+      <div class="bg-block" style="height:90px;border-radius:10px"></div>
+      <div class="bg-block" style="height:90px;border-radius:10px"></div>
+      <div class="bg-block" style="height:90px;border-radius:10px"></div>
+    </div>
+  </div>
+
+  <!-- ═══ Overlay ═══ -->
+  <div class="overlay"></div>
+
+  <!-- ═══ Bottom Sheet ═══ -->
+  <div class="bottom-sheet">
+
+    <!-- Handle -->
+    <div class="bs-handle">
+      <div class="handle-bar"></div>
+    </div>
+
+    <!-- Header -->
+    <div class="bs-header">
+      <span class="bs-title">添加血压记录</span>
+      <span class="bs-close" data-action="close">✕</span>
+    </div>
+
+    <!-- Type tabs (segmented) -->
+    <div class="type-tabs">
+      <span class="type-tab on" data-indicator="bp">血压</span>
+      <span class="type-tab" data-indicator="glucose">血糖</span>
+      <span class="type-tab" data-indicator="ua">尿酸</span>
+    </div>
+
+    <!-- Entry mode -->
+    <div class="mode-row">
+      <span class="mode-item on" data-mode="manual">手动输入</span>
+      <span class="mode-item" data-mode="sync">设备同步</span>
+    </div>
+
+    <!-- ═══ Form ═══ -->
+    <div class="bs-form">
+
+      <!-- ── Manual input fields ── -->
+      <div class="bs-form-fields">
+
+        <!-- 收缩压 + 舒张压 (dual) -->
+        <div class="fld-bp-row">
+          <div class="fld">
+            <div class="fld-lbl">收缩压 <span class="fld-req">*</span></div>
+            <div class="fld-inp"><span class="fld-ph">数值</span><span class="fld-unit">mmHg</span></div>
+          </div>
+          <div class="fld">
+            <div class="fld-lbl">舒张压 <span class="fld-req">*</span></div>
+            <div class="fld-inp"><span class="fld-ph">数值</span><span class="fld-unit">mmHg</span></div>
+          </div>
+        </div>
+
+        <!-- 脉搏 -->
+        <div class="fld">
+          <div class="fld-lbl">脉搏</div>
+          <div class="fld-inp"><span class="fld-ph">输入数值</span><span class="fld-unit">bpm</span></div>
+        </div>
+
+        <!-- 测量时间 -->
+        <div class="fld">
+          <div class="fld-lbl">测量时间 <span class="fld-req">*</span></div>
+          <div class="fld-inp" data-action="time"><span class="fld-val">今日 07:30</span><span class="fld-arrw">›</span></div>
+        </div>
+
+        <!-- 测量场景 -->
+        <div class="fld">
+          <div class="fld-lbl">测量场景</div>
+          <div class="scene-row">
+            <span class="scene-pill on">晨起</span>
+            <span class="scene-pill">睡前</span>
+            <span class="scene-pill">日常</span>
+          </div>
+        </div>
+
+        <!-- 备注 -->
+        <div class="fld">
+          <div class="fld-lbl">备注</div>
+          <div class="fld-ta"><span class="fld-ph">可选，测量前状态或备注…</span></div>
+        </div>
+
+      </div><!-- /form-fields -->
+
+      <!-- ── Device sync area ── -->
+      <div class="bs-sync-area">
+        <div class="bs-divider"></div>
+        <div class="sync-area">
+          <div class="sync-title">可用设备</div>
+          <div class="sync-empty">暂无可用设备，<span class="sync-link" data-action="device">前往设备管理</span></div>
+        </div>
+      </div>
+
+    </div><!-- /bs-form -->
+
+    <!-- ═══ Bottom actions ═══ -->
+    <div class="bs-actions">
+      <span class="bs-btn bs-cancel" data-action="cancel">取消</span>
+      <span class="bs-btn bs-save" data-action="save">保存</span>
+    </div>
+
+  </div><!-- /bottom-sheet -->
+
+</div><!-- /phone -->
+</div><!-- /pg-view -->
+
+
+<!-- ============================================================ -->
+<!-- ═══ 添加血糖记录 ═══ -->
+<!-- ============================================================ -->
+<div class="pg-view" id="pg-glucose">
+<div class="phone">
+
+  <div class="status-bar">
+    <span class="s-time">9:41</span>
+    <div class="s-icons">
+      <div class="s-sig"><span></span><span></span><span></span></div>
+      <span class="s-network">5G</span>
+      <div class="s-battery">
+        <span class="s-pct">87%</span>
+        <span class="s-bat"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav">
+    <span class="n-title">健康</span>
+    <div class="n-capsule"><span class="c-bar"></span><span class="c-dot"></span></div>
+  </div>
+
+  <div class="bg-content">
+    <!-- 顶部轻操作行 -->
+    <div class="bg-block" style="height:36px;border-radius:8px"></div>
+    <!-- 今日健康概览卡片 -->
+    <div class="bg-block" style="height:80px;border-radius:10px"></div>
+    <!-- 2×2 指标卡片 -->
+    <div class="bg-grid">
+      <div class="bg-block" style="height:90px;border-radius:10px"></div>
+      <div class="bg-block" style="height:90px;border-radius:10px"></div>
+      <div class="bg-block" style="height:90px;border-radius:10px"></div>
+      <div class="bg-block" style="height:90px;border-radius:10px"></div>
+    </div>
+  </div>
+
+  <div class="overlay"></div>
+
+  <div class="bottom-sheet">
+
+    <div class="bs-handle">
+      <div class="handle-bar"></div>
+    </div>
+
+    <div class="bs-header">
+      <span class="bs-title">添加血糖记录</span>
+      <span class="bs-close" data-action="close">✕</span>
+    </div>
+
+    <div class="type-tabs">
+      <span class="type-tab" data-indicator="bp">血压</span>
+      <span class="type-tab on" data-indicator="glucose">血糖</span>
+      <span class="type-tab" data-indicator="ua">尿酸</span>
+    </div>
+
+    <div class="mode-row">
+      <span class="mode-item on" data-mode="manual">手动输入</span>
+      <span class="mode-item" data-mode="sync">设备同步</span>
+    </div>
+
+    <div class="bs-form">
+
+      <div class="bs-form-fields">
+
+        <!-- 血糖值 -->
+        <div class="fld">
+          <div class="fld-lbl">血糖值 <span class="fld-req">*</span></div>
+          <div class="fld-inp"><span class="fld-ph">输入数值</span><span class="fld-unit">mmol/L</span></div>
+        </div>
+
+        <!-- 测量时间 -->
+        <div class="fld">
+          <div class="fld-lbl">测量时间 <span class="fld-req">*</span></div>
+          <div class="fld-inp" data-action="time"><span class="fld-val">今日 07:00</span><span class="fld-arrw">›</span></div>
+        </div>
+
+        <!-- 测量场景 (重要) -->
+        <div class="fld">
+          <div class="fld-lbl">测量场景 <span class="fld-req">*</span></div>
+          <div class="scene-row">
+            <span class="scene-pill on">空腹</span>
+            <span class="scene-pill">餐前</span>
+            <span class="scene-pill">餐后 2 小时</span>
+            <span class="scene-pill">随机</span>
+          </div>
+        </div>
+
+        <!-- 备注 -->
+        <div class="fld">
+          <div class="fld-lbl">备注</div>
+          <div class="fld-ta"><span class="fld-ph">可选，饮食或运动备注…</span></div>
+        </div>
+
+      </div><!-- /form-fields -->
+
+      <!-- ── Device sync area (has device) ── -->
+      <div class="bs-sync-area">
+        <div class="bs-divider"></div>
+        <div class="sync-area">
+          <div class="sync-title">可用设备</div>
+          <div class="sync-row">
+            <div>
+              <div class="sync-device">
+                <span class="sync-status">
+                  <span class="sync-dot"></span>
+                  <span class="sync-label">已连接</span>
+                </span>
+                <span class="dvc-name">智能血糖仪</span>
+              </div>
+              <div class="sync-time">最近同步：今日 07:00</div>
+            </div>
+            <span class="sync-btn" data-action="sync-device">同步</span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /bs-form -->
+
+    <div class="bs-actions">
+      <span class="bs-btn bs-cancel" data-action="cancel">取消</span>
+      <span class="bs-btn bs-save" data-action="save">保存</span>
+    </div>
+
+  </div><!-- /bottom-sheet -->
+
+</div><!-- /phone -->
+</div><!-- /pg-view -->
+
+
+<!-- ============================================================ -->
+<!-- ═══ 添加尿酸记录 ═══ -->
+<!-- ============================================================ -->
+<div class="pg-view" id="pg-ua">
+<div class="phone">
+
+  <div class="status-bar">
+    <span class="s-time">9:41</span>
+    <div class="s-icons">
+      <div class="s-sig"><span></span><span></span><span></span></div>
+      <span class="s-network">5G</span>
+      <div class="s-battery">
+        <span class="s-pct">87%</span>
+        <span class="s-bat"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav">
+    <span class="n-title">健康</span>
+    <div class="n-capsule"><span class="c-bar"></span><span class="c-dot"></span></div>
+  </div>
+
+  <div class="bg-content">
+    <!-- 顶部轻操作行 -->
+    <div class="bg-block" style="height:36px;border-radius:8px"></div>
+    <!-- 今日健康概览卡片 -->
+    <div class="bg-block" style="height:80px;border-radius:10px"></div>
+    <!-- 2×2 指标卡片 -->
+    <div class="bg-grid">
+      <div class="bg-block" style="height:90px;border-radius:10px"></div>
+      <div class="bg-block" style="height:90px;border-radius:10px"></div>
+      <div class="bg-block" style="height:90px;border-radius:10px"></div>
+      <div class="bg-block" style="height:90px;border-radius:10px"></div>
+    </div>
+  </div>
+
+  <div class="overlay"></div>
+
+  <div class="bottom-sheet">
+
+    <div class="bs-handle">
+      <div class="handle-bar"></div>
+    </div>
+
+    <div class="bs-header">
+      <span class="bs-title">添加尿酸记录</span>
+      <span class="bs-close" data-action="close">✕</span>
+    </div>
+
+    <div class="type-tabs">
+      <span class="type-tab" data-indicator="bp">血压</span>
+      <span class="type-tab" data-indicator="glucose">血糖</span>
+      <span class="type-tab on" data-indicator="ua">尿酸</span>
+    </div>
+
+    <div class="mode-row">
+      <span class="mode-item on" data-mode="manual">手动输入</span>
+      <span class="mode-item" data-mode="sync">设备同步</span>
+    </div>
+
+    <div class="bs-form">
+
+      <div class="bs-form-fields">
+
+        <!-- 尿酸值 -->
+        <div class="fld">
+          <div class="fld-lbl">尿酸值 <span class="fld-req">*</span></div>
+          <div class="fld-inp"><span class="fld-ph">输入数值</span><span class="fld-unit">μmol/L</span></div>
+        </div>
+
+        <!-- 测量时间 -->
+        <div class="fld">
+          <div class="fld-lbl">测量时间 <span class="fld-req">*</span></div>
+          <div class="fld-inp" data-action="time"><span class="fld-val">昨天 20:00</span><span class="fld-arrw">›</span></div>
+        </div>
+
+        <!-- 备注 -->
+        <div class="fld">
+          <div class="fld-lbl">备注</div>
+          <div class="fld-ta"><span class="fld-ph">可选，饮食或备注…</span></div>
+        </div>
+
+      </div><!-- /form-fields -->
+
+      <!-- ── Device sync area (no device) ── -->
+      <div class="bs-sync-area">
+        <div class="bs-divider"></div>
+        <div class="sync-area">
+          <div class="sync-title">可用设备</div>
+          <div class="sync-empty">暂无可用设备，<span class="sync-link" data-action="device">前往设备管理</span></div>
+        </div>
+      </div>
+
+    </div><!-- /bs-form -->
+
+    <div class="bs-actions">
+      <span class="bs-btn bs-cancel" data-action="cancel">取消</span>
+      <span class="bs-btn bs-save" data-action="save">保存</span>
+    </div>
+
+  </div><!-- /bottom-sheet -->
+
+</div><!-- /phone -->
+</div><!-- /pg-view -->
+
+
+<script>
+// ── Page view switching (demo) ──
+document.querySelectorAll('.db-btn').forEach(btn => {
+  btn.addEventListener('click', function(){
+    document.querySelectorAll('.db-btn').forEach(b=>b.classList.remove('on'));
+    this.classList.add('on');
+    document.querySelectorAll('.pg-view').forEach(v=>v.classList.remove('active'));
+    document.getElementById('pg-'+this.dataset.page).classList.add('active');
+  });
+});
+
+// ── Entry mode toggle ──
+document.querySelectorAll('.mode-item').forEach(item => {
+  item.addEventListener('click', function(){
+    const parent = this.closest('.mode-row');
+    parent.querySelectorAll('.mode-item').forEach(m => m.classList.remove('on'));
+    this.classList.add('on');
+    const sheet = this.closest('.bottom-sheet');
+    const form = sheet.querySelector('.bs-form');
+    form.classList.toggle('mode-sync', this.dataset.mode === 'sync');
+  });
+});
+
+// ── Scene pill toggle ──
+document.querySelectorAll('.scene-pill').forEach(pill => {
+  pill.addEventListener('click', function(){
+    const parent = this.closest('.scene-row');
+    parent.querySelectorAll('.scene-pill').forEach(p => p.classList.remove('on'));
+    this.classList.add('on');
+  });
+});
+
+// ── Navigation placeholders ──
+document.querySelectorAll('[data-action]').forEach(el => {
+  el.addEventListener('click', function(e){
+    e.stopPropagation();
+    const action = this.dataset.action;
+    const page = this.closest('.pg-view')?.id || '';
+    const label = this.textContent.trim();
+    switch(action){
+      case 'close':
+        console.log('[弹窗占位] 关闭添加记录弹窗');
+        break;
+      case 'cancel':
+        console.log('[弹窗占位] 取消添加记录');
+        break;
+      case 'save':
+        console.log('[弹窗占位] 保存记录');
+        break;
+      case 'time':
+        console.log('[弹窗占位] 打开时间选择器');
+        break;
+      case 'device':
+        console.log('[导航占位] 前往设备管理页');
+        break;
+      case 'sync-device':
+        console.log('[设备占位] 同步设备数据');
+        break;
+      default:
+        console.log('[占位]', action, label);
+    }
+  });
+});
+
+// ── Type tab click (switch the active page demo) ──
+document.querySelectorAll('.type-tab').forEach(tab => {
+  tab.addEventListener('click', function(){
+    const indicator = this.dataset.indicator;
+    // Switch to the corresponding demo page
+    const btn = document.querySelector(`.db-btn[data-page="${indicator}"]`);
+    if(btn) btn.click();
+  });
+});
+</script>
+
+</body>
+</html>

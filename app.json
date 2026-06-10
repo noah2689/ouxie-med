@@ -1,0 +1,40 @@
+{
+  "pages": [
+    "pages/health/index",
+    "pages/ai/index",
+    "pages/my/index",
+    "pages/detail/index",
+    "pages/records/index",
+    "pages/family/index",
+    "pages/device/index",
+    "pages/reminder/index"
+  ],
+  "window": {
+    "navigationBarTitleText": "瓯械健康",
+    "navigationBarBackgroundColor": "#FFFFFF",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#F5F6F8",
+    "backgroundTextStyle": "dark"
+  },
+  "tabBar": {
+    "color": "#B0B0BC",
+    "selectedColor": "#2EAB8A",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/health/index",
+        "text": "健康"
+      },
+      {
+        "pagePath": "pages/ai/index",
+        "text": "AI 助手"
+      },
+      {
+        "pagePath": "pages/my/index",
+        "text": "我的"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json"
+}

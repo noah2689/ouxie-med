@@ -1,0 +1,482 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=390, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>瓯械健康 — 成员快捷选择底部弹窗 高保真 UI</title>
+<style>
+/* ═══════════════════════════════════════════════
+   高保真 UI — 瓯械健康 · 成员快捷选择底部弹窗
+   设计规范 v1.1  |  390 × 844 WeChat Mini Program
+   ═══════════════════════════════════════════════ */
+
+:root {
+  --brand: #2EAB8A;
+  --brand-soft: #E8F6F1;
+  --brand-press: #269C7A;
+  --surface-brand: #F0F9F5;
+
+  --bg-page: #F5F6F8;
+  --bg-card: #FFFFFF;
+  --bg-input: #F8F9FA;
+  --bg-press: #F0F1F3;
+  --bg-overlay: rgba(0,0,0,0.40);
+  --bg-nav-bar: #FFFFFF;
+
+  --fg-primary: #1A1A2E;
+  --fg-body: #4A4A5A;
+  --fg-secondary: #8E8E9A;
+  --fg-placeholder: #B8B8C4;
+  --fg-disabled: #C8C8D4;
+  --fg-on-brand: #FFFFFF;
+
+  --border-card: #E8E8EE;
+  --border-divider: #F0F0F2;
+  --border-input: #D8D8E0;
+  --border-strong: #C8C8D0;
+
+  --state-attention: #E8913A;
+  --state-attention-bg: #FFF8F0;
+  --state-attention-border: #F0D5A8;
+  --state-normal: #5B9E7A;
+  --state-normal-bg: #F0F9F5;
+  --state-normal-border: #C8E0D0;
+  --state-rec: #7A8C9E;
+  --state-rec-bg: #F5F6F8;
+  --state-rec-border: #D0D5DA;
+  --state-pending: #B0A090;
+  --state-pending-bg: #FAF8F5;
+  --state-pending-border: #E0D8D0;
+
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.04);
+  --shadow-raised: 0 2px 8px rgba(0,0,0,0.06);
+
+  --motion-fast: 150ms;
+  --motion-base: 200ms;
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+}
+
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{
+  display:flex;flex-direction:column;align-items:center;
+  min-height:100vh;padding:20px 0;
+  background:#D0D1D6;
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── Phone frame ── */
+.phone{
+  width:390px;height:844px;
+  background:var(--bg-page);
+  border-radius:40px;overflow:hidden;
+  box-shadow:0 0 0 1px rgba(0,0,0,.08),0 8px 32px rgba(0,0,0,.15);
+  display:flex;flex-direction:column;
+  position:relative
+}
+
+/* ── Status bar ── */
+.status-bar{
+  height:44px;background:var(--bg-nav-bar);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 28px;flex-shrink:0
+}
+.s-time{font-size:15px;font-weight:700;color:var(--fg-primary);letter-spacing:.3px}
+.s-icons{display:flex;align-items:center;gap:6px}
+.s-icons .s-sig{display:flex;gap:2px;align-items:flex-end;height:12px}
+.s-icons .s-sig span{display:block;width:3px;background:#B0B0BC;border-radius:1px}
+.s-icons .s-sig span:nth-child(1){height:5px}
+.s-icons .s-sig span:nth-child(2){height:8px}
+.s-icons .s-sig span:nth-child(3){height:11px}
+.s-icons .s-network{font-size:11px;color:var(--fg-secondary);font-weight:500;letter-spacing:.3px}
+.s-icons .s-battery{display:flex;align-items:center;gap:3px}
+.s-icons .s-battery .s-pct{font-size:11px;color:var(--fg-secondary);font-weight:500}
+.s-icons .s-battery .s-bat{
+  width:22px;height:11px;border:1px solid #B0B0BC;border-radius:3px;
+  position:relative;background:transparent
+}
+.s-icons .s-battery .s-bat::after{
+  content:'';position:absolute;right:-4px;top:2.5px;
+  width:2px;height:4px;background:#B0B0BC;border-radius:0 1px 1px 0
+}
+
+/* ── Navigation bar (home page style, no back) ── */
+.nav{
+  height:44px;background:var(--bg-nav-bar);
+  display:flex;align-items:center;justify-content:center;
+  border-bottom:1px solid var(--border-divider);flex-shrink:0;position:relative
+}
+.nav .n-title{font-size:17px;font-weight:600;color:var(--fg-primary)}
+.nav .n-capsule{
+  position:absolute;right:14px;top:50%;transform:translateY(-50%);
+  width:70px;height:26px;border:1px solid #D0D0D8;border-radius:13px;
+  display:flex;align-items:center;justify-content:center;gap:5px
+}
+.nav .n-capsule .c-bar{width:16px;height:2px;background:#C0C0C8;border-radius:1px}
+.nav .n-capsule .c-dot{width:4px;height:4px;border-radius:50%;background:#C0C0C8}
+
+/* ── Dimmed background content (simulate health home) ── */
+.bg-content{
+  flex:1;overflow:hidden;background:var(--bg-page);
+  display:flex;flex-direction:column;gap:10px;padding:12px 16px;
+  filter:saturate(0.5);
+  user-select:none;pointer-events:none;
+  position:relative;z-index:1
+}
+
+/* Top row placeholder */
+.bg-top-row{
+  display:flex;justify-content:space-between;align-items:center;
+  height:34px;padding:0 2px
+}
+.bg-top-row .bg-member{
+  display:flex;align-items:center;gap:4px;
+  font-size:14px;color:var(--fg-secondary);font-weight:500
+}
+.bg-top-row .bg-remind{
+  font-size:12px;color:var(--fg-placeholder)
+}
+
+/* Overview card placeholder */
+.bg-ov{
+  background:#E8E8EE;border-radius:12px;
+  height:90px;width:100%;opacity:.55
+}
+
+/* 2×2 indicator cards placeholder */
+.bg-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px
+}
+.bg-grid .bg-ind{
+  height:115px;background:#E8E8EE;border-radius:11px;opacity:.55
+}
+
+/* ── Overlay ── */
+.overlay{
+  position:absolute;inset:0;top:88px;  /* 44 status + 44 nav */
+  background:var(--bg-overlay);
+  z-index:5
+}
+
+/* ── Bottom Sheet ── */
+.bottom-sheet{
+  position:absolute;bottom:0;left:0;right:0;
+  background:var(--bg-card);
+  border-radius:20px 20px 0 0;
+  z-index:10;display:flex;flex-direction:column;
+  box-shadow:var(--shadow-raised);
+  max-height:500px;
+  animation:slideUp var(--motion-base) var(--ease)
+}
+@keyframes slideUp{
+  from{transform:translateY(30px);opacity:0}
+  to{transform:translateY(0);opacity:1}
+}
+
+/* ── Handle bar ── */
+.bs-handle{
+  display:flex;justify-content:center;padding:10px 0 4px;flex-shrink:0
+}
+.bs-handle .handle-bar{
+  width:36px;height:4px;border-radius:2px;background:#D8D8E0
+}
+
+/* ── Header ── */
+.bs-header{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  padding:0 20px 10px;flex-shrink:0
+}
+.bs-hd-left{}
+.bs-header .bs-title{
+  font-size:17px;font-weight:600;color:var(--fg-primary);margin-bottom:3px
+}
+.bs-header .bs-sub{
+  font-size:11px;color:var(--fg-secondary);line-height:1.5
+}
+.bs-header .bs-close{
+  width:28px;height:28px;border-radius:50%;
+  border:1px solid var(--border-input);background:var(--bg-input);
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;color:var(--fg-secondary);cursor:pointer;
+  transition:all var(--motion-fast) var(--ease);
+  font-family:inherit;line-height:1;flex-shrink:0;margin-top:2px
+}
+.bs-header .bs-close:active{background:var(--bg-press)}
+
+/* ── Member list ── */
+.ms-list{
+  flex:1;overflow-y:auto;padding:0 20px 6px;
+  -webkit-overflow-scrolling:touch
+}
+.ms-list::-webkit-scrollbar{display:none}
+
+.ms-item{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 14px;margin-bottom:6px;
+  border:1px solid var(--border-card);border-radius:12px;
+  background:var(--bg-card);
+  cursor:pointer;transition:all var(--motion-fast) var(--ease);
+  box-shadow:var(--shadow-card)
+}
+.ms-item:last-child{margin-bottom:0}
+.ms-item:active{background:var(--bg-press);border-color:var(--border-input)}
+
+/* Selected state */
+.ms-item.on{
+  border-color:var(--brand);
+  background:var(--surface-brand)
+}
+.ms-item.on .ms-check{display:flex}
+
+/* Avatar */
+.ms-avatar{
+  width:44px;height:44px;border-radius:50%;
+  border:1.5px solid var(--border-card);background:var(--bg-input);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;color:var(--fg-secondary);font-weight:600;
+  font-family:inherit
+}
+.ms-item.on .ms-avatar{
+  border-color:var(--brand)
+}
+
+/* Info area */
+.ms-info{flex:1;min-width:0}
+.ms-name{
+  font-size:15px;font-weight:600;color:var(--fg-primary);
+  display:flex;align-items:center;gap:6px;margin-bottom:2px
+}
+.ms-name .ms-rel{
+  display:inline-block;font-size:10px;font-weight:500;color:var(--fg-secondary);
+  border:1px solid var(--border-input);border-radius:3px;
+  padding:1px 6px;background:var(--bg-input);vertical-align:middle
+}
+.ms-meta{
+  font-size:11px;color:var(--fg-placeholder);line-height:1.5
+}
+
+/* Checkmark circle (hidden by default, shown on selected member) */
+.ms-check{
+  width:22px;height:22px;border-radius:50%;
+  background:var(--brand);
+  display:none;align-items:center;justify-content:center;
+  flex-shrink:0
+}
+
+/* Status tag in info area */
+.ms-tag{
+  display:inline-block;font-size:10px;font-weight:500;
+  padding:1px 6px;border-radius:3px;line-height:1.5;
+  margin-left:4px;vertical-align:middle;
+  background:var(--state-rec-bg);color:var(--state-rec);
+  border:1px solid var(--state-rec-border)
+}
+.ms-item.on .ms-tag{
+  background:var(--surface-brand);color:var(--brand);
+  border:1px solid var(--brand)
+}
+
+/* Align the meta row to show tag inline */
+.ms-meta-row{
+  display:flex;align-items:center;gap:4px;flex-wrap:wrap
+}
+
+/* ── Footer ── */
+.bs-footer{
+  padding:10px 20px calc(10px + env(safe-area-inset-bottom,0));
+  border-top:1px solid var(--border-divider);
+  flex-shrink:0;display:flex;flex-direction:column;gap:6px
+}
+.bs-footer .bf-btn{
+  display:block;width:100%;text-align:center;
+  font-size:13px;font-weight:500;padding:10px 0;
+  border-radius:8px;cursor:pointer;
+  transition:all var(--motion-fast) var(--ease);
+  font-family:inherit
+}
+.bs-footer .bf-btn:active{opacity:.8}
+.bs-footer .bf-manage{
+  background:var(--bg-card);color:var(--fg-body);
+  border:1px solid var(--border-input)
+}
+.bs-footer .bf-manage:active{background:var(--bg-press)}
+</style>
+</head>
+<body>
+
+<!-- ═══ Phone frame ═══ -->
+<div class="phone">
+
+  <!-- ── Status bar ── -->
+  <div class="status-bar">
+    <span class="s-time">9:41</span>
+    <div class="s-icons">
+      <div class="s-sig"><span></span><span></span><span></span></div>
+      <span class="s-network">5G</span>
+      <span class="s-battery">
+        <span class="s-pct">87%</span>
+        <span class="s-bat"></span>
+      </span>
+    </div>
+  </div>
+
+  <!-- ── Navigation bar ── -->
+  <div class="nav">
+    <span class="n-title">瓯械健康</span>
+    <div class="n-capsule">
+      <span class="c-bar"></span>
+      <span class="c-dot"></span>
+    </div>
+  </div>
+
+  <!-- ── Dimmed background (simulating health home) ── -->
+  <div class="bg-content">
+    <!-- Top row -->
+    <div class="bg-top-row">
+      <span class="bg-member">本人 <span style="font-size:10px;margin-left:1px;color:var(--fg-placeholder)">▾</span></span>
+      <span class="bg-remind">提醒</span>
+    </div>
+    <!-- Overview card -->
+    <div class="bg-ov"></div>
+    <!-- 2×2 grid -->
+    <div class="bg-grid">
+      <div class="bg-ind"></div>
+      <div class="bg-ind"></div>
+      <div class="bg-ind"></div>
+      <div class="bg-ind"></div>
+    </div>
+  </div>
+
+  <!-- ── Overlay ── -->
+  <div class="overlay" id="ovOverlay"></div>
+
+  <!-- ── Bottom Sheet ── -->
+  <div class="bottom-sheet" id="memberSheet">
+
+    <!-- Handle -->
+    <div class="bs-handle">
+      <div class="handle-bar"></div>
+    </div>
+
+    <!-- Header -->
+    <div class="bs-header">
+      <div class="bs-hd-left">
+        <div class="bs-title">选择成员</div>
+        <div class="bs-sub">切换后首页和记录页面将展示该成员数据</div>
+      </div>
+      <span class="bs-close" id="btnClose">✕</span>
+    </div>
+
+    <!-- Member list -->
+    <div class="ms-list">
+
+      <!-- Member 1: 本人 (selected) -->
+      <div class="ms-item on" data-relation="本人">
+        <div class="ms-avatar">本</div>
+        <div class="ms-info">
+          <div class="ms-name">
+            本人
+            <span class="ms-rel">本人</span>
+          </div>
+          <div class="ms-meta-row">
+            <span class="ms-meta">默认成员 · 最近记录 今日 07:30</span>
+            <span class="ms-tag">当前查看</span>
+          </div>
+        </div>
+        <div class="ms-check">
+          <svg width="9" height="7" viewBox="0 0 10 8" fill="none">
+            <path d="M1 4l2.5 2.5L8.5 1" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Member 2: 父亲 -->
+      <div class="ms-item" data-relation="父亲">
+        <div class="ms-avatar">父</div>
+        <div class="ms-info">
+          <div class="ms-name">
+            父亲
+            <span class="ms-rel">父亲</span>
+          </div>
+          <div class="ms-meta-row">
+            <span class="ms-meta">最近记录 昨天 20:15</span>
+            <span class="ms-tag">已添加</span>
+          </div>
+        </div>
+        <div class="ms-check">
+          <svg width="9" height="7" viewBox="0 0 10 8" fill="none">
+            <path d="M1 4l2.5 2.5L8.5 1" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Member 3: 母亲 -->
+      <div class="ms-item" data-relation="母亲">
+        <div class="ms-avatar">母</div>
+        <div class="ms-info">
+          <div class="ms-name">
+            母亲
+            <span class="ms-rel">母亲</span>
+          </div>
+          <div class="ms-meta-row">
+            <span class="ms-meta">资料待完善 · 最近记录 暂无</span>
+            <span class="ms-tag">待完善</span>
+          </div>
+        </div>
+        <div class="ms-check">
+          <svg width="9" height="7" viewBox="0 0 10 8" fill="none">
+            <path d="M1 4l2.5 2.5L8.5 1" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer: manage members -->
+    <div class="bs-footer">
+      <span class="bf-btn bf-manage" id="btnManage">管理家庭成员</span>
+    </div>
+
+  </div><!-- /bottom-sheet -->
+
+</div><!-- /phone -->
+
+<script>
+(function(){
+  var overlay = document.getElementById('ovOverlay');
+  var sheet = document.getElementById('memberSheet');
+  var closeBtn = document.getElementById('btnClose');
+  var manageBtn = document.getElementById('btnManage');
+  var memberItems = document.querySelectorAll('.ms-item');
+
+  // ── Click overlay → close ──
+  overlay.addEventListener('click', function(){
+    console.log('[弹窗占位] 关闭成员快捷选择');
+  });
+
+  // ── Click close button → close ──
+  closeBtn.addEventListener('click', function(){
+    console.log('[弹窗占位] 关闭成员快捷选择');
+  });
+
+  // ── Click member item → switch selection + console.log ──
+  memberItems.forEach(function(item){
+    item.addEventListener('click', function(){
+      var relation = this.dataset.relation || '成员';
+      // Visual switch: remove .on from all members, add to clicked
+      memberItems.forEach(function(m){ m.classList.remove('on'); });
+      this.classList.add('on');
+      console.log('[成员占位] 切换查看' + relation);
+    });
+  });
+
+  // ── Click manage members → navigate ──
+  manageBtn.addEventListener('click', function(){
+    console.log('[导航占位] 进入家庭成员页');
+  });
+
+})();
+</script>
+
+</body>
+</html>

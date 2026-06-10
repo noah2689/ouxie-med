@@ -1,0 +1,6 @@
+<!-- 瓯械健康 · 家庭成员页 —— Phase 1 骨架占位 -->
+<view class="page-placeholder">
+  <text class="page-title">家庭成员</text>
+  <text class="page-desc">管理家庭成员及其健康档案</text>
+  <text class="page-hint">Phase 5 将完成本页完整功能</text>
+</view>

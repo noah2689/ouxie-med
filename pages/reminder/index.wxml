@@ -1,0 +1,6 @@
+<!-- 瓯械健康 · 提醒设置页 —— Phase 1 骨架占位 -->
+<view class="page-placeholder">
+  <text class="page-title">提醒设置</text>
+  <text class="page-desc">设置健康指标记录提醒，保持规律测量</text>
+  <text class="page-hint">Phase 6 将完成本页完整功能</text>
+</view>

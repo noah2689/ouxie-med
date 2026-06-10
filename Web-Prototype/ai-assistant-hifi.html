@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=390, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>瓯械健康 — AI 助手 高保真 UI</title>
+<style>
+/* ═══════════════════════════════════════════════
+   高保真 UI — 瓯械健康 · AI 助手页
+   设计规范 v1.1  |  390 × 844 WeChat Mini Program
+   ═══════════════════════════════════════════════ */
+
+/* ── Tokens ── */
+:root {
+  --brand: #2EAB8A;
+  --brand-soft: #E8F6F1;
+  --brand-press: #269C7A;
+  --surface-brand: #F0F9F5;
+  --surface-warn: #FFF8F0;
+
+  --bg-page: #F5F6F8;
+  --bg-card: #FFFFFF;
+  --bg-input: #F8F9FA;
+  --bg-press: #F0F1F3;
+  --bg-overlay: rgba(0,0,0,0.40);
+  --bg-tab-bar: #FFFFFF;
+  --bg-nav-bar: #FFFFFF;
+
+  --fg-primary: #1A1A2E;
+  --fg-body: #4A4A5A;
+  --fg-secondary: #8E8E9A;
+  --fg-placeholder: #B8B8C4;
+  --fg-disabled: #C8C8D4;
+  --fg-on-brand: #FFFFFF;
+
+  --border-card: #E8E8EE;
+  --border-divider: #F0F0F2;
+  --border-input: #D8D8E0;
+  --border-strong: #C8C8D0;
+
+  --state-attention: #E8913A;
+  --state-attention-bg: #FFF8F0;
+  --state-attention-border: #F0D5A8;
+  --state-normal: #5B9E7A;
+  --state-normal-bg: #F0F9F5;
+  --state-normal-border: #C8E0D0;
+  --state-rec: #7A8C9E;
+  --state-rec-bg: #F5F6F8;
+  --state-rec-border: #D0D5DA;
+  --state-pending: #B0A090;
+  --state-pending-bg: #FAF8F5;
+  --state-pending-border: #E0D8D0;
+
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.04);
+  --shadow-raised: 0 2px 8px rgba(0,0,0,0.06);
+  --shadow-tab: 0 -1px 3px rgba(0,0,0,0.04);
+
+  --motion-fast: 150ms;
+  --motion-base: 200ms;
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* ── Reset & Base ── */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{
+  display:flex;flex-direction:column;align-items:center;
+  min-height:100vh;padding:20px 0;
+  background:#D0D1D6;
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── Phone frame ── */
+.phone{
+  width:390px;height:844px;
+  background:var(--bg-page);
+  border-radius:40px;overflow:hidden;
+  box-shadow:0 0 0 1px rgba(0,0,0,.08),0 8px 32px rgba(0,0,0,.15);
+  display:flex;flex-direction:column;position:relative
+}
+
+/* ── Status bar ── */
+.status-bar{
+  height:44px;background:var(--bg-nav-bar);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 28px;flex-shrink:0
+}
+.s-time{font-size:15px;font-weight:700;color:var(--fg-primary);letter-spacing:.3px}
+.s-icons{display:flex;align-items:center;gap:6px}
+.s-icons .s-sig{display:flex;gap:2px;align-items:flex-end;height:12px}
+.s-icons .s-sig span{display:block;width:3px;background:#B0B0BC;border-radius:1px}
+.s-icons .s-sig span:nth-child(1){height:5px}
+.s-icons .s-sig span:nth-child(2){height:8px}
+.s-icons .s-sig span:nth-child(3){height:11px}
+.s-icons .s-network{font-size:11px;color:var(--fg-secondary);font-weight:500;letter-spacing:.3px}
+.s-icons .s-battery{display:flex;align-items:center;gap:3px}
+.s-icons .s-battery .s-pct{font-size:11px;color:var(--fg-secondary);font-weight:500}
+.s-icons .s-battery .s-bat{
+  width:22px;height:11px;border:1px solid #B0B0BC;border-radius:3px;position:relative;background:transparent
+}
+.s-icons .s-battery .s-bat::after{
+  content:'';position:absolute;right:-4px;top:2.5px;
+  width:2px;height:4px;background:#B0B0BC;border-radius:0 1px 1px 0
+}
+
+/* ── Navigation bar (Tab page, no back) ── */
+.nav{
+  height:44px;background:var(--bg-nav-bar);
+  display:flex;align-items:center;justify-content:center;
+  border-bottom:1px solid var(--border-divider);flex-shrink:0;position:relative
+}
+.nav .n-title{font-size:17px;font-weight:600;color:var(--fg-primary)}
+.nav .n-capsule{
+  position:absolute;right:14px;top:50%;transform:translateY(-50%);
+  width:70px;height:26px;border:1px solid #D0D0D8;border-radius:13px;
+  display:flex;align-items:center;justify-content:center;gap:5px
+}
+.nav .n-capsule .c-bar{width:16px;height:2px;background:#C0C0C8;border-radius:1px}
+.nav .n-capsule .c-dot{width:4px;height:4px;border-radius:50%;background:#C0C0C8}
+
+/* ── Scrollable content ── */
+.content{
+  flex:1;overflow-y:auto;background:var(--bg-page);
+  -webkit-overflow-scrolling:touch;scroll-behavior:smooth
+}
+.content::-webkit-scrollbar{display:none}
+.content-spacer{height:12px}
+
+/* ── ① Intro card ── */
+.intro-card{
+  background:var(--bg-card);
+  border:1px solid var(--border-card);border-radius:12px;
+  padding:16px;margin:12px 16px 0;
+  display:flex;align-items:center;gap:12px;
+  box-shadow:var(--shadow-card)
+}
+.intro-card .ic-brand{
+  width:36px;height:36px;border-radius:50%;
+  background:var(--surface-brand);border:1px solid var(--brand);
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:700;color:var(--brand);flex-shrink:0
+}
+.intro-card .ic-text{flex:1}
+.intro-card .ic-title{font-size:14px;font-weight:600;color:var(--fg-primary);margin-bottom:2px}
+.intro-card .ic-desc{font-size:12px;color:var(--fg-secondary);line-height:1.5}
+.intro-card .ic-tag{
+  font-size:10px;font-weight:500;color:var(--fg-placeholder);
+  border:1px solid var(--border-strong);border-radius:3px;
+  padding:1px 6px;flex-shrink:0
+}
+
+/* ── ② Quick questions ── */
+.qq-sec{margin:10px 16px 0}
+.qq-title{font-size:12px;font-weight:600;color:var(--fg-secondary);margin-bottom:8px}
+.qq-grid{display:flex;flex-wrap:wrap;gap:8px}
+.qq-pill{
+  font-size:12px;font-weight:400;color:var(--fg-body);
+  border:1px solid var(--border-card);border-radius:8px;
+  padding:7px 12px;background:var(--bg-card);
+  cursor:pointer;transition:all var(--motion-fast) var(--ease);
+  box-shadow:var(--shadow-card)
+}
+.qq-pill:active{background:var(--bg-press)}
+
+/* ── ③ Today's summary card ── */
+.sum-card{
+  background:var(--bg-card);
+  border:1px solid var(--border-card);border-radius:12px;
+  padding:16px;margin:12px 16px 0;
+  box-shadow:var(--shadow-card)
+}
+.sum-card .sc-title{
+  font-size:14px;font-weight:600;color:var(--fg-primary);margin-bottom:10px
+}
+.sum-item{
+  padding:6px 0;display:flex;align-items:flex-start;gap:8px
+}
+.sum-item + .sum-item{
+  border-top:1px solid var(--border-divider);padding-top:10px;margin-top:2px
+}
+.sum-item .si-dot{
+  width:6px;height:6px;border-radius:50%;
+  margin-top:5px;flex-shrink:0
+}
+.sum-item .si-dot.bp{background:var(--chart-bp-sys,#4A8C9E)}
+.sum-item .si-dot.gl{background:var(--chart-glucose,#8A9BB5)}
+.sum-item .si-dot.ua{background:var(--chart-uric,#B0907A)}
+.sum-item .si-text{flex:1;min-width:0}
+.sum-item .si-text .si-main{font-size:13px;color:var(--fg-body);line-height:1.5;margin-bottom:2px}
+.sum-item .si-text .si-main .si-lbl{font-weight:500;color:var(--fg-primary)}
+.sum-item .si-text .si-sub{font-size:11px;color:var(--fg-secondary)}
+.sum-item .si-stag{
+  display:inline-block;font-size:10px;font-weight:500;
+  padding:1px 6px;border-radius:3px;line-height:1.4;
+  flex-shrink:0;margin-top:2px
+}
+.sum-item .si-stag.st-rec{
+  color:var(--state-rec);border:1px solid var(--state-rec-border);
+  background:var(--state-rec-bg)
+}
+.sum-item .si-stag.st-pending{
+  color:var(--state-pending);border:1px solid var(--state-pending-border);
+  background:var(--state-pending-bg)
+}
+
+/* ── ④ Chat area ── */
+.chat-sec{margin:12px 16px 0;display:flex;flex-direction:column;gap:12px}
+.chat-msg{display:flex;gap:8px;max-width:88%}
+.chat-msg.ai{align-self:flex-start}
+.chat-msg.user{align-self:flex-end;flex-direction:row-reverse}
+.chat-msg .c-avatar{
+  width:28px;height:28px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:600
+}
+.chat-msg.ai .c-avatar{
+  background:var(--surface-brand);border:1px solid var(--brand-soft);
+  color:var(--brand)
+}
+.chat-msg.user .c-avatar{
+  background:var(--bg-input);border:1px solid var(--border-card);
+  color:var(--fg-secondary)
+}
+.c-bubble{
+  font-size:13px;color:var(--fg-body);line-height:1.6;
+  border-radius:10px;padding:10px 12px
+}
+.chat-msg.ai .c-bubble{
+  background:var(--bg-card);border:1px solid var(--border-card);
+  border-top-left-radius:2px;box-shadow:var(--shadow-card)
+}
+.chat-msg.user .c-bubble{
+  background:var(--surface-brand);border:1px solid var(--brand-soft);
+  border-top-right-radius:2px;color:var(--fg-primary)
+}
+
+/* AI structured reply inner */
+.ai-inner{margin-top:6px}
+.ai-inner .ai-sec{
+  font-size:11px;font-weight:600;color:var(--fg-secondary);
+  margin:8px 0 4px;letter-spacing:.3px
+}
+.ai-inner .ai-line{
+  font-size:12px;color:var(--fg-body);padding:2px 0 2px 12px;position:relative;
+  line-height:1.5
+}
+.ai-inner .ai-line::before{
+  content:'';position:absolute;left:0;top:7px;
+  width:4px;height:4px;border-radius:50%;
+  background:var(--border-strong)
+}
+.ai-inner .ai-act{
+  font-size:12px;color:var(--fg-body);padding:2px 0;line-height:1.5
+}
+.ai-inner .ai-act .ai-num{
+  display:inline-block;width:16px;height:16px;line-height:16px;
+  text-align:center;font-size:10px;font-weight:600;
+  border:1px solid var(--brand);border-radius:50%;
+  color:var(--brand);margin-right:4px;vertical-align:middle
+}
+.ai-note{
+  font-size:10px;color:var(--fg-placeholder);margin-top:8px;padding-top:6px;
+  border-top:1px solid var(--border-divider);line-height:1.5
+}
+
+/* ── ⑤ Input bar ── */
+.input-bar{
+  background:var(--bg-tab-bar);
+  border-top:1px solid var(--border-divider);
+  padding:8px 12px;flex-shrink:0;
+  display:flex;align-items:center;gap:8px;
+  padding-bottom:calc(env(safe-area-inset-bottom,0) + 8px)
+}
+.input-bar .ib-input{
+  flex:1;height:38px;
+  border:1px solid var(--border-input);border-radius:8px;
+  padding:0 12px;font-size:14px;color:var(--fg-primary);background:var(--bg-input);
+  outline:none;font-family:inherit
+}
+.input-bar .ib-input::placeholder{color:var(--fg-placeholder);font-size:13px}
+.input-bar .ib-input:focus{border-color:var(--brand)}
+.input-bar .ib-send{
+  width:38px;height:38px;border-radius:8px;
+  background:var(--brand);border:none;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;flex-shrink:0;
+  transition:background var(--motion-fast) var(--ease)
+}
+.input-bar .ib-send:active{background:var(--brand-press)}
+.input-bar .ib-send svg{width:16px;height:16px;stroke:#fff;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+
+/* ── ⑥ Bottom tab bar ── */
+.tab-bar{
+  height:50px;
+  background:var(--bg-tab-bar);
+  border-top:1px solid var(--border-divider);
+  box-shadow:var(--shadow-tab);
+  display:flex;align-items:center;justify-content:space-around;
+  flex-shrink:0;
+  padding-bottom:env(safe-area-inset-bottom,0)
+}
+.tab-item{
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+  cursor:pointer;transition:opacity var(--motion-fast) var(--ease)
+}
+.tab-item:active{opacity:.7}
+.tab-item .tb-icon{width:22px;height:22px;display:flex;align-items:center;justify-content:center}
+.tab-item .tb-lbl{font-size:10px;font-weight:500;letter-spacing:.3px}
+.tab-item .tb-icon,.tab-item .tb-lbl{color:#B0B0BC;transition:color var(--motion-fast) var(--ease)}
+.tab-item.on .tb-icon,.tab-item.on .tb-lbl{color:var(--brand)}
+.tb-icon svg{display:block}
+</style>
+</head>
+<body>
+
+<!-- ═══ Phone frame ═══ -->
+<div class="phone">
+
+  <!-- ── Status bar ── -->
+  <div class="status-bar">
+    <span class="s-time">9:41</span>
+    <div class="s-icons">
+      <div class="s-sig"><span></span><span></span><span></span></div>
+      <span class="s-network">5G</span>
+      <div class="s-battery">
+        <span class="s-pct">87%</span>
+        <span class="s-bat"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Navigation bar ── -->
+  <div class="nav">
+    <span class="n-title">AI 助手</span>
+    <div class="n-capsule">
+      <span class="c-bar"></span>
+      <span class="c-dot"></span>
+    </div>
+  </div>
+
+  <!-- ── Scrollable content ── -->
+  <div class="content">
+
+    <!-- ─── ① AI 助手介绍卡片 ─── -->
+    <div class="intro-card">
+      <div class="ic-brand">AI</div>
+      <div class="ic-text">
+        <div class="ic-title">瓯械健康助手</div>
+        <div class="ic-desc">根据你的健康记录，提供趋势解读和记录建议</div>
+      </div>
+      <span class="ic-tag">仅供参考</span>
+    </div>
+
+    <!-- ─── ② 快捷问题区 ─── -->
+    <div class="qq-sec">
+      <div class="qq-title">你可以这样问</div>
+      <div class="qq-grid">
+        <span class="qq-pill" data-qq="0">最近血压趋势怎么样？</span>
+        <span class="qq-pill" data-qq="1">血糖记录需要注意什么？</span>
+        <span class="qq-pill" data-qq="2">尿酸记录有什么变化？</span>
+        <span class="qq-pill" data-qq="3">我今天还需要记录什么？</span>
+      </div>
+    </div>
+
+    <!-- ─── ③ 今日摘要卡片 ─── -->
+    <div class="sum-card">
+      <div class="sc-title">今日摘要</div>
+
+      <div class="sum-item">
+        <span class="si-dot bp"></span>
+        <div class="si-text">
+          <div class="si-main"><span class="si-lbl">血压</span>：今日 07:30 已记录，建议继续保持晨起记录</div>
+          <div class="si-sub">收缩压 128 / 舒张压 82</div>
+        </div>
+        <span class="si-stag st-rec">已记录</span>
+      </div>
+
+      <div class="sum-item">
+        <span class="si-dot gl"></span>
+        <div class="si-text">
+          <div class="si-main"><span class="si-lbl">血糖</span>：今日 07:00 已记录为空腹记录</div>
+          <div class="si-sub">6.2 mmol/L · 空腹</div>
+        </div>
+        <span class="si-stag st-rec">空腹记录</span>
+      </div>
+
+      <div class="sum-item">
+        <span class="si-dot ua"></span>
+        <div class="si-text">
+          <div class="si-main"><span class="si-lbl">尿酸</span>：近 7 天记录较少，建议补充记录</div>
+          <div class="si-sub">最近一次：昨天 20:00 · 428 μmol/L</div>
+        </div>
+        <span class="si-stag st-pending">记录较少</span>
+      </div>
+    </div>
+
+    <!-- ─── ④ 对话区 ─── -->
+    <div class="chat-sec">
+
+      <!-- AI welcome -->
+      <div class="chat-msg ai">
+        <div class="c-avatar">AI</div>
+        <div class="c-bubble">
+          你好，我可以帮你整理近期健康记录，提醒你关注记录趋势。
+        </div>
+      </div>
+
+      <!-- User question -->
+      <div class="chat-msg user">
+        <div class="c-avatar">我</div>
+        <div class="c-bubble">最近血压需要关注吗？</div>
+      </div>
+
+      <!-- AI structured reply -->
+      <div class="chat-msg ai">
+        <div class="c-avatar">AI</div>
+        <div class="c-bubble">
+          最近几次血压记录中，晨起数据更值得持续观察。建议继续保持固定时间记录，方便后续查看趋势。
+
+          <div class="ai-inner">
+            <div class="ai-sec">数据依据</div>
+            <div class="ai-line">今日 07:30 晨起记录 128/82</div>
+            <div class="ai-line">昨天 20:15 睡前记录 122/78</div>
+
+            <div class="ai-sec">建议行动</div>
+            <div class="ai-act"><span class="ai-num">1</span>保持晨起定时记录</div>
+            <div class="ai-act"><span class="ai-num">2</span>睡前补充一次记录</div>
+          </div>
+
+          <div class="ai-note">内容仅用于健康管理参考。如有不适请咨询专业人士。</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="content-spacer"></div>
+  </div><!-- /content -->
+
+  <!-- ─── ⑤ 输入区 ─── -->
+  <div class="input-bar">
+    <input class="ib-input" placeholder="输入你的健康问题" readonly>
+    <div class="ib-send" id="btnSend">
+      <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    </div>
+  </div>
+
+  <!-- ═══ Bottom Tab Bar ═══ -->
+  <div class="tab-bar">
+    <div class="tab-item" data-tab="health">
+      <span class="tb-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+          <polyline points="12 8.5 12 12 14 14"/>
+        </svg>
+      </span>
+      <span class="tb-lbl">健康</span>
+    </div>
+    <div class="tab-item on" data-tab="ai">
+      <span class="tb-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+      </span>
+      <span class="tb-lbl">AI 助手</span>
+    </div>
+    <div class="tab-item" data-tab="me">
+      <span class="tb-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+      </span>
+      <span class="tb-lbl">我的</span>
+    </div>
+  </div>
+
+</div><!-- /phone -->
+
+<script>
+(function(){
+  // ── Tab navigation ──
+  document.querySelectorAll('.tab-item').forEach(function(item){
+    item.addEventListener('click', function(){
+      var tab = this.dataset.tab;
+      if (tab === 'health') {
+        console.log('[Tab 占位] 切换到健康首页');
+      } else if (tab === 'ai') {
+        console.log('[Tab 占位] 当前已在 AI 助手页');
+      } else if (tab === 'me') {
+        console.log('[Tab 占位] 切换到我的页面');
+      }
+    });
+  });
+
+  // ── Quick questions ──
+  document.querySelectorAll('.qq-pill').forEach(function(pill){
+    pill.addEventListener('click', function(){
+      var txt = this.textContent.trim();
+      var labels = {
+        '0': '最近血压趋势怎么样？',
+        '1': '血糖记录需要注意什么？',
+        '2': '尿酸记录有什么变化？',
+        '3': '我今天还需要记录什么？'
+      };
+      var idx = this.dataset.qq;
+      console.log('[AI 占位] 点击快捷问题：' + (labels[idx] || txt));
+    });
+  });
+
+  // ── Send button ──
+  document.getElementById('btnSend').addEventListener('click', function(){
+    console.log('[AI 占位] 发送健康问题');
+  });
+
+  // ── Input field placeholder interaction ──
+  document.querySelector('.ib-input').addEventListener('focus', function(){
+    // Readonly prevents actual editing, just a placeholder
+  });
+})();
+</script>
+
+</body>
+</html>

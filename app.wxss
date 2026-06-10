@@ -1,0 +1,169 @@
+/* ═══════════════════════════════════════════════
+   瓯械健康 — 全局样式
+   设计规范 v1.1  |  WeChat Mini Program
+   ═══════════════════════════════════════════════ */
+
+/* ── Design Tokens ── */
+page {
+  /* Brand */
+  --brand: #2EAB8A;
+  --brand-soft: #E8F6F1;
+  --brand-press: #269C7A;
+  --surface-brand: #F0F9F5;
+  --surface-warn: #FFF8F0;
+  --surface-info: #F5F7FA;
+
+  /* Backgrounds */
+  --bg-page: #F5F6F8;
+  --bg-card: #FFFFFF;
+  --bg-input: #F8F9FA;
+  --bg-press: #F0F1F3;
+  --bg-overlay: rgba(0, 0, 0, 0.4);
+
+  /* Foreground */
+  --fg-primary: #1A1A2E;
+  --fg-body: #4A4A5A;
+  --fg-secondary: #8E8E9A;
+  --fg-placeholder: #B8B8C4;
+  --fg-disabled: #C8C8D4;
+  --fg-on-brand: #FFFFFF;
+
+  /* Borders */
+  --border-card: #E8E8EE;
+  --border-divider: #F0F0F2;
+  --border-input: #D8D8E0;
+  --border-strong: #C8C8D0;
+
+  /* State colors */
+  --state-attention: #E8913A;
+  --state-attention-bg: #FFF8F0;
+  --state-attention-border: #F0D5A8;
+  --state-normal: #5B9E7A;
+  --state-normal-bg: #F0F9F5;
+  --state-normal-border: #C8E0D0;
+  --state-observe: #8A9BB5;
+  --state-observe-bg: #F5F7FA;
+  --state-observe-border: #D0D8E0;
+  --state-rec: #7A8C9E;
+  --state-rec-bg: #F5F6F8;
+  --state-rec-border: #D0D5DA;
+  --state-pending: #B0A090;
+  --state-pending-bg: #FAF8F5;
+  --state-pending-border: #E0D8D0;
+
+  /* Chart colors */
+  --chart-bp-sys: #4A8C9E;
+  --chart-bp-dia: #8AB8C8;
+  --chart-glucose: #8A9BB5;
+  --chart-uric: #B0907A;
+  --chart-exceed: #E8913A;
+
+  /* Elevation */
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.04);
+  --shadow-raised: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --shadow-tab: 0 -1px 3px rgba(0, 0, 0, 0.04);
+
+  /* Layout */
+  --page-padding: 16px;
+  --grid-gap: 10px;
+
+  /* Typography */
+  --font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC',
+    'Helvetica Neue', system-ui, sans-serif;
+
+  /* Base styles */
+  background-color: var(--bg-page);
+  color: var(--fg-primary);
+  font-family: var(--font-family);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Reset ── */
+view,
+text,
+scroll-view,
+swiper {
+  box-sizing: border-box;
+}
+
+/* ── Button Reset ── */
+button {
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  font-family: var(--font-family);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--fg-primary);
+}
+
+button::after {
+  border: none;
+}
+
+/* ── Image Reset ── */
+image {
+  display: block;
+}
+
+/* ── Tag Base ── */
+.tag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 2px 7px;
+  border-radius: 4px;
+  line-height: 1.4;
+}
+
+/* ── Card Base ── */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: 12px;
+  box-shadow: var(--shadow-card);
+}
+
+/* ── Tabular Numbers ── */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Safe Area Bottom ── */
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+/* ── Page Placeholder（Phase 1 骨架使用） ── */
+.page-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  padding: 40px var(--page-padding);
+  text-align: center;
+}
+
+.page-placeholder .page-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--fg-primary);
+  margin-bottom: 8px;
+}
+
+.page-placeholder .page-desc {
+  font-size: 14px;
+  color: var(--fg-body);
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.page-placeholder .page-hint {
+  font-size: 12px;
+  color: var(--fg-placeholder);
+}

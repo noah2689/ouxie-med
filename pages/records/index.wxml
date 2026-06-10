@@ -1,0 +1,6 @@
+<!-- 瓯械健康 · 全部记录页 —— Phase 1 骨架占位 -->
+<view class="page-placeholder">
+  <text class="page-title">全部记录</text>
+  <text class="page-desc">查看所有健康指标的完整历史记录</text>
+  <text class="page-hint">Phase 4 将完成本页完整功能</text>
+</view>

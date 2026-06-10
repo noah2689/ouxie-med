@@ -1,0 +1,6 @@
+<!-- 瓯械健康 · 设备管理页 —— Phase 1 骨架占位 -->
+<view class="page-placeholder">
+  <text class="page-title">设备管理</text>
+  <text class="page-desc">管理已连接的健康监测设备</text>
+  <text class="page-hint">Phase 6 将完成本页完整功能</text>
+</view>
