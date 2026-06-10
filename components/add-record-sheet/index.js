@@ -14,8 +14,8 @@ Component({
   data: {
     // 当前激活的类型 tab
     activeTab: 'bloodPressure',
-    // 录入方式：manual / sync
-    inputMode: 'manual',
+    // 录入方式：manual / sync（默认设备同步）
+    inputMode: 'sync',
 
     // 各类型的场景选项
     sceneOptions: {
