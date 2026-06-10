@@ -27,14 +27,20 @@ page {
 
 .ai-header-left {
   flex: 1;
+  min-width: 0;
+}
+
+.ai-header-title-row {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  margin-bottom: 4rpx;
 }
 
 .ai-header-title {
   font-size: 17px;
   font-weight: 600;
   color: #1A1A2E;
-  display: block;
-  margin-bottom: 4rpx;
 }
 
 .ai-header-sub {
@@ -46,9 +52,7 @@ page {
 .ai-header-right {
   display: flex;
   align-items: center;
-  gap: 16rpx;
   flex-shrink: 0;
-  margin-top: 4rpx;
 }
 
 .ai-ref-tag {
@@ -58,19 +62,28 @@ page {
   background: #F0F9F5;
   border-radius: 6rpx;
   padding: 2rpx 10rpx;
+  flex-shrink: 0;
 }
 
 .ai-history-btn {
-  width: 48rpx;
-  height: 48rpx;
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 6rpx;
+  padding: 10rpx 20rpx;
+  border: 1px solid #E0E0E6;
+  border-radius: 28rpx;
+  color: #8E8E9A;
 }
 
-.history-icon {
-  font-size: 20px;
+.history-text {
+  font-size: 12px;
   color: #8E8E9A;
+}
+
+.history-arrow {
+  font-size: 12px;
+  color: #8E8E9A;
+  line-height: 1;
 }
 
 /* ── 可滚动内容区 ── */

@@ -4,13 +4,16 @@
   <!-- ═══ 顶部标题区 ═══ -->
   <view class="ai-header">
     <view class="ai-header-left">
-      <text class="ai-header-title">AI 健康助手</text>
+      <view class="ai-header-title-row">
+        <text class="ai-header-title">AI 健康助手</text>
+        <text class="ai-ref-tag">仅供参考</text>
+      </view>
       <text class="ai-header-sub">基于近期记录，辅助理解健康数据变化</text>
     </view>
     <view class="ai-header-right">
-      <text class="ai-ref-tag">仅供参考</text>
       <view class="ai-history-btn" bindtap="openSessionDrawer">
-        <text class="history-icon">☰</text>
+        <text class="history-text">历史</text>
+        <text class="history-arrow">›</text>
       </view>
     </view>
   </view>
