@@ -3,6 +3,7 @@ const mockData = require('../../mock/health');
 
 Page({
   data: {
+    avatarText: '本',
     memberName: '本人',
     memberGender: '男',
     memberAge: '32 岁',
@@ -55,6 +56,7 @@ Page({
 
     if (member) {
       this.setData({
+        avatarText: member.avatarText || '本',
         memberName: member.name,
         memberGender: member.gender || '男',
         memberAge: (member.age || 32) + ' 岁',

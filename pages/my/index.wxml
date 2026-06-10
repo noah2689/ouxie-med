@@ -3,7 +3,7 @@
 
   <!-- ═══ ① 用户信息卡片 ═══ -->
   <view class="profile-card">
-    <view class="pc-avatar">本</view>
+    <view class="pc-avatar">{{avatarText}}</view>
     <view class="pc-info">
       <text class="pc-name">{{memberName}}</text>
       <text class="pc-detail">{{memberGender}} · {{memberAge}}</text>
